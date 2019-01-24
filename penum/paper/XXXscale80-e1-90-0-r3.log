@@ -1,0 +1,336 @@
+Working threads: 60
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 1.
+Setting randomized trials to 1.
+Read conf file at penum.conf
+Setting prebeta parameter to 22.
+Setting pruning parameter to 0.15.
+Delta: 0.999
+Beta: 32
+Mode: 1
+Candidate Height: 10
+Target length: -1
+Trying to read: input/svpc-e1-d80.txt
+Read a basis of dimension: 80 / 80 with |b_0| = 0.4414277847e241
+Starting procedure
+NewNew Gauss is: 2396.46
+Preparing preprocessing of 1 threads.
+Thread 0 is BKZ-32 reducing basis
+|b_0| of BKZ-32 reduced basis of thread 0 is: 2721.828981(2.46664s [1.8965 s / 0.50607s ]).
+Sorting 1 bases.
+-0.023296 
+Time for preprocessing: 2.59408 seconds.
+Processing base of thread 0
+Executing ENUM with target length 2396.5
+A: 5.743e+06
+Searching candidates in depth 10
+Found new minumun (length: 2353)   7   21  -20   -8    3   -5    1   -8    0  -15   -6    7   -3    2   -5    2   -2   -7    2   10    1    0    2    0   -8   -3   10   -4    3    3   -4    1   10   -8    0   -6    3    3   -3   -4   -1    3    1    2    2    0    2    1    2   -2    0    1    2   -2   -1    1   -1   -2    0    0   -1    2    1   -2   -1    0   -1    1    1    0    0    0    0   -1    0   -1    0    0    0    0    0    0 
+Processed 3891 candidate-subtrees.
+coefficients: [ 7 21 -20 -8 3 -5 1 -8 -0 -15 -6 7 -3 2 -5 2 -2 -7 2 10 1 -0 2 -0 -8 -3 10 -4 3 3 -4 1 10 -8 -0 -6 3 3 -3 -4 -1 3 1 2 2 -0 2 1 2 -2 -0 1 2 -2 -1 1 -1 -2 -0 -0 -1 2 1 -2 -1 -0 -1 1 1 0 -0 0 0 -1 -0 -1 0 0 0 0 ]
+Shortest Vector: [229 -58 212 366 364 -81 372 311 -206 -443 -76 630 198 -473 -17 -42 -91 85 518 -104 55 -333 172 53 -92 412 67 172 151 -465 -177 -176 8 156 347 157 -113 165 -147 317 248 111 -707 -68 -229 146 -642 32 347 -194 -146 -264 16 155 104 53 639 143 45 -112 224 -92 332 -137 272 230 278 150 46 80 -221 -53 504 118 -170 -109 40 242 -226 213 ]
+Len: 2353
+
+Runtime of standard enumeration: 19.972 s.
+Finishing after 1 attemps in 22.738 s (processed 1 bases).
+Working threads: 50
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 1.
+Setting randomized trials to 1.
+Read conf file at penum.conf
+Setting prebeta parameter to 22.
+Setting pruning parameter to 0.15.
+Delta: 0.999
+Beta: 32
+Mode: 1
+Candidate Height: 10
+Target length: -1
+Trying to read: input/svpc-e1-d80.txt
+Read a basis of dimension: 80 / 80 with |b_0| = 0.4414277847e241
+Starting procedure
+NewNew Gauss is: 2396.46
+Preparing preprocessing of 1 threads.
+Thread 0 is BKZ-32 reducing basis
+|b_0| of BKZ-32 reduced basis of thread 0 is: 2721.828981(2.45979s [1.89205 s / 0.50488s ]).
+Sorting 1 bases.
+-0.023296 
+Time for preprocessing: 2.58349 seconds.
+Processing base of thread 0
+Executing ENUM with target length 2396.5
+A: 5.743e+06
+Searching candidates in depth 10
+Found new minumun (length: 2353)   7   21  -20   -8    3   -5    1   -8    0  -15   -6    7   -3    2   -5    2   -2   -7    2   10    1    0    2    0   -8   -3   10   -4    3    3   -4    1   10   -8    0   -6    3    3   -3   -4   -1    3    1    2    2    0    2    1    2   -2    0    1    2   -2   -1    1   -1   -2    0    0   -1    2    1   -2   -1    0   -1    1    1    0    0    0    0   -1    0   -1    0    0    0    0    0    0 
+Processed 3860 candidate-subtrees.
+coefficients: [ 7 21 -20 -8 3 -5 1 -8 -0 -15 -6 7 -3 2 -5 2 -2 -7 2 10 1 -0 2 -0 -8 -3 10 -4 3 3 -4 1 10 -8 -0 -6 3 3 -3 -4 -1 3 1 2 2 -0 2 1 2 -2 -0 1 2 -2 -1 1 -1 -2 -0 -0 -1 2 1 -2 -1 -0 -1 1 1 0 -0 0 0 -1 -0 -1 0 0 0 0 ]
+Shortest Vector: [229 -58 212 366 364 -81 372 311 -206 -443 -76 630 198 -473 -17 -42 -91 85 518 -104 55 -333 172 53 -92 412 67 172 151 -465 -177 -176 8 156 347 157 -113 165 -147 317 248 111 -707 -68 -229 146 -642 32 347 -194 -146 -264 16 155 104 53 639 143 45 -112 224 -92 332 -137 272 230 278 150 46 80 -221 -53 504 118 -170 -109 40 242 -226 213 ]
+Len: 2353
+
+Runtime of standard enumeration: 20.063 s.
+Finishing after 1 attemps in 22.814 s (processed 1 bases).
+Working threads: 40
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 1.
+Setting randomized trials to 1.
+Read conf file at penum.conf
+Setting prebeta parameter to 22.
+Setting pruning parameter to 0.15.
+Delta: 0.999
+Beta: 32
+Mode: 1
+Candidate Height: 10
+Target length: -1
+Trying to read: input/svpc-e1-d80.txt
+Read a basis of dimension: 80 / 80 with |b_0| = 0.4414277847e241
+Starting procedure
+NewNew Gauss is: 2396.46
+Preparing preprocessing of 1 threads.
+Thread 0 is BKZ-32 reducing basis
+|b_0| of BKZ-32 reduced basis of thread 0 is: 2721.828981(2.46082s [1.89277 s / 0.50495s ]).
+Sorting 1 bases.
+-0.023296 
+Time for preprocessing: 2.58508 seconds.
+Processing base of thread 0
+Executing ENUM with target length 2396.5
+A: 5.743e+06
+Searching candidates in depth 10
+Found new minumun (length: 2353)   7   21  -20   -8    3   -5    1   -8    0  -15   -6    7   -3    2   -5    2   -2   -7    2   10    1    0    2    0   -8   -3   10   -4    3    3   -4    1   10   -8    0   -6    3    3   -3   -4   -1    3    1    2    2    0    2    1    2   -2    0    1    2   -2   -1    1   -1   -2    0    0   -1    2    1   -2   -1    0   -1    1    1    0    0    0    0   -1    0   -1    0    0    0    0    0    0 
+Processed 3792 candidate-subtrees.
+coefficients: [ 7 21 -20 -8 3 -5 1 -8 -0 -15 -6 7 -3 2 -5 2 -2 -7 2 10 1 -0 2 -0 -8 -3 10 -4 3 3 -4 1 10 -8 -0 -6 3 3 -3 -4 -1 3 1 2 2 -0 2 1 2 -2 -0 1 2 -2 -1 1 -1 -2 -0 -0 -1 2 1 -2 -1 -0 -1 1 1 0 -0 0 0 -1 -0 -1 0 0 0 0 ]
+Shortest Vector: [229 -58 212 366 364 -81 372 311 -206 -443 -76 630 198 -473 -17 -42 -91 85 518 -104 55 -333 172 53 -92 412 67 172 151 -465 -177 -176 8 156 347 157 -113 165 -147 317 248 111 -707 -68 -229 146 -642 32 347 -194 -146 -264 16 155 104 53 639 143 45 -112 224 -92 332 -137 272 230 278 150 46 80 -221 -53 504 118 -170 -109 40 242 -226 213 ]
+Len: 2353
+
+Runtime of standard enumeration: 20.122 s.
+Finishing after 1 attemps in 22.874 s (processed 1 bases).
+Working threads: 30
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 1.
+Setting randomized trials to 1.
+Read conf file at penum.conf
+Setting prebeta parameter to 22.
+Setting pruning parameter to 0.15.
+Delta: 0.999
+Beta: 32
+Mode: 1
+Candidate Height: 10
+Target length: -1
+Trying to read: input/svpc-e1-d80.txt
+Read a basis of dimension: 80 / 80 with |b_0| = 0.4414277847e241
+Starting procedure
+NewNew Gauss is: 2396.46
+Preparing preprocessing of 1 threads.
+Thread 0 is BKZ-32 reducing basis
+|b_0| of BKZ-32 reduced basis of thread 0 is: 2721.828981(2.46714s [1.89584 s / 0.508628s ]).
+Sorting 1 bases.
+-0.023296 
+Time for preprocessing: 2.59102 seconds.
+Processing base of thread 0
+Executing ENUM with target length 2396.5
+A: 5.743e+06
+Searching candidates in depth 10
+Found new minumun (length: 2391) -13    1    1    4   -7   -3    4    0    5   13   -2    5   -5    0    5    2    1    3  -11  -11   -3    4    6   -3    2   -4   -8    5    3   -7    1   -1   -2   -1    2    1    0   -2    2    2    2   -1    2    0    2    1    0    0    1   -1   -1   -2    0    0    1    0    1    0    0    0   -1   -1    3   -1    0   -1    0    0    0    1    1    0    0    0    0    0    0    0    0    0    0    0 
+Processed 2645 candidate-subtrees.
+coefficients: [ -13 1 1 4 -7 -3 4 -0 5 13 -2 5 -5 -0 5 2 1 3 -11 -11 -3 4 6 -3 2 -4 -8 5 3 -7 1 -1 -2 -1 2 1 -0 -2 2 2 2 -1 2 -0 2 1 -0 -0 1 -1 -1 -2 -0 0 1 -0 1 -0 0 -0 -1 -1 3 -1 -0 -1 -0 -0 -0 1 1 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [284 39 -56 434 -252 -172 -46 34 -519 98 -327 41 23 -43 -2 -511 -13 149 123 241 469 266 36 -176 302 -43 592 64 44 -356 199 -182 -84 61 -77 -82 367 -306 -168 149 93 -250 273 264 305 -301 -230 223 -485 -227 647 12 -5 -345 -497 -220 119 480 112 341 -13 -45 -416 101 35 -113 175 416 -441 -273 346 158 -303 -70 -94 6 331 -513 140 143 ]
+Len: 2391.9
+
+Runtime of standard enumeration: 20.148 s.
+Finishing after 1 attemps in 22.906 s (processed 1 bases).
+Working threads: 20
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 1.
+Setting randomized trials to 1.
+Read conf file at penum.conf
+Setting prebeta parameter to 22.
+Setting pruning parameter to 0.15.
+Delta: 0.999
+Beta: 32
+Mode: 1
+Candidate Height: 10
+Target length: -1
+Trying to read: input/svpc-e1-d80.txt
+Read a basis of dimension: 80 / 80 with |b_0| = 0.4414277847e241
+Starting procedure
+NewNew Gauss is: 2396.46
+Preparing preprocessing of 1 threads.
+Thread 0 is BKZ-32 reducing basis
+|b_0| of BKZ-32 reduced basis of thread 0 is: 2721.828981(2.45539s [1.8906 s / 0.502756s ]).
+Sorting 1 bases.
+-0.023296 
+Time for preprocessing: 2.57895 seconds.
+Processing base of thread 0
+Executing ENUM with target length 2396.5
+A: 5.743e+06
+Searching candidates in depth 10
+Found new minumun (length: 2391) -13    1    1    4   -7   -3    4    0    5   13   -2    5   -5    0    5    2    1    3  -11  -11   -3    4    6   -3    2   -4   -8    5    3   -7    1   -1   -2   -1    2    1    0   -2    2    2    2   -1    2    0    2    1    0    0    1   -1   -1   -2    0    0    1    0    1    0    0    0   -1   -1    3   -1    0   -1    0    0    0    1    1    0    0    0    0    0    0    0    0    0    0    0 
+Processed 1016 candidate-subtrees.
+coefficients: [ -13 1 1 4 -7 -3 4 -0 5 13 -2 5 -5 -0 5 2 1 3 -11 -11 -3 4 6 -3 2 -4 -8 5 3 -7 1 -1 -2 -1 2 1 -0 -2 2 2 2 -1 2 -0 2 1 -0 -0 1 -1 -1 -2 -0 0 1 -0 1 -0 0 -0 -1 -1 3 -1 -0 -1 -0 -0 -0 1 1 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [284 39 -56 434 -252 -172 -46 34 -519 98 -327 41 23 -43 -2 -511 -13 149 123 241 469 266 36 -176 302 -43 592 64 44 -356 199 -182 -84 61 -77 -82 367 -306 -168 149 93 -250 273 264 305 -301 -230 223 -485 -227 647 12 -5 -345 -497 -220 119 480 112 341 -13 -45 -416 101 35 -113 175 416 -441 -273 346 158 -303 -70 -94 6 331 -513 140 143 ]
+Len: 2391.9
+
+Runtime of standard enumeration: 20.328 s.
+Finishing after 1 attemps in 23.076 s (processed 1 bases).
+Working threads: 10
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 1.
+Setting randomized trials to 1.
+Read conf file at penum.conf
+Setting prebeta parameter to 22.
+Setting pruning parameter to 0.15.
+Delta: 0.999
+Beta: 32
+Mode: 1
+Candidate Height: 10
+Target length: -1
+Trying to read: input/svpc-e1-d80.txt
+Read a basis of dimension: 80 / 80 with |b_0| = 0.4414277847e241
+Starting procedure
+NewNew Gauss is: 2396.46
+Preparing preprocessing of 1 threads.
+Thread 0 is BKZ-32 reducing basis
+|b_0| of BKZ-32 reduced basis of thread 0 is: 2721.828981(2.4563s [1.89083 s / 0.501802s ]).
+Sorting 1 bases.
+-0.023296 
+Time for preprocessing: 2.58106 seconds.
+Processing base of thread 0
+Executing ENUM with target length 2396.5
+A: 5.743e+06
+Searching candidates in depth 10
+Found new minumun (length: 2391) -13    1    1    4   -7   -3    4    0    5   13   -2    5   -5    0    5    2    1    3  -11  -11   -3    4    6   -3    2   -4   -8    5    3   -7    1   -1   -2   -1    2    1    0   -2    2    2    2   -1    2    0    2    1    0    0    1   -1   -1   -2    0    0    1    0    1    0    0    0   -1   -1    3   -1    0   -1    0    0    0    1    1    0    0    0    0    0    0    0    0    0    0    0 
+Processed 173 candidate-subtrees.
+coefficients: [ -13 1 1 4 -7 -3 4 -0 5 13 -2 5 -5 -0 5 2 1 3 -11 -11 -3 4 6 -3 2 -4 -8 5 3 -7 1 -1 -2 -1 2 1 -0 -2 2 2 2 -1 2 -0 2 1 -0 -0 1 -1 -1 -2 -0 0 1 -0 1 -0 0 -0 -1 -1 3 -1 -0 -1 -0 -0 -0 1 1 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [284 39 -56 434 -252 -172 -46 34 -519 98 -327 41 23 -43 -2 -511 -13 149 123 241 469 266 36 -176 302 -43 592 64 44 -356 199 -182 -84 61 -77 -82 367 -306 -168 149 93 -250 273 264 305 -301 -230 223 -485 -227 647 12 -5 -345 -497 -220 119 480 112 341 -13 -45 -416 101 35 -113 175 416 -441 -273 346 158 -303 -70 -94 6 331 -513 140 143 ]
+Len: 2391.9
+
+Runtime of standard enumeration: 20.366 s.
+Finishing after 1 attemps in 23.115 s (processed 1 bases).
+Working threads: 5
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 1.
+Setting randomized trials to 1.
+Read conf file at penum.conf
+Setting prebeta parameter to 22.
+Setting pruning parameter to 0.15.
+Delta: 0.999
+Beta: 32
+Mode: 1
+Candidate Height: 10
+Target length: -1
+Trying to read: input/svpc-e1-d80.txt
+Read a basis of dimension: 80 / 80 with |b_0| = 0.4414277847e241
+Starting procedure
+NewNew Gauss is: 2396.46
+Preparing preprocessing of 1 threads.
+Thread 0 is BKZ-32 reducing basis
+|b_0| of BKZ-32 reduced basis of thread 0 is: 2721.828981(2.45707s [1.89211 s / 0.502281s ]).
+Sorting 1 bases.
+-0.023296 
+Time for preprocessing: 2.58091 seconds.
+Processing base of thread 0
+Executing ENUM with target length 2396.5
+A: 5.743e+06
+Searching candidates in depth 10
+Found new minumun (length: 2391) -13    1    1    4   -7   -3    4    0    5   13   -2    5   -5    0    5    2    1    3  -11  -11   -3    4    6   -3    2   -4   -8    5    3   -7    1   -1   -2   -1    2    1    0   -2    2    2    2   -1    2    0    2    1    0    0    1   -1   -1   -2    0    0    1    0    1    0    0    0   -1   -1    3   -1    0   -1    0    0    0    1    1    0    0    0    0    0    0    0    0    0    0    0 
+Processed 41 candidate-subtrees.
+coefficients: [ -13 1 1 4 -7 -3 4 -0 5 13 -2 5 -5 -0 5 2 1 3 -11 -11 -3 4 6 -3 2 -4 -8 5 3 -7 1 -1 -2 -1 2 1 -0 -2 2 2 2 -1 2 -0 2 1 -0 -0 1 -1 -1 -2 -0 0 1 -0 1 -0 0 -0 -1 -1 3 -1 -0 -1 -0 -0 -0 1 1 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [284 39 -56 434 -252 -172 -46 34 -519 98 -327 41 23 -43 -2 -511 -13 149 123 241 469 266 36 -176 302 -43 592 64 44 -356 199 -182 -84 61 -77 -82 367 -306 -168 149 93 -250 273 264 305 -301 -230 223 -485 -227 647 12 -5 -345 -497 -220 119 480 112 341 -13 -45 -416 101 35 -113 175 416 -441 -273 346 158 -303 -70 -94 6 331 -513 140 143 ]
+Len: 2391.9
+
+Runtime of standard enumeration: 21.361 s.
+Finishing after 1 attemps in 24.109 s (processed 1 bases).
+Working threads: 1
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 1.
+Setting randomized trials to 1.
+Read conf file at penum.conf
+Setting prebeta parameter to 22.
+Setting pruning parameter to 0.15.
+Delta: 0.999
+Beta: 32
+Mode: 1
+Candidate Height: 10
+Target length: -1
+Trying to read: input/svpc-e1-d80.txt
+Read a basis of dimension: 80 / 80 with |b_0| = 0.4414277847e241
+Starting procedure
+NewNew Gauss is: 2396.46
+Preparing preprocessing of 1 threads.
+Thread 0 is BKZ-32 reducing basis
+|b_0| of BKZ-32 reduced basis of thread 0 is: 2721.828981(2.45501s [1.89211 s / 0.501681s ]).
+Sorting 1 bases.
+-0.023296 
+Time for preprocessing: 2.57814 seconds.
+Processing base of thread 0
+Executing ENUM with target length 2396.5
+A: 5.743e+06
+Searching candidates in depth 10
+Found new minumun (length: 2391) -13    1    1    4   -7   -3    4    0    5   13   -2    5   -5    0    5    2    1    3  -11  -11   -3    4    6   -3    2   -4   -8    5    3   -7    1   -1   -2   -1    2    1    0   -2    2    2    2   -1    2    0    2    1    0    0    1   -1   -1   -2    0    0    1    0    1    0    0    0   -1   -1    3   -1    0   -1    0    0    0    1    1    0    0    0    0    0    0    0    0    0    0    0 
+Processed 2 candidate-subtrees.
+coefficients: [ -13 1 1 4 -7 -3 4 -0 5 13 -2 5 -5 -0 5 2 1 3 -11 -11 -3 4 6 -3 2 -4 -8 5 3 -7 1 -1 -2 -1 2 1 -0 -2 2 2 2 -1 2 -0 2 1 -0 -0 1 -1 -1 -2 -0 0 1 -0 1 -0 0 -0 -1 -1 3 -1 -0 -1 -0 -0 -0 1 1 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [284 39 -56 434 -252 -172 -46 34 -519 98 -327 41 23 -43 -2 -511 -13 149 123 241 469 266 36 -176 302 -43 592 64 44 -356 199 -182 -84 61 -77 -82 367 -306 -168 149 93 -250 273 264 305 -301 -230 223 -485 -227 647 12 -5 -345 -497 -220 119 480 112 341 -13 -45 -416 101 35 -113 175 416 -441 -273 346 158 -303 -70 -94 6 331 -513 140 143 ]
+Len: 2391.9
+
+Runtime of standard enumeration: 29.098 s.
+Finishing after 1 attemps in 31.844 s (processed 1 bases).

@@ -1,0 +1,1848 @@
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 10
+Target length: 1969
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 11 is BKZ-24 reducing basis
+Thread 10 is BKZ-24 reducing basis
+Thread 1 is BKZ-24 reducing basis
+Thread 9 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 13 is BKZ-24 reducing basis
+Thread 3 is BKZ-Thread 24 reducing basis
+Thread Thread Thread 8 is BKZ-524 reducing basis
+Thread 2 is BKZ-Thread 24 reducing basis
+ is BKZ-24 reducing basis
+7Thread 12 is BKZ-2415 reducing basis
+ is BKZ-24 reducing basis
+ is BKZ-24 reducing basis
+6 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.876998s [0.757576 s / 0.0403856s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 2223.528052(1.21476s [1.07636 s / 0.031697s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 1993.548344(1.21837s [1.09246 s / 0.0228033s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 2219.263617(1.22637s [1.10751 s / 0.00978088s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 2105.63957(1.2304s [1.12082 s / 0.00973582s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2088.453974(1.23455s [1.0888 s / 0.0444635s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 1967.340591(1.26664s [1.11843 s / 0.0394013s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 2097.735207(1.278s [1.16938 s / 0.00928061s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2128.457188(1.29141s [1.15633 s / 0.0270584s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 1993.548344(1.30263s [1.18326 s / 0.0206349s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2140.206298(1.33475s [1.23494 s / 0.00901771s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2106.232893(1.36117s [1.23658 s / 0.0205474s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: |b_0| of BKZ-24 reduced basis of thread 14 is: 2093.512837(1.38701s [1.2749 s / 0.00880457s ]).
+2097.735207(1.38739s [1.25075 s / 0.0199616s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 1993.548344(1.38757s [1.22386 s / 0.0460292s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2088.453974(1.44987s [1.3323 s / 0.0137525s ]).
+Time for preprocessing: 1.47127 seconds.
+Processing base of thread 0
+Executing ENUM with target length 1969
+A: 3.877e+06
+Searching candidates in depth 10
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.10089 s.
+Finishing after 1 attemps in 1.6268 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 10
+Target length: 1969
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread Thread 10 is BKZ-24 reducing basis6
+ is BKZ-24 reducing basis
+Thread 12 is BKZ-Thread 24 reducing basis
+14 is BKZ-24 reducing basis
+Thread 7 is BKZ-24 reducing basis
+Thread 13 is BKZ-24 reducing basis
+Thread 5 is BKZ-24 reducing basis
+Thread 9 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+Thread 3 is BKZ-Thread 24 reducing basis
+11 is BKZ-24 reducing basis
+Thread 1 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.859105s [0.748464 s / 0.0397628s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2193.267654(1.13195s [1.01466 s / 0.0100508s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 2060.464996(1.18938s [1.06626 s / 0.0162481s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 2266.319042(1.18991s [1.05712 s / 0.0238242s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 2101.052831(1.21765s [1.09246 s / 0.00983222s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 2037.385825(1.23582s [1.09224 s / 0.028616s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 2143.98764(1.26332s [1.10231 s / 0.0470404s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2135.742026(1.29036s [1.15711 s / 0.0208006s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2140.206298(1.29207s [1.14019 s / 0.0423521s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 2131.730752(1.31975s [1.1746 s / 0.0397735s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 2038.165106(1.33476s [1.17339 s / 0.0563866s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2213.254391(1.35877s [1.23432 s / 0.0143363s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 2134.513996(1.36606s [1.13903 s / 0.110985s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 2106.232893(1.37041s [1.1855 s / 0.0679186s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2105.63957(1.37216s [1.24499 s / 0.0136281s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2088.453974(1.44763s [1.3273 s / 0.0196495s ]).
+Time for preprocessing: 1.46106 seconds.
+Processing base of thread 0
+Executing ENUM with target length 1969
+A: 3.877e+06
+Searching candidates in depth 10
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.10078 s.
+Finishing after 1 attemps in 1.6163 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 10
+Target length: 1969
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basis
+Thread 10 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 12 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+Thread 5 is BKZ-24 reducing basis
+Thread 3 is BKZ-24 reducing basis
+Thread 7 is BKZ-24 reducing basisThread 
+9 is BKZ-24 reducing basis
+Thread 13 is BKZ-24 reducing basis
+Thread 11 is BKZ-24 reducing basis
+Thread 1 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.86446s [0.753589 s / 0.0403084s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 1967.340591(1.16107s [1.02687 s / 0.0219169s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2166.733255(1.18356s [1.06919 s / 0.00979652s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 2159.618948(1.21938s [1.07203 s / 0.0407231s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 1967.340591(1.22181s [1.07388 s / 0.0332415s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 2089.493719(1.24033s [1.10011 s / 0.0360173s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2205.456869(1.2453s [1.13043 s / 0.00959075s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 2128.457188(1.29568s [1.08915 s / 0.094794s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2038.165106(1.31284s [1.16113 s / 0.0458954s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 1967.340591(1.32258s [1.1967 s / 0.0152294s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2037.385825(1.33022s [1.1971 s / 0.0284003s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 1967.340591(1.33425s [1.15672 s / 0.0627702s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 2106.232893(1.33983s [1.16465 s / 0.0651075s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 1967.340591(1.35589s [1.24398 s / 0.00889692s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 1993.548344(1.36124s [1.16213 s / 0.0937318s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 2060.464996(1.38206s [1.24755 s / 0.0254712s ]).
+Time for preprocessing: 1.39442 seconds.
+Processing base of thread 0
+Executing ENUM with target length 1969
+A: 3.877e+06
+Searching candidates in depth 10
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.10265 s.
+Finishing after 1 attemps in 1.5516 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 10
+Target length: 1969
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 5 is BKZ-24 reducing basis
+Thread 7 is BKZ-24 reducing basis
+Thread 10 is BKZ-24 reducing basis
+Thread 9 is BKZ-24 reducing basis
+Thread 3 is BKZ-24 reducing basis
+Thread 11 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+Thread 1 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 12 is BKZ-Thread 24 reducing basis
+13 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.8598s [0.748263 s / 0.0399251s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 2140.206298(1.15095s [1.02302 s / 0.015606s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2186.27217(1.15421s [1.03074 s / 0.00994986s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 2165.153805(1.18795s [1.03242 s / 0.0439175s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2097.735207(1.22363s [1.09468 s / 0.0227681s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 2109.765864(1.25005s [1.08158 s / 0.0655328s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2170.457095(1.25643s [1.1254 s / 0.0215608s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 1967.340591(1.28308s [1.15144 s / 0.0255402s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 1967.340591(1.29057s [1.11066 s / 0.0677614s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2114.390692(1.30451s [1.17429 s / 0.0203377s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 1967.340591(1.30554s [1.16718 s / 0.0209769s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 2090.318158(1.31212s [1.1731 s / 0.0327246s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 2037.385825(1.39122s [1.28031 s / 0.00883051s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 1993.548344(1.41297s [1.27303 s / 0.0348119s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 1993.548344(1.41999s [1.26596 s / 0.0420823s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2037.385825(1.43246s [1.27386 s / 0.0559925s ]).
+Time for preprocessing: 1.44548 seconds.
+Processing base of thread 0
+Executing ENUM with target length 1969
+A: 3.877e+06
+Searching candidates in depth 10
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.10263 s.
+Finishing after 1 attemps in 1.6029 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 10
+Target length: 1969
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 1 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+Thread 3 is BKZ-24 reducing basis
+Thread 5 is BKZ-24 reducing basis
+Thread 11 is BKZ-24 reducing basis
+Thread 9 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 7 is BKZ-24 reducing basis
+Thread 13 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 12 is BKZ-24 reducing basis
+Thread Thread 2 is BKZ-24 reducing basis10
+ is BKZ-24Thread  reducing basis
+6 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.860659s [0.7478 s / 0.0426662s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 2204.042422(1.16895s [0.999937 s / 0.0656411s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2105.63957(1.19686s [1.05124 s / 0.0345652s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 2093.512837(1.22262s [1.03685 s / 0.0749278s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 2198.969759(1.23267s [1.11114 s / 0.00960307s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 2157.071394(1.26865s [1.14233 s / 0.0208896s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2089.493719(1.2895s [1.10298 s / 0.0747285s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 2109.765864(1.29741s [1.18262 s / 0.009484s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2178.755608(1.31109s [1.08523 s / 0.119585s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 2089.493719(1.31889s [1.12211 s / 0.0865876s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 2104.264717(1.33727s [1.20222 s / 0.0259301s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 2128.446617(1.34671s [1.21854 s / 0.0238482s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2090.318158(1.36386s [1.24065 s / 0.0202819s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 1967.340591(1.3677s [1.25436 s / 0.00911728s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2155.034803(1.37166s [1.24756 s / 0.0192478s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 2192.580215(1.39435s [1.24541 s / 0.0407362s ]).
+Time for preprocessing: 1.40387 seconds.
+Processing base of thread 0
+Executing ENUM with target length 1969
+A: 3.877e+06
+Searching candidates in depth 10
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.10345 s.
+Finishing after 1 attemps in 1.5617 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 10
+Target length: 1969
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 10 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 12 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 5 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+Thread 7 is BKZ-24 reducing basis
+Thread 3 is BKZ-24 reducing basis
+Thread 1 is BKZ-24 reducing basis
+Thread 13 is BKZ-24 reducing basis
+Thread 9 is BKZ-Thread 24 reducing basis11
+ is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.858444s [0.747263 s / 0.0394051s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 2159.618948(1.21964s [1.09523 s / 0.00988775s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 2182.845162(1.23784s [1.09185 s / 0.0378825s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 2113.108374(1.25366s [1.0915 s / 0.0483997s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2131.730752(1.27225s [1.14773 s / 0.0145124s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 1993.548344(1.27336s [1.07272 s / 0.0939413s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 1993.548344(1.29135s [1.16373 s / 0.0207516s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 2176.030331(1.30449s [1.1774 s / 0.013743s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2130.738604(1.31364s [1.19852 s / 0.00927852s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 2060.464996(1.32946s [1.19607 s / 0.0200182s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 1967.340591(1.336s [1.20777 s / 0.0196111s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 2176.404374(1.34044s [1.14551 s / 0.0781266s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2093.512837(1.35697s [1.24419 s / 0.00883187s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 2167.517474(1.37564s [1.25407 s / 0.0183896s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2172.843529(1.46641s [1.34371 s / 0.0144574s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2142.826405(1.48868s [1.36103 s / 0.0196112s ]).
+Time for preprocessing: 1.5007 seconds.
+Processing base of thread 0
+Executing ENUM with target length 1969
+A: 3.877e+06
+Searching candidates in depth 10
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.10619 s.
+Finishing after 1 attemps in 1.669 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 10
+Target length: 1969
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 12 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basis
+Thread 10 is BKZ-24 reducing basis
+Thread 3 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+Thread 9 is BKZ-24 reducing basis
+Thread 1 is BKZ-Thread 24 reducing basis
+7 is BKZ-24 reducing basis
+Thread 11 is BKZ-Thread 24 reducing basis
+13 is BKZ-24 reducing basis
+Thread 5 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.856136s [0.746239 s / 0.0395574s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 1993.548344(1.15395s [1.03236 s / 0.00994701s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 2037.385825(1.18895s [1.04328 s / 0.0403971s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 2238.401662(1.19757s [1.08479 s / 0.00995475s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 2106.232893(1.22426s [1.10297 s / 0.00975721s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 2131.730752(1.22857s [1.07174 s / 0.0462583s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2199.987045(1.23319s [1.09085 s / 0.0367068s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 1967.340591(1.23817s [1.11476 s / 0.00969765s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 2038.165106(1.25215s [1.13374 s / 0.0153026s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2038.165106(1.26414s [1.11833 s / 0.0408046s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 1967.340591(1.28448s [1.14843 s / 0.0250799s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 1993.548344(1.31961s [1.15581 s / 0.0533708s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2186.787598(1.32551s [1.20417 s / 0.0242476s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2037.385825(1.37032s [1.215 s / 0.0483038s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2089.493719(1.42516s [1.30081 s / 0.0231931s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 2060.464996(1.58092s [1.44224 s / 0.0408463s ]).
+Time for preprocessing: 1.59422 seconds.
+Processing base of thread 0
+Executing ENUM with target length 1969
+A: 3.877e+06
+Searching candidates in depth 10
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.0995 s.
+Finishing after 1 attemps in 1.7482 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 10
+Target length: 1969
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 12 is BKZ-24 reducing basisThread 
+Thread 8 is BKZ-24 reducing basis
+10 is BKZ-24 reducing basis
+Thread 7 is BKZ-24 reducing basis
+Thread 1 is BKZ-24 reducing basis
+Thread 11 is BKZ-24 reducing basis
+Thread Thread 13 is BKZ-24 reducing basis9
+ is BKZ-24 reducing basis
+Thread Thread 5 is BKZ-24 reducing basis
+3 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.859724s [0.748282 s / 0.0393633s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 2090.318158(1.13057s [0.983841 s / 0.0355896s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2038.165106(1.20904s [1.03729 s / 0.0621417s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 1967.340591(1.24926s [1.09109 s / 0.0474808s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 1967.340591(1.2677s [1.14449 s / 0.00952251s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 1967.340591(1.26966s [1.15171 s / 0.00986587s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 2236.895617(1.28274s [1.11624 s / 0.0555479s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 2060.464996(1.29654s [1.15684 s / 0.0330673s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 1993.548344(1.30137s [1.16288 s / 0.0331024s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2060.464996(1.30671s [1.16036 s / 0.0395082s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2093.512837(1.31147s [1.16837 s / 0.03937s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 2128.457188(1.32214s [1.19196 s / 0.0186414s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 2037.385825(1.32316s [1.16504 s / 0.0500387s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 2037.385825(1.33216s [1.18954 s / 0.0338556s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2060.464996(1.33796s [1.18533 s / 0.0470063s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2097.735207(1.43674s [1.32471 s / 0.0141634s ]).
+Time for preprocessing: 1.4513 seconds.
+Processing base of thread 0
+Executing ENUM with target length 1969
+A: 3.877e+06
+Searching candidates in depth 10
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.09878 s.
+Finishing after 1 attemps in 1.6105 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 10
+Target length: 1969
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 10 is BKZ-24 reducing basis
+Thread 12 is BKZ-24 reducing basis
+Thread 5 is BKZ-24 reducing basis
+Thread Thread 1 is BKZ-324 is BKZ- reducing basis24
+ reducing basisThread 13 is BKZ-24 reducing basis
+
+Thread 7 is BKZ-Thread 24 reducing basis
+9 is BKZ-24 reducing basisThread 
+Thread 15 is BKZ-24 reducing basis
+11 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.85856s [0.747621 s / 0.0394989s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 2090.318158(1.19319s [1.06676 s / 0.0144941s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 2038.165106(1.19895s [1.07371 s / 0.0144876s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 2176.35498(1.22634s [1.10025 s / 0.0206923s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2038.165106(1.23116s [1.09244 s / 0.0348146s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2037.385825(1.28311s [1.09483 s / 0.0831701s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 2109.765864(1.30523s [1.15523 s / 0.0437532s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 2185.93687(1.31266s [1.19095 s / 0.0159287s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 1993.548344(1.32562s [1.17754 s / 0.0347644s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 1993.548344(1.32665s [1.20264 s / 0.00948529s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 1967.340591(1.3298s [1.18456 s / 0.0320232s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2104.264717(1.34698s [1.19545 s / 0.0403796s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2131.730752(1.35609s [1.22407 s / 0.0256241s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 2140.206298(1.36573s [1.22829 s / 0.0265353s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 1967.340591(1.36979s [1.24681 s / 0.020704s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2108.691775(1.51155s [1.40001 s / 0.00908826s ]).
+Time for preprocessing: 1.52451 seconds.
+Processing base of thread 0
+Executing ENUM with target length 1969
+A: 3.877e+06
+Searching candidates in depth 10
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.10682 s.
+Finishing after 1 attemps in 1.6976 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 10
+Target length: 1969
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basis
+Thread 12 is BKZ-24 reducing basis
+Thread 10 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 9 is BKZ-24 reducing basis
+Thread 3 is BKZ-24 reducing basis
+Thread 13 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+Thread Thread 5 is BKZ-Thread 247 is BKZ- reducing basis1
+24 reducing basis
+Thread 11 is BKZ- is BKZ-2424 reducing basis reducing basis
+
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.858942s [0.747742 s / 0.0397726s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2161.902634(1.13475s [1.00838 s / 0.0145904s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 1967.340591(1.15341s [1.03813 s / 0.00987084s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 2145.718295(1.20199s [1.04854 s / 0.0463737s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 2093.512837(1.20278s [1.05836 s / 0.0364976s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 2207.059356(1.21344s [1.07904 s / 0.0216323s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 2101.052831(1.22241s [1.07267 s / 0.0444955s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 2089.493719(1.2378s [1.10424 s / 0.0216172s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2140.206298(1.26429s [1.09293 s / 0.068491s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 1967.340591(1.28105s [1.15678 s / 0.0141494s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 1993.548344(1.31455s [1.18283 s / 0.0272581s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 2175.90441(1.33518s [1.14846 s / 0.07632s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 1993.548344(1.34789s [1.19983 s / 0.0421032s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2037.385825(1.35594s [1.21616 s / 0.035431s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2161.155709(1.37637s [1.19629 s / 0.0674119s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 2101.052831(1.37773s [1.17773 s / 0.0871419s ]).
+Time for preprocessing: 1.38907 seconds.
+Processing base of thread 0
+Executing ENUM with target length 1969
+A: 3.877e+06
+Searching candidates in depth 10
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.10153 s.
+Finishing after 1 attemps in 1.5468 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 10
+Target length: 1969
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basis
+Thread Thread 1012 is BKZ- is BKZ-2424 reducing basis reducing basis
+
+Thread 4 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 7 is BKZ-24 reducing basis
+Thread 1 is BKZ-24 reducing basis
+Thread 3 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+Thread 11 is BKZ-24 reducing basis
+Thread 13 is BKZ-24 reducing basis
+Thread 9 is BKZ-24 reducing basis
+Thread 5 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.86278s [0.7491 s / 0.0401328s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2164.996074(1.21643s [1.07555 s / 0.0376315s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 2108.691775(1.22152s [1.09362 s / 0.0233263s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 2108.691775(1.24512s [1.12398 s / 0.00978084s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2101.052831(1.25584s [1.12652 s / 0.0200483s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 2128.446617(1.27239s [1.04522 s / 0.116698s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 1993.548344(1.31805s [1.18361 s / 0.0298593s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2171.98849(1.34159s [1.21021 s / 0.0257709s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 2170.44189(1.34517s [1.16876 s / 0.0624378s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 2161.353511(1.35406s [1.22773 s / 0.020238s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 2218.599108(1.35649s [1.20097 s / 0.0399319s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2060.464996(1.36251s [1.19509 s / 0.0630791s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 1993.548344(1.38103s [1.2356 s / 0.0359532s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2060.464996(1.38459s [1.25053 s / 0.025006s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 2198.969759(1.41792s [1.30256 s / 0.0136302s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2155.385812(1.42526s [1.29898 s / 0.0245951s ]).
+Time for preprocessing: 1.43968 seconds.
+Processing base of thread 0
+Executing ENUM with target length 1969
+A: 3.877e+06
+Searching candidates in depth 10
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.10037 s.
+Finishing after 1 attemps in 1.5969 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 10
+Target length: 1969
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 12 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basis
+Thread 10 is BKZ-24 reducing basis
+Thread 7 is BKZ-24 reducing basis
+Thread 13 is BKZ-24 reducing basis
+Thread 9 is BKZ-24 reducing basis
+Thread 3 is BKZ-24 reducing basis
+Thread 11 is BKZ-Thread 24 reducing basis
+1 is BKZ-24 reducing basis
+Thread 5 is BKZ-24 reducing basisThread 
+15 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.860722s [0.749667 s / 0.0395418s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 2234.301009(1.20005s [1.07807 s / 0.0099393s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2201.161512(1.21214s [1.07222 s / 0.0350979s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 1967.340591(1.24214s [1.09655 s / 0.0292155s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 1993.548344(1.24207s [1.0901 s / 0.0405943s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 1993.548344(1.25341s [1.12384 s / 0.0147073s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 2168.229231(1.26417s [1.09439 s / 0.0519449s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 1967.340591(1.26381s [1.0786 s / 0.0694038s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 1967.340591(1.26405s [1.13205 s / 0.0154361s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 1967.340591(1.26855s [1.14278 s / 0.0208706s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 2250.091776(1.28741s [1.09584 s / 0.0861941s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 1967.340591(1.31312s [1.18929 s / 0.0137334s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2060.464996(1.31808s [1.14105 s / 0.0668002s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 2037.385825(1.32103s [1.16479 s / 0.0521988s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2060.464996(1.38623s [1.27041 s / 0.020435s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2060.464996(1.41566s [1.27111 s / 0.0355625s ]).
+Time for preprocessing: 1.42795 seconds.
+Processing base of thread 0
+Executing ENUM with target length 1969
+A: 3.877e+06
+Searching candidates in depth 10
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.097882 s.
+Finishing after 1 attemps in 1.5801 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 10
+Target length: 1969
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basis
+Thread 10 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 12 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+Thread 5 is BKZ-24 reducing basis
+Thread 11 is BKZ-24 reducing basis
+Thread 7 is BKZ-24 reducing basis
+Thread 9 is BKZ-24 reducing basis
+Thread Thread 1 is BKZ-13Thread 3 is BKZ-24 reducing basis is BKZ-
+2424 reducing basis
+ reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.859063s [0.746802 s / 0.0394372s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 2060.464996(1.18765s [1.06469 s / 0.0099018s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 1967.340591(1.20245s [1.05367 s / 0.0430372s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2178.720267(1.20754s [1.04313 s / 0.0506818s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 2194.156102(1.22015s [1.1049 s / 0.00957627s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2215.007675(1.23689s [1.12151 s / 0.00953047s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 2172.551265(1.26306s [1.10876 s / 0.0409241s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2135.742026(1.28195s [1.16782 s / 0.00937996s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 1967.340591(1.29481s [1.12121 s / 0.0603368s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2038.165106(1.31126s [1.16966 s / 0.0303454s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 2108.691775(1.33679s [1.21986 s / 0.0135875s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 2217.877814(1.34902s [1.18551 s / 0.0576889s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 1993.548344(1.35094s [1.23107 s / 0.0144962s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 2155.385812(1.38427s [1.27236 s / 0.00905132s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 2089.493719(1.44213s [1.31129 s / 0.0205925s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 1993.548344(1.52388s [1.38752 s / 0.0254786s ]).
+Time for preprocessing: 1.53885 seconds.
+Processing base of thread 0
+Executing ENUM with target length 1969
+A: 3.877e+06
+Searching candidates in depth 10
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.099171 s.
+Finishing after 1 attemps in 1.6956 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 10
+Target length: 1969
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 12 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread Thread 6 is BKZ-24 reducing basis
+4 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 10 is BKZ-24 reducing basis
+Thread 3 is BKZ-24 reducing basis
+Thread 1 is BKZ-24 reducing basis
+Thread 9 is BKZ-24 reducing basis
+Thread 11 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+Thread 13 is BKZ-24Thread  reducing basis
+7 is BKZ-24 reducing basis
+Thread 5 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.860843s [0.749086 s / 0.0397039s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2109.765864(1.18209s [1.06521 s / 0.01012s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 2134.513996(1.2302s [1.10115 s / 0.0234664s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 2153.274715(1.23717s [1.04178 s / 0.0834589s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 2175.790661(1.2537s [1.11176 s / 0.0291627s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2088.453974(1.26111s [1.11945 s / 0.0286345s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 2210.332328(1.26166s [1.11431 s / 0.0361025s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 2038.165106(1.26616s [1.11673 s / 0.0349854s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2172.59062(1.27134s [1.14807 s / 0.0204271s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 1967.340591(1.30249s [1.17976 s / 0.019666s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2101.052831(1.31647s [1.09125 s / 0.112109s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 1993.548344(1.35322s [1.22546 s / 0.0199405s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 1993.548344(1.37055s [1.24761 s / 0.0192122s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2108.691775(1.38488s [1.26519 s / 0.0192298s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 2201.594422(1.40405s [1.27065 s / 0.0254512s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 1967.340591(1.41634s [1.27302 s / 0.039909s ]).
+Time for preprocessing: 1.43121 seconds.
+Processing base of thread 0
+Executing ENUM with target length 1969
+A: 3.877e+06
+Searching candidates in depth 10
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.1079 s.
+Finishing after 1 attemps in 1.6017 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 10
+Target length: 1969
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 12 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 10 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 13 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+Thread 1 is BKZ-24 reducing basis
+Thread 7 is BKZ-24 reducing basis
+Thread 3 is BKZ-24 reducing basis
+Thread 5 is BKZ-24 reducing basis
+Thread 11 is BKZ-Thread 24 reducing basis
+9 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.857065s [0.746596 s / 0.0399486s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 2157.071394(1.18987s [1.04728 s / 0.0363976s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 1993.548344(1.20092s [1.05429 s / 0.0413238s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2251.554352(1.20596s [1.09319 s / 0.00977192s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 2155.385812(1.22188s [1.05654 s / 0.0597229s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2106.232893(1.23616s [1.09266 s / 0.0333898s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 2170.969829(1.24628s [1.12427 s / 0.00958433s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2089.493719(1.25151s [1.13651 s / 0.0092117s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 1967.340591(1.25994s [1.12641 s / 0.0213052s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 2128.457188(1.2686s [1.10794 s / 0.0477261s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2149.18217(1.30216s [1.16308 s / 0.0268968s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 2090.318158(1.32453s [1.18225 s / 0.0263312s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2037.385825(1.32514s [1.19566 s / 0.0202942s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 2090.318158(1.32954s [1.13883 s / 0.0744048s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2128.446617(1.33426s [1.21133 s / 0.0191156s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 1993.548344(1.34198s [1.20258 s / 0.0369812s ]).
+Time for preprocessing: 1.35403 seconds.
+Processing base of thread 0
+Executing ENUM with target length 1969
+A: 3.877e+06
+Searching candidates in depth 10
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.10536 s.
+Finishing after 1 attemps in 1.5137 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 2
+Target length: -1
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+NewNew Gauss is: 2099.03
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 11 is BKZ-24 reducing basis
+Thread 1 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+Thread 3 is BKZ-24 reducing basis
+Thread 13 is BKZ-24 reducing basis
+Thread 9 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basisThread 
+5 is BKZ-24 reducing basis
+Thread 12Thread  is BKZ-8 is BKZ-2424Thread  reducing basis reducing basis
+
+Thread 2 is BKZ-24 reducing basis10
+ is BKZ-24 reducing basis
+Thread 7 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.854202s [0.746658 s / 0.0400483s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2220.224088(1.22145s [1.07924 s / 0.0356384s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 2155.034803(1.23955s [1.07432 s / 0.0421145s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: |b_0| of BKZ-24 reduced basis of thread 3 is: 2038.165106(1.24014s [1.10167 s / 0.0200557s ]).
+2159.877774(1.2403s [1.08288 s / 0.0365629s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 2114.390692(1.2411s [1.11252 s / 0.0100962s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2038.165106(1.25594s [1.05165 s / 0.0915145s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 2038.165106(1.2607s [1.12539 s / 0.0289717s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2253.151571(1.26527s [1.07763 s / 0.0741785s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 2135.742026(1.26958s [1.12965 s / 0.0332106s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 2156.205(1.30023s [1.16802 s / 0.0204704s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 2060.464996(1.31224s [1.19708 s / 0.00924456s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2090.318158(1.34931s [1.21067 s / 0.0330874s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 2038.165106(1.36936s [1.25179 s / 0.00884213s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2135.742026(1.39706s [1.27179 s / 0.0138582s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 2114.390692(1.39999s [1.26519 s / 0.0247216s ]).
+Time for preprocessing: 1.41045 seconds.
+Processing base of thread 0
+Executing ENUM with target length 2099
+A: 4.4059e+06
+Searching candidates in depth 13
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.072683 s.
+Finishing iterative search after 1 attemps in 1.5576 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 2
+Target length: -1
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+NewNew Gauss is: 2099.03
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 12 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basisThread 
+10 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basis
+Thread 5 is BKZ-24 reducing basis
+Thread 9 is BKZ-24 reducing basis
+Thread 3 is BKZ-24 reducing basis
+Thread 11 is BKZ-24 reducing basis
+Thread 1 is BKZ-24 reducing basis
+Thread Thread 15 is BKZ-7 is BKZ-24 reducing basis24
+ reducing basis
+Thread 13 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.852871s [0.746125 s / 0.039807s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 2239.544597(1.14487s [1.01563 s / 0.0230754s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 2159.877774(1.15105s [1.02494 s / 0.0212571s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 2097.735207(1.21513s [1.07082 s / 0.0330211s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 2140.206298(1.21845s [1.01681 s / 0.0894935s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2060.464996(1.24633s [1.09681 s / 0.0427981s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 2106.232893(1.24965s [1.10607 s / 0.0384271s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2204.809516(1.26266s [1.14264 s / 0.00979071s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 2216.510771(1.27017s [1.10494 s / 0.0444549s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 1993.548344(1.26822s [1.14435 s / 0.0146875s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2037.385825(1.27723s [1.05053 s / 0.114248s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 1967.340591(1.27998s [1.15051 s / 0.0248422s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 1967.340591(1.29975s [1.09437 s / 0.094286s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2219.875222(1.33526s [1.18735 s / 0.0372234s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2088.453974(1.33467s [1.2164 s / 0.0138364s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 2037.385825(1.43486s [1.2792 s / 0.0501331s ]).
+Time for preprocessing: 1.4449 seconds.
+Processing base of thread 0
+Executing ENUM with target length 2099
+A: 4.4059e+06
+Searching candidates in depth 13
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.065018 s.
+Finishing iterative search after 1 attemps in 1.5913 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 2
+Target length: -1
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+NewNew Gauss is: 2099.03
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 10 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basis
+Thread 12 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 1 is BKZ-24 reducing basis
+Thread 13 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+Thread 7 is BKZ-24 reducing basis
+Thread 9 is BKZ-24 reducing basis
+Thread 5 is BKZ-Thread 24 reducing basis
+3 is BKZ-24 reducing basisThread 
+11 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.858167s [0.750597 s / 0.0397915s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2093.512837(1.15182s [1.03209 s / 0.0100129s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 2093.512837(1.19272s [1.02358 s / 0.0575585s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 2108.691775(1.22165s [1.08169 s / 0.0281116s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 2104.264717(1.26992s [1.11617 s / 0.042536s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 1967.340591(1.3013s [1.18492 s / 0.00944488s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 2106.232893(1.31212s [1.13343 s / 0.0672465s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 1967.340591(1.31542s [1.18221 s / 0.0271348s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2143.98764(1.32451s [1.19324 s / 0.0283381s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 2156.205(1.35133s [1.22114 s / 0.0201381s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2114.390692(1.36732s [1.24013 s / 0.0147512s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 1967.340591(1.37541s [1.23694 s / 0.0338308s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2172.551265(1.39429s [1.16792 s / 0.120519s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2089.493719(1.4382s [1.27604 s / 0.0599635s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 1967.340591(1.45743s [1.33292 s / 0.0228628s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 2088.453974(1.49682s [1.36509 s / 0.0309825s ]).
+Time for preprocessing: 1.511 seconds.
+Processing base of thread 0
+Executing ENUM with target length 2099
+A: 4.4059e+06
+Searching candidates in depth 13
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.06556 s.
+Finishing iterative search after 1 attemps in 1.6505 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 2
+Target length: -1
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+NewNew Gauss is: 2099.03
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basis
+Thread 10 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 12 is BKZ-24 reducing basis
+Thread 7 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+Thread 11 is BKZ-24 reducing basis
+Thread 13 is BKZ-24 reducing basis
+Thread 9 is BKZ-24 reducing basis
+Thread 1 is BKZ-Thread 24 reducing basis
+3 is BKZ-24 reducing basis
+Thread 5 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.852266s [0.745452 s / 0.0395072s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2234.935793(1.18108s [1.05344 s / 0.0219275s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2234.076543(1.19277s [1.07115 s / 0.0153585s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 2088.453974(1.20236s [1.06827 s / 0.0281164s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 1993.548344(1.21513s [1.06302 s / 0.0409058s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 2164.996074(1.22736s [1.04642 s / 0.0687428s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 1967.340591(1.23863s [1.0664 s / 0.0595373s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2109.765864(1.25775s [1.10212 s / 0.0520102s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 2244.588381(1.26852s [1.10382 s / 0.0530311s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 2130.738604(1.27483s [1.15716 s / 0.0148645s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2037.385825(1.28488s [1.16647 s / 0.00912768s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2205.770387(1.28836s [1.1157 s / 0.067895s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 2090.318158(1.30456s [1.18719 s / 0.00902547s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 1993.548344(1.31716s [1.15965 s / 0.0482384s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 2037.385825(1.38518s [1.17516 s / 0.107428s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 1993.548344(1.50031s [1.35583 s / 0.047722s ]).
+Time for preprocessing: 1.5142 seconds.
+Processing base of thread 0
+Executing ENUM with target length 2099
+A: 4.4059e+06
+Searching candidates in depth 13
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.069866 s.
+Finishing iterative search after 1 attemps in 1.665 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 2
+Target length: -1
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+NewNew Gauss is: 2099.03
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 12 is BKZ-24 reducing basis
+Thread 13 is BKZ-24 reducing basis
+Thread 10 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 5 is BKZ-24 reducing basis
+Thread 7 is BKZ-24 reducing basis
+Thread 3 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+Thread 1 is BKZ-24 reducing basis
+Thread 11 is BKZ-Thread 24 reducing basis
+14 is BKZ-24 reducing basis
+Thread 9 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.868336s [0.759484 s / 0.0401261s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 2204.042422(1.12101s [1.00295 s / 0.00986163s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 2093.512837(1.12157s [1.0046 s / 0.00983986s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2105.63957(1.16544s [1.04421 s / 0.00972504s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 2104.264717(1.19378s [1.06736 s / 0.0148409s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 2167.4891(1.21721s [1.09667 s / 0.0152744s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 2131.730752(1.25866s [1.12425 s / 0.0232179s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2037.385825(1.29602s [1.17559 s / 0.0091861s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 2114.390692(1.31459s [1.19672 s / 0.00917789s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 2176.745966(1.3338s [1.18414 s / 0.0374329s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2089.493719(1.33508s [1.19776 s / 0.036659s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2060.464996(1.34805s [1.22504 s / 0.0197326s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2060.464996(1.37675s [1.24905 s / 0.0259179s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 2090.318158(1.38661s [1.15542 s / 0.126436s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 1993.548344(1.44474s [1.33404 s / 0.00910233s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 2093.512837(1.4542s [1.31789 s / 0.0299589s ]).
+Time for preprocessing: 1.46541 seconds.
+Processing base of thread 0
+Executing ENUM with target length 2099
+A: 4.4059e+06
+Searching candidates in depth 13
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.063196 s.
+Finishing iterative search after 1 attemps in 1.6024 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 2
+Target length: -1
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+NewNew Gauss is: 2099.03
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 12 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 10 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 13 is BKZ-24 reducing basis
+Thread 11 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+Thread 9 is BKZ-24 reducing basis
+Thread 5 is BKZ-24 reducing basis
+Thread 3 is BKZ-24 reducing basis
+Thread 7 is BKZ-Thread 24 reducing basis
+1 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.852355s [0.745378 s / 0.0397161s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2219.023209(1.17253s [1.05105 s / 0.0100274s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 2172.551265(1.20019s [1.04056 s / 0.0479184s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 2211.84674(1.22472s [1.1067 s / 0.00980371s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 2161.155709(1.23226s [1.09134 s / 0.0209658s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 2134.513996(1.23417s [1.07805 s / 0.0419438s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2241.372124(1.24517s [1.09163 s / 0.0444878s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 2155.034803(1.24696s [1.12913 s / 0.00958089s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 2165.153805(1.2647s [1.13042 s / 0.0221069s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 2146.770365(1.26372s [1.14882 s / 0.00938011s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 2175.665186(1.30798s [1.15386 s / 0.0497376s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 1967.340591(1.32401s [1.0942 s / 0.122676s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 2143.98764(1.3516s [1.23594 s / 0.00870629s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2130.738604(1.38936s [1.22945 s / 0.05348s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2101.052831(1.39987s [1.24963 s / 0.0472644s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2038.165106(1.40336s [1.2782 s / 0.0234089s ]).
+Time for preprocessing: 1.41747 seconds.
+Processing base of thread 0
+Executing ENUM with target length 2099
+A: 4.4059e+06
+Searching candidates in depth 13
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.063422 s.
+Finishing iterative search after 1 attemps in 1.556 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 2
+Target length: -1
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+NewNew Gauss is: 2099.03
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basis
+Thread 10 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 12 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 11 is BKZ-24 reducing basis
+Thread 5 is BKZ-24 reducing basis
+Thread 9 is BKZ-24 reducing basis
+Thread 3 is BKZ-24 reducing basis
+Thread 13 is BKZ-24 reducing basis
+Thread 7 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+Thread 1 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.856229s [0.749273 s / 0.0399434s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2187.095791(1.14653s [1.01108 s / 0.0296408s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2206.211685(1.16039s [1.00175 s / 0.0508629s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 1993.548344(1.16096s [1.04388 s / 0.00986818s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 2178.402396(1.18005s [1.06414 s / 0.00980483s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 2134.337602(1.22115s [1.07406 s / 0.0341375s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 2145.813133(1.2277s [1.06147 s / 0.0538161s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2273.207206(1.23565s [1.07792 s / 0.0510737s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 2164.363186(1.28671s [1.13841 s / 0.0363874s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 2206.297124(1.30612s [1.19364 s / 0.00910466s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 2090.318158(1.36166s [1.2485 s / 0.0131179s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2097.735207(1.38257s [1.18427 s / 0.0873954s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 2088.453974(1.38896s [1.22916 s / 0.0494772s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 2093.512837(1.41406s [1.27954 s / 0.0261589s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2156.205(1.44327s [1.33571 s / 0.00878794s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2105.63957(1.49413s [1.29101 s / 0.0938039s ]).
+Time for preprocessing: 1.50634 seconds.
+Processing base of thread 0
+Executing ENUM with target length 2099
+A: 4.4059e+06
+Searching candidates in depth 13
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.061292 s.
+Finishing iterative search after 1 attemps in 1.6416 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 2
+Target length: -1
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+NewNew Gauss is: 2099.03
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 12 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 10 is BKZ-24 reducing basis
+Thread 5 is BKZ-24 reducing basis
+Thread Thread 1 is BKZ-9 is BKZ-2424 reducing basis reducing basis
+
+Thread 7 is BKZ-24 reducing basis
+Thread 13 is BKZ-24 reducing basis
+Thread 3 is BKZ-24 reducing basis
+Thread 11 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.854653s [0.746334 s / 0.0397725s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 2265.255835(1.14495s [1.02268 s / 0.0100328s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 1967.340591(1.24941s [1.11574 s / 0.0218149s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 2109.765864(1.25352s [1.0673 s / 0.065814s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 2088.453974(1.25514s [1.10434 s / 0.0301158s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2142.826405(1.25986s [1.14176 s / 0.0099127s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 2108.691775(1.27617s [1.13658 s / 0.0263519s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 1967.340591(1.30486s [1.18889 s / 0.00939119s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2104.264717(1.31128s [1.17286 s / 0.0257748s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 2089.493719(1.3134s [1.13469 s / 0.0709857s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 2093.512837(1.34832s [1.22016 s / 0.0235623s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2156.413921(1.37085s [1.2563 s / 0.00912036s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2038.165106(1.39003s [1.25699 s / 0.0277427s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2088.453974(1.4097s [1.28059 s / 0.0193202s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 1967.340591(1.43261s [1.29216 s / 0.0304196s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 2161.353511(1.46949s [1.33141 s / 0.0381074s ]).
+Time for preprocessing: 1.48419 seconds.
+Processing base of thread 0
+Executing ENUM with target length 2099
+A: 4.4059e+06
+Searching candidates in depth 13
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.06432 s.
+Finishing iterative search after 1 attemps in 1.6224 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 2
+Target length: -1
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+NewNew Gauss is: 2099.03
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 5 is BKZ-24 reducing basis
+Thread 7 is BKZ-24 reducing basis
+Thread 13 is BKZ-24 reducing basis
+Thread 11 is BKZ-24 reducing basis
+Thread 9 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+Thread 1 is BKZ-24 reducing basis
+Thread 3 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 12 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 2 is BKZ-Thread 24 reducing basis
+6 is BKZ-24 reducing basis
+Thread 10 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.856689s [0.748543 s / 0.0398567s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2156.205(1.1075s [0.989068 s / 0.0152179s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2186.787598(1.19513s [1.0787 s / 0.015642s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 2161.902634(1.19875s [1.06447 s / 0.0291089s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2168.776153(1.22684s [1.0733 s / 0.0419021s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 2108.691775(1.25589s [1.09302 s / 0.0554363s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 1993.548344(1.27616s [1.15201 s / 0.00954177s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 1967.340591(1.27989s [1.12323 s / 0.048802s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2089.493719(1.29693s [1.16095 s / 0.0308s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 2216.459564(1.29984s [1.18277 s / 0.0135909s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 1993.548344(1.31345s [1.18143 s / 0.0220697s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 1967.340591(1.32006s [1.19732 s / 0.0200204s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2101.052831(1.34231s [1.22402 s / 0.00895844s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 2060.464996(1.39147s [1.26593 s / 0.0197552s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 2089.493719(1.5143s [1.36991 s / 0.0313496s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 1967.340591(1.51533s [1.35371 s / 0.0526466s ]).
+Time for preprocessing: 1.52582 seconds.
+Processing base of thread 0
+Executing ENUM with target length 2099
+A: 4.4059e+06
+Searching candidates in depth 13
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.062242 s.
+Finishing iterative search after 1 attemps in 1.6622 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 2
+Target length: -1
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+NewNew Gauss is: 2099.03
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 10 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 12 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+Thread 11 is BKZ-24 reducing basis
+Thread 1 is BKZ-24 reducing basis
+Thread 9 is BKZ-24 reducing basis
+Thread 3 is BKZ-24 reducing basis
+Thread 5 is BKZ-24 reducing basis
+Thread 7 is BKZ-24 reducing basisThread 
+13 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.854135s [0.746677 s / 0.0395143s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 2175.129421(1.16384s [1.02755 s / 0.0312811s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2060.464996(1.23998s [1.10009 s / 0.0230832s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 1993.548344(1.24065s [1.08738 s / 0.0421149s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2142.826405(1.24282s [1.10401 s / 0.0314919s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 2145.718295(1.25558s [1.13073 s / 0.00986178s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 1993.548344(1.25567s [1.13005 s / 0.0152852s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 2134.513996(1.28411s [1.12617 s / 0.0406852s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2097.735207(1.28324s [1.13041 s / 0.0406866s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2060.464996(1.31695s [1.16137 s / 0.0431191s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 2159.877774(1.32974s [1.1807 s / 0.0444891s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 2088.453974(1.33862s [1.15451 s / 0.0716984s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 2090.318158(1.3457s [1.19037 s / 0.044182s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 1967.340591(1.36984s [1.19148 s / 0.073458s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2148.838291(1.42397s [1.29855 s / 0.0256636s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 2161.353511(1.47075s [1.32828 s / 0.036382s ]).
+Time for preprocessing: 1.48115 seconds.
+Processing base of thread 0
+Executing ENUM with target length 2099
+A: 4.4059e+06
+Searching candidates in depth 13
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.064694 s.
+Finishing iterative search after 1 attemps in 1.6195 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 2
+Target length: -1
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+NewNew Gauss is: 2099.03
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 10 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 12 is BKZ-Thread 24 reducing basis
+2 is BKZ-24 reducing basis
+Thread 11 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+Thread 9 is BKZ-24 reducing basis
+Thread 3 is BKZ-24 reducing basis
+Thread 1 is BKZ-24 reducing basis
+Thread Thread 13 is BKZ-5 is BKZ-24 reducing basis
+24 reducing basis
+Thread 7 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.854728s [0.747501 s / 0.0396913s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2097.735207(1.16756s [1.04132 s / 0.0223229s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2215.007675(1.18983s [1.03626 s / 0.0499368s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2105.63957(1.21427s [1.0947 s / 0.0150204s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: |b_0| of BKZ-24 reduced basis of thread 8 is: 2038.165106(1.2267s [1.05673 s / 0.0538271s ]).
+2109.765864(1.22712s [1.09444 s / 0.0167691s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2250.618582(1.23047s [1.1098 s / 0.00989101s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 2204.809516(1.23316s [1.06115 s / 0.066382s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 2184.744607(1.24142s [1.12891 s / 0.00933988s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 2108.691775(1.24336s [1.05248 s / 0.0842628s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 2224.621091(1.25329s [1.09839 s / 0.0426645s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2128.457188(1.26472s [1.09707 s / 0.0624685s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 2038.165106(1.29128s [1.15615 s / 0.0249899s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 2128.446617(1.31775s [1.1713 s / 0.0384318s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2060.464996(1.33708s [1.19728 s / 0.0318007s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 2155.385812(1.34296s [1.18453 s / 0.0569401s ]).
+Time for preprocessing: 1.35579 seconds.
+Processing base of thread 0
+Executing ENUM with target length 2099
+A: 4.4059e+06
+Searching candidates in depth 13
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.065755 s.
+Finishing iterative search after 1 attemps in 1.5071 s (processed 1 bases).
+Working threads: 16
+Using NTL types.
+Activating EXTREME pruning.
+Setting pruning parameter to 0.22.
+Setting candidate-queue size to 10240.
+Setting parallel-enum threshold to dimension 15.
+Disabling usage of Gauss heuristic
+Enabling BKZ-auto-height adaption.
+Setting bkz-height to 2.
+Setting pre-beta to 24.
+Setting parallel-BKZ instances to 32.
+Setting randomized trials to 40.
+Read conf file at penum.conf
+Setting prebeta parameter to 24.
+Setting pruning parameter to 0.375.
+Delta: 0.9999
+Beta: 24
+Mode: 1
+Candidate Height: 2
+Target length: -1
+Trying to read: ./inppap/svpc-e1-d60-6880.txt
+Read a basis of dimension: 60 / 60 with |b_0| = 0.3471676213e181
+Starting procedure
+NewNew Gauss is: 2099.03
+Preparing preprocessing of 16 threads.
+Thread 0 is BKZ-24 reducing basis
+Thread 10 is BKZ-24 reducing basis
+Thread 4 is BKZ-24 reducing basis
+Thread 6 is BKZ-24 reducing basis
+Thread 14 is BKZ-24 reducing basis
+Thread 2 is BKZ-24 reducing basis
+Thread 12 is BKZ-24 reducing basis
+Thread 8 is BKZ-24 reducing basis
+Thread 15 is BKZ-24 reducing basis
+Thread 3 is BKZ-24 reducing basis
+Thread 7 is BKZ-24 reducing basis
+Thread 9 is BKZ-24 reducing basis
+Thread 13 is BKZ-24 reducing basis
+Thread 5 is BKZ-24 reducing basis
+Thread 11 is BKZ-24 reducing basis
+Thread 1 is BKZ-24 reducing basis
+|b_0| of BKZ-24 reduced basis of thread 0 is: 1967.340591(0.854768s [0.747009 s / 0.0399188s ]).
+|b_0| of BKZ-24 reduced basis of thread 9 is: 2131.730752(1.13809s [1.01232 s / 0.0222059s ]).
+|b_0| of BKZ-24 reduced basis of thread 5 is: 2227.548653(1.15715s [1.0442 s / 0.00968768s ]).
+|b_0| of BKZ-24 reduced basis of thread 12 is: 2175.665186(1.17881s [1.05728 s / 0.00991848s ]).
+|b_0| of BKZ-24 reduced basis of thread 13 is: 2060.464996(1.18496s [1.05226 s / 0.0282957s ]).
+|b_0| of BKZ-24 reduced basis of thread 8 is: 2206.060063(1.22361s [1.10236 s / 0.00961713s ]).
+|b_0| of BKZ-24 reduced basis of thread 3 is: 2114.390692(1.24918s [1.13676 s / 0.00931382s ]).
+|b_0| of BKZ-24 reduced basis of thread 15 is: 2105.63957(1.26799s [1.1242 s / 0.0387888s ]).
+|b_0| of BKZ-24 reduced basis of thread 6 is: 2159.618948(1.27165s [1.09023 s / 0.0693391s ]).
+|b_0| of BKZ-24 reduced basis of thread 11 is: 2038.165106(1.29461s [1.17026 s / 0.0204365s ]).
+|b_0| of BKZ-24 reduced basis of thread 1 is: 1993.548344(1.3148s [1.17504 s / 0.037447s ]).
+|b_0| of BKZ-24 reduced basis of thread 14 is: 2206.211685(1.32562s [1.18911 s / 0.026621s ]).
+|b_0| of BKZ-24 reduced basis of thread 7 is: 2104.264717(1.33797s [1.21952 s / 0.0187217s ]).
+|b_0| of BKZ-24 reduced basis of thread 10 is: 2090.318158(1.40646s [1.27025 s / 0.0302172s ]).
+|b_0| of BKZ-24 reduced basis of thread 2 is: 2165.153805(1.41028s [1.27859 s / 0.0249374s ]).
+|b_0| of BKZ-24 reduced basis of thread 4 is: 1967.340591(1.45946s [1.28651 s / 0.0659647s ]).
+Time for preprocessing: 1.47087 seconds.
+Processing base of thread 0
+Executing ENUM with target length 2099
+A: 4.4059e+06
+Searching candidates in depth 13
+Found new minumun (length: 1967)   1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0 
+coefficients: [ 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 ]
+Shortest Vector: [-380 -216 403 436 -19 156 628 129 214 64 -480 -10 -34 -338 326 205 -65 -233 -67 -80 -58 -224 114 93 43 242 29 487 51 484 -314 -129 8 103 280 434 460 187 -257 -30 -186 -95 -7 -290 -285 -122 -106 -259 114 -79 -188 451 5 314 -213 410 174 -137 22 -198 ]
+Len: 1967.3
+
+Runtime of standard enumeration: 0.064286 s.
+Finishing iterative search after 1 attemps in 1.6162 s (processed 1 bases).

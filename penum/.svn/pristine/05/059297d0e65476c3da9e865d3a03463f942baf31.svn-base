@@ -1,0 +1,10 @@
+--enumpruning EXTREME
+--pruneparam 0.063
+--candsize 1024 
+--parthres 20
+--nogaussestimate
+--bkzautoheight
+--bkzheight 2
+--trials 12 
+
+

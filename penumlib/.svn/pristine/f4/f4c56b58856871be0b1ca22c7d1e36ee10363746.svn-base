@@ -1,0 +1,56 @@
+/*
+ * pruningfunc.cpp
+ *
+ *  Created on: 29.06.2018
+ *      Author: mburger
+ */
+
+#include "pruningfunc.hpp"
+#include <iostream>
+
+#define ALPHA 0.3
+
+void updatePruningFuncLoc(double* prunfunc, pruning_conf& conf, const double A, const int dim,
+		const int jj, const int kk) {
+	if(conf.type == NO) {
+		for(int i=jj; i<=kk; i++) {
+			prunfunc[i] = A;
+		}
+	}
+
+	else if(conf.type == LINEAR) {
+		for(int i=jj; i<=kk; i++) {
+
+
+			prunfunc[kk-i] = A * (i+1)/dim;
+
+			//double val = A * min(1.0, 1.05*(dim - i) / (dim));
+			//prunfunc[i] = val; // 1.05
+		}
+	}
+
+	else if(conf.type == SOFT) {
+		double val = A*1.05;
+		for(int i=jj; i<=kk; i++) {
+			prunfunc[i] = val;
+			val *= 0.99;
+		}
+	}
+
+	else if (conf.type == STEP) {
+		for(int i=0;i<dim/2;i++) {
+			prunfunc[i] = A;
+		}
+		for(int i=dim/2;i<dim;i++) {
+			prunfunc[i] = A * ALPHA;
+		}
+	}
+
+	// Default is no pruning
+	else {
+		for(int i=0; i<dim; i++) {
+			prunfunc[i] = A;
+		}
+	}
+	prunfunc[kk+1] = prunfunc[kk];
+}

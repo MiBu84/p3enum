@@ -1,0 +1,55 @@
+#ifndef EXTREMEPRUNINGFUNCTION_HPP_
+#define EXTREMEPRUNINGFUNCTION_HPP_
+
+#include "Utils.hpp"
+
+#include <NTL/RR.h>
+#include <NTL/LLL.h>
+#include <vector>
+#include <random>
+
+using namespace std;
+using namespace NTL;
+
+NTL_CLIENT
+
+template <class T>
+T doubleRand(const T & min, const T & max) {
+    static thread_local std::mt19937 generator;
+    std::uniform_real_distribution<T> distribution(min,max);
+    return distribution(generator);
+}
+
+template <class T>
+void sampleRandomPoint(vector<T>& fig, const vector<T>& ref_fig, const int k) {
+
+	for(int i = 0; i <= k; i++) {
+		fig[i] = doubleRand<double>(0, ref_fig[i]);
+	}
+
+	return;
+}
+
+template <class T>
+T calc_VnR (const T R, const int n ) {
+
+	T numerator = T(pow(M_PI, double(n)/2.0));
+	T denominator = T(gamma(double(n)/2.0 + 1.0));
+	T vol = T(pow(R,RR(n))) * numerator / denominator;
+
+	return vol;
+}
+
+template <class T>
+double approxCylinderVolume(const vector<T>& cyl, const vector<T>& ball, const int k) {
+	vector<double> sam;
+	sam.reserve(cyl.size());
+	sam.resize(cyl.size());
+
+	for(int i=0; i<1000000; i++) {
+		sampleRandomPoint(sam, ball, k);
+	}
+	return 0.0;
+}
+
+#endif
