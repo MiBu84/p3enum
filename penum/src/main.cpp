@@ -658,8 +658,9 @@ int main(int argc, char** argv)
 	cout << "Using NTL types." << endl;
 #endif
 
-	if(readConfig("/home/mburger/eclipse-workspace/penum/") < 0)
-		readConfig("");
+	if(readConfig("") < 0)
+		readConfig("/home/mburger/eclipse-workspace/penum/");
+		
 
 	std::string filepath=""; // Basisfile that is read
 	std::string vecpath=""; // Vectorfile that is read
@@ -681,6 +682,16 @@ int main(int argc, char** argv)
             }
 
             filepath = std::string(argv[i+1]);
+            i++;
+        }
+
+        if(input == "--prunefile") {
+            if(argc <= i) {
+                std::cerr << "Missing prunefile in argument. Terminating." << std::endl;
+                exit(-1);
+            }
+
+            Configurator::getInstance().ext_pruning_function_file = std::string(argv[i+1]);
             i++;
         }
 

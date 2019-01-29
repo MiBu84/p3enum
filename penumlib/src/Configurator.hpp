@@ -53,6 +53,8 @@ public:
 
 	Pruning enum_prune;
 	double prune_param;
+	vector<double> ext_pruning_function;
+	string ext_pruning_function_file;
 
 	double Amax;
 	int trials; // How many trial of pruned and randomized repetitions
@@ -94,6 +96,9 @@ private:
 
 		Aend = numeric_limits<double>::max();
 		iterative_enumeration = false;
+
+		// Default: Use scaled pruning function
+		ext_pruning_function_file = "NOT";
 
 		// Setting max A's from the svpchallenge website
 		maxas[50] = 1881;

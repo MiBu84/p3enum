@@ -42,16 +42,13 @@ public:
 private:
 	// Memberfunctions
 	double BurgerEnumerationDoubleParallelDriver(double** mu, double* bstarnorm,
-			double* u, int jj, int kk, int dim, const double A, int candidate_height, bool is_bkz_enum=false);
-
-	double BurgerEnumerationDoubleParallelDriverTwo(double** mu, double* bstarnorm,
-			double* u, int jj, int kk, int dim, const double A, int candidate_height);
+			double* u, int jj, int kk, int dim, const double A, int candidate_height=9, bool is_bkz_enum=false);
 
 	void resetEnumerator();
 	void resetCandidateSearch();
 
 	double BurgerEnumerationDoubleRemainder(double** mu, double* bstarnorm,
-			MBVec<double>& u, double* prunefunc_in, int j, int k, int rel_len, int dim, double Ain);
+			MBVec<double>& u, double* prunefunc_in, int j, int k, int rel_len, int dim, long long& locnodecnt, double Ain=-1.0 );
 
 	double BurgerEnumerationDouble(double** mu, double* bstarnorm,
 			double* u, MBVec<double> prunefunc_in, int j, int k, int dim, double Ain);
@@ -59,7 +56,7 @@ private:
 	inline double muProdDouble (double* x, double** mu, const int t, const int s);
 
 	int BurgerEnumerationCandidateSearch(double** mu, double* bstarnorm,
-			MBVec<double>& u, const double* prun_func, const int min, int j, int k, int dim, double Ain);
+			MBVec<double>& u, const double* prun_func, const int min, int j, int k, int dim, long long& locnodecnt, double Ain=-1.0);
 
 
 
