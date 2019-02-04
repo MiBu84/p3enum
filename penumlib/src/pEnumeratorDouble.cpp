@@ -165,6 +165,12 @@ pEnumeratorDouble::~pEnumeratorDouble() {
 }
 
 double pEnumeratorDouble::solveSVP(mat_ZZ& B, vec_ZZ& vec) {
+		// Experimental use of fpllls strategizer functions
+		if (Configurator::getInstance().ext_pruning_function_file.compare("NOT") != 0) {
+			cout << "Reading pruning function from " << Configurator::getInstance().ext_pruning_function_file << endl;
+			readPruning(Configurator::getInstance().ext_pruning_function_file);
+		}
+
 		// Several runs to test the difference
 		vec_ZZ randint;
 
@@ -640,9 +646,6 @@ double pEnumeratorDouble::EnumTuner(double** mu, double* bstar, double* u, int b
 			pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(mu, bstar,
 					u, jj, kk, dim, A, height, true);
 
-			//pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(mu, bstar,
-			//					u, 1, beta, dim, A, height, true);
-
 			double tend = omp_get_wtime();
 
 			//cout << "Height: " << height << " / threads: " << act_thread << " required "
@@ -725,7 +728,7 @@ double pEnumeratorDouble::EnumDouble(double** mu, double* bstar, double* u, int 
 }
 
 double pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(double** mu, double* bstar,
-		double* u, int jj, int kk, int dim, const double A, int candidate_height=9, bool is_bkz_enum) {
+		double* u, int jj, int kk, int dim, const double A, int candidate_height, bool is_bkz_enum) {
 
     _cand_cnt = 0;    
     _cnt2 = 0;
@@ -746,11 +749,13 @@ double pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(double** mu, dou
 	resetCandidateSearch();
 	cand_t = kk-serial_height;
 	double Amin = prunfunc[jj] * 1.000;
+	long long locnodeinit = 0;
+	double enumtime_start = omp_get_wtime();
 
 	cout << "Searching candidates in depth " << serial_height << endl;
 
 	int ret = BurgerEnumerationCandidateSearch(mu, bstar,
-			startmin, NULL, jj, kk-serial_height, kk, dim, Amin);
+			startmin, NULL, jj, kk-serial_height, kk, dim, locnodeinit, Amin);
             
 	if(ret == 0) {
 		candidates_left = false;
@@ -762,8 +767,9 @@ double pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(double** mu, dou
     int enumt = Configurator::getInstance().Enumthreads;
     omp_set_num_threads(enumt);
     cout << "Enumerating with " << Configurator::getInstance().Enumthreads << " threads." << endl; 
+	long long locnodecnt = 0;
 
-#pragma omp parallel shared(candidates_left) num_threads(enumt)
+#pragma omp parallel shared(candidates_left) num_threads(enumt) reduction(+:locnodecnt)
 	{
 		bool do_candidate_search = false;
 		bool do_enumeration = false;
@@ -796,7 +802,7 @@ double pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(double** mu, dou
 
 			if(do_candidate_search) {                   
 				int ret = BurgerEnumerationCandidateSearch(mu, bstar,
-						startmin, NULL, jj, kk-serial_height, kk, dim, Amin); 
+						startmin, NULL, jj, kk-serial_height, kk, dim, locnodecnt, Amin); 
                         
 				//candidates_queue.checkDuplicates();
 				// Mark for all that there are no candidates and that no thread needs to do the search again
@@ -825,7 +831,7 @@ double pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(double** mu, dou
 			if(do_enumeration) {
 				prunfuncloc = prunfunc;
 				Aret = BurgerEnumerationDoubleRemainder(mu, bstar, u_loc,
-						prunfuncloc.data(), jj, kk-serial_height, kk, dim, Amin);
+						prunfuncloc.data(), jj, kk-serial_height, kk, dim, locnodecnt, Amin);
 
 #pragma omp critical (ValuesUpdate)
 				if(Aret < Amin)
@@ -856,8 +862,10 @@ double pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(double** mu, dou
 	for(int i=jj; i<=kk; i++) {
 		u[i] = ures[i];
 	}
+	double enumtime_end = omp_get_wtime();
 
     cout << "Processed " << _cnt2 << " candidate-subtrees." << endl;
+	cout << "Speed:  " << (double)(locnodeinit + locnodecnt) / (enumtime_end - enumtime_start) << " nodes/s." << endl; 
 	return Amin;
 }
 
@@ -880,7 +888,8 @@ void pEnumeratorDouble::resetCandidateSearch() {
 return: Integer indicating if candidates are left. If 0 is returned, no candidates are left in the tree
 */
 int pEnumeratorDouble::BurgerEnumerationCandidateSearch(double** mu, double* bstarnorm,
-		MB::MBVec<double>& u, const double* prun_func, const int min, int j, int k, int dim, double Ain) {
+		MB::MBVec<double>& u, const double* prun_func, const int min, int j, int k, int dim, 
+		long long& locnodecnt, double Ain) {
 
 	while (cand_t <= k) {
 			cand_l[cand_t] = cand_l[ cand_t + 1 ] +
@@ -902,6 +911,7 @@ int pEnumeratorDouble::BurgerEnumerationCandidateSearch(double** mu, double* bst
 					else {
 						cand_delta[cand_t] = 1;
 					}
+					locnodecnt++;
 				}
 
 				else {
@@ -961,7 +971,7 @@ int pEnumeratorDouble::BurgerEnumerationCandidateSearch(double** mu, double* bst
 
 
 double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* bstarnorm,
-		MB::MBVec<double>& u, double* prunefunc_in, int j, int k, int rel_len, int dim, double Ain=-1) {
+		MB::MBVec<double>& u, double* prunefunc_in, int j, int k, int rel_len, int dim, long long& locnodecnt, double Ain) {
 
 	const int myid = omp_get_thread_num();
 	double A = bstarnorm[j] * 1.0001 ;//Ain;
@@ -1099,6 +1109,7 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 				else {
 					delta[myid][t] = 1;
 				}
+				locnodecnt++;
 			}
 
 			else {

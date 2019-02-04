@@ -110,6 +110,42 @@ Pruning to_prune(const std::string& s)
     throw std::runtime_error("invalid conversion from text to periods");
 }
 
+
+int readPruning(string path) {
+	std::ifstream file(path.c_str());
+
+	if (!file)
+	{
+	    cerr << "No valid pruning function file at " << path << endl;
+	    return -1;
+	}
+
+	std::string   line;
+	double dval;
+	int valcnt = 0;
+
+	while(std::getline(file, line)) {
+		valcnt ++;
+	}	
+	file.close();	
+	cout << "Reading a pruning function of dimension " << valcnt << endl;
+	Configurator::getInstance().ext_pruning_function.clear();
+	Configurator::getInstance().ext_pruning_function.resize(valcnt);
+	Configurator::getInstance().ext_pruning_function.reserve(valcnt);
+
+	file.open(path.c_str());
+	int pos = valcnt-1;
+	while(std::getline(file, line)) {
+		std::stringstream   linestream(line);
+		linestream >> dval;
+		//cout << "dval[" << pos << "] = " << dval << endl;
+		Configurator::getInstance().ext_pruning_function[pos] = dval;
+		pos--;
+	}
+
+	return 0;
+}
+
 int readConfig(string path) {
 	std::string locpath = path;
 	locpath += "penum.conf";
@@ -289,81 +325,57 @@ int readConfig(string path) {
 		// Parse input arguments
 	    /*for(int i = 1; i < argc; i++) {
 	    	std::string input = std::string(argv[i]);
-
-
-
 	        if(input == "--vecfile") {
 	            if(argc <= i) {
 	                std::cerr << "Missing vectorfile in argument. Terminating." << std::endl;
 	                exit(-1);
 	            }
-
 	            cout << "Only executing vector length mode." << endl;
 	            vecpath = std::string(argv[i+1]);
 	            i++;
 	        }
-
 	        if(input == "--beta") {
 	            if(argc <= i) {
 	                std::cerr << "Missing beta in argument. Terminating." << std::endl;
 	                exit(-1);
 	            }
-
 	            beta = atoi(argv[i+1]);
 	            Configurator::getInstance().glob_beta = beta;
 	            i++;
 	        }
-
 	        if(input == "--sheight") {
 	            if(argc <= i+1) {
 	                std::cerr << "Missing sheight in argument. Terminating." << std::endl;
 	                exit(-1);
 	            }
-
 	            candidate_height = atoi(argv[i+1]);
 	            Configurator::getInstance().forced_height = candidate_height;
 	            i++;
 	        }
-
-
-
-
 	        if(input == "--noautoheight") {
 	        	Configurator::getInstance().auto_height_tuning = false;
 	        }
-
-
-
-
-
-
-
 	        if(input == "--delta") {
 	            if(argc <= i) {
 	                std::cerr << "Missing delta in argument. Terminating." << std::endl;
 	                exit(-1);
 	            }
-
 	            delta = atof(argv[i+1]);
 	            Configurator::getInstance().glob_delta = delta;
 	            i++;
 	        }
-
 	        if(input == "--mbenum") {
 	            Configurator::getInstance().use_ntl_enum = false;
 	        }
-
 	        if(input == "--onlyLLLexport") {
 	            if(argc <= i) {
 	                std::cerr << "Missing output file argument for LLL. Terminating." << std::endl;
 	                exit(-1);
 	            }
-
 	            reducedfilepath = std::string(argv[i+1]);
 	            mode = 2;
 	            i++;
 	        }
-
 	        if(input == "--noLLL") {
 	        	dolll = false;
 	        }
@@ -375,7 +387,6 @@ int readConfig(string path) {
 	cout << "Read conf file at " << locpath << endl;
 	return 0;
 }
-
 int intRandTS(const int & min, const int & max) {
     static thread_local std::mt19937 generator;
     std::uniform_int_distribution<int> distribution(min,max);
