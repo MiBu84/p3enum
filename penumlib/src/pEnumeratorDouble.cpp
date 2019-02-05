@@ -202,18 +202,14 @@ double pEnumeratorDouble::solveSVP(mat_ZZ& B, vec_ZZ& vec) {
         
 		double target_a = -1;
 		int dimen = B.NumCols();
+
 		double theAval = Configurator::getInstance().Amax;
 		if(theAval != numeric_limits<double>::max() && theAval > 0)
 			target_a = theAval * theAval;
-		/*else if(B.NumCols()>=50 && B.NumCols()<=95) {
-			double tmpv = Configurator::getInstance().maxas[dimen] + 1.0;
-			target_a = tmpv * tmpv;
-		}*/
         else if(theAval < 0) {
            target_a = calcGaussHeuristicChallenge<ZZ>(B, dimen);
            target_a = target_a * target_a;
         }
-
 		else
 			target_a = p_bstar[0] * 1.00001;
 		
@@ -367,42 +363,6 @@ double pEnumeratorDouble::solveSVP(mat_ZZ& B, vec_ZZ& vec) {
 								}
 							}
 
-							// File based
-							/*std::ofstream outbase;
-
-							std::string filename = "outbase";
-							std::string number = std::to_string(rand());
-							std::string numbertid = std::to_string(omp_get_thread_num());
-							filename += number + numbertid + ".temp";
-
-							std::string redfilename = "outbasered" +
-									number + ".temp";
-
-							outbase.open(filename.c_str(), ios_base::out);
-							outbase << Bcands[tid];
-							outbase.close();
-
-							std::string commandline = std::string("module load fplll && fplll ") +
-									filename +
-									std::string(" &> ") +
-									redfilename +
-									std::string(" -a bkz -b ") +
-									std::to_string(bval) +
-									//std::string(" -d 0.999 -s default.json -bkzautoabort "); //
-									std::string(" -d 0.999 -bkzautoabort ");
-							//cout << commandline << endl;
-							std::system(commandline.c_str());
-
-							std::ifstream basestream;
-							basestream.open(redfilename.c_str());
-							basestream >> Bcands[tid];
-
-							cout << "Thread " << tid << " inserts a new randomized matrix." << endl;
-
-							basestream.close();
-
-							commandline = "rm " + filename + " " + redfilename;
-							std::system(commandline.c_str());*/
 						}
 
 						else {
@@ -719,6 +679,7 @@ double pEnumeratorDouble::EnumDouble(double** mu, double* bstar, double* u, int 
 	}
 
 	else {
+		cout << "Enumerting in serial " << endl;
 		updatePruningFuncLoc(prunfunc.data(), _conf, A, kk-jj + 1, jj, kk);
 		ret =  BurgerEnumerationDouble(mu, bstar, u, prunfunc, jj, kk, dim+vec_offset, A);
 	}
@@ -976,9 +937,6 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 	const int myid = omp_get_thread_num();
 	double A = bstarnorm[j] * 1.0001 ;//Ain;
 
-	//cout << u << endl;
-	//double* udoub = u.data();
-
 	//cout << udoub[0] << endl;
 	//double ** sigma;
 	/*sigma = new double* [_dim + 3];
@@ -1120,8 +1078,6 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 						umin[myid][i] = u[i];
 				}
 
-				//cout << "New min "  << A << endl;
-
 				// Avoid visiting short vector twice
 				// When bound is not updated
 				/*t = t + 1;
@@ -1171,6 +1127,16 @@ double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm
 	if(j==0 && k==dim-1)
 		fix_sign = true;*/
 
+	double sigma[52][52];
+	int r[52];
+
+	for(int i=0; i<52; i++) {
+		r[i] = i;
+		for(int j=0; j<52; j++) {
+			sigma[i][j] = 0.0;
+		}
+	}
+
 	double* umin = new double[dim + 2];
 	double* v = new double[dim + 2];
 	double* l = new double[dim + 2];
@@ -1207,17 +1173,16 @@ double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm
 	//while (t <= k) {
 		l[t] = l[ t + 1 ] + ( (u[t]) + c[t] ) * ( (u[t]) + c[t] ) * bstarnorm[t];
 
-#ifdef VECDEBUG
-		MB::MBVec<double> tmpvec = MB::MBVec<double>(k-t + 2, u, t, k);
-		vectabentry entr = vectabentry(tmpvec, l[t]);
-		VectorStorage::getInstance().tab1.insert(entr);
-#endif
-
 		if(l[t] < prunefunc_in[t]) {
 			if(t > j) {
 				t = t - 1;
 
-				c[t] = muProdDouble(u, mu, t, s/*dim-1*/);
+				r[t] = std::max<int>(r[t], r[t+1]);
+				for(int i = r[t]; i >= t + 1; i--)
+					sigma[i][t] = sigma[i+1][t] + u[i]*mu[i][t];
+
+				c[t] = sigma[t+1][t];
+				//c[t] = muProdDouble(u, mu, t, s/*dim-1*/);
 
 				u[t] = v[t] = (ceil(-c[t] - 0.5));
 
@@ -1268,6 +1233,8 @@ double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm
 			t = t + 1;
 			if(t > k)
 				break;
+
+			r[t-1] = t;
 
 			s = max(s,t);
 
