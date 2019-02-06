@@ -91,8 +91,8 @@ private:
 	double * tstart_bench;
 
 	// To reduce number of multiplications
-	//double** r;
-	//volatile double*** sigma;
+	int** r;
+	double*** sigma;
 
 	MBVecQueue3* candidates_queue;
 	//std::vector<MBVec<double> > candidates_vec;

@@ -175,9 +175,12 @@ private:
 
 template <typename T>
 std::ostream& operator<<( std::ostream& o, const MBVec<T>& v) {
+	int pos = 0;
 	for(auto it=v._data.begin(); it!=v._data.end(); ++it) {
-		int datval = (int)*it;
-		o << setw(4) <<  setw(4) << setfill(' ') << datval << " ";
+
+		T datval = (T)*it;
+		o << "["<<pos<<"]" << setw(4) <<  setw(4) << setfill(' ') << datval << " ";
+		pos++;
 	}
 	//o << endl;
    return o;

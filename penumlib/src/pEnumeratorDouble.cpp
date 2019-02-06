@@ -54,8 +54,6 @@ pEnumeratorDouble::pEnumeratorDouble() {
 	v = NULL;
 	l = NULL;
 	c = NULL;
-	//r = NULL;
-	//sigma = NULL;
 
 	// To decide the zigzag pattern
 	Delta  = NULL;
@@ -70,6 +68,9 @@ pEnumeratorDouble::pEnumeratorDouble() {
 	candidates_queue = NULL;
 	tstart_bench = NULL;
 	node_cnt = 0;
+
+	r = NULL;
+	sigma = NULL;
 }
 
 pEnumeratorDouble::pEnumeratorDouble(int dim) {
@@ -127,6 +128,18 @@ pEnumeratorDouble::pEnumeratorDouble(int dim) {
 		}
 	}
 
+	// Values for center-caching within enumeration
+	this->r = new int*[this->_num_threads];
+	this->sigma = new double**[this->_num_threads];
+
+	for (int nt = 0; nt < this->_num_threads; nt++) {
+		this->r[nt] = new int[ dim + 2];
+		this->sigma[nt] = new double*[ dim + 2 ];
+		for(int i = 0; i < dim + 2; i++) {
+			this->sigma[nt][i] = new double[ dim + 2 ];
+		}
+	}
+
 	_cnt = 1;
 	_cnt2 = 0;
     _cand_cnt = 0;
@@ -161,6 +174,21 @@ pEnumeratorDouble::~pEnumeratorDouble() {
 		delete[] Delta;
 		delete[] delta;
 		delete candidates_queue;
+
+
+
+		// Values for center-caching within enumeration
+		if(this->r != NULL) {
+			for(int nt=0; nt < this->_num_threads; nt++ ) {
+				delete[] this->r[nt];
+				for(int i = 0; i < this->_dim + 2; i++) {
+					delete[] this->sigma[nt][i];
+				}
+				delete[] this->sigma[nt];
+			}
+			delete[] this->r;
+			delete[] this->sigma;
+		}
 	}
 }
 
@@ -730,7 +758,7 @@ double pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(double** mu, dou
     cout << "Enumerating with " << Configurator::getInstance().Enumthreads << " threads." << endl; 
 	long long locnodecnt = 0;
 
-#pragma omp parallel shared(candidates_left) num_threads(enumt) reduction(+:locnodecnt)
+//#pragma omp parallel shared(candidates_left) num_threads(enumt) reduction(+:locnodecnt)
 	{
 		bool do_candidate_search = false;
 		bool do_enumeration = false;
@@ -937,16 +965,12 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 	const int myid = omp_get_thread_num();
 	double A = bstarnorm[j] * 1.0001 ;//Ain;
 
-	//cout << udoub[0] << endl;
-	//double ** sigma;
-	/*sigma = new double* [_dim + 3];
-	for(int i=0; i <_dim+3; i++) {
-		sigma[i] = new double[_dim + 3];
-
-		for(int j=0; j < dim+2; j++) {
-			sigma[i][j] = 0.0;
+	for(int i=0; i <_dim+2; i++) {
+		for(int j=0; j < _dim+2; j++) {
+			sigma[myid][i][j] = 0.0;
 		}
-	}*/
+		r[myid][i+1] = k;
+	}
 
 	MB::MBVec<double> sig_cache;
 	sig_cache.SetLength(dim+3);
@@ -965,8 +989,6 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 		delta[myid][ii] = 1.0;
 		umin[myid][ii] = 0.0;
 	}
-
-	//double* up = u.data();
 
 	for(long ii=j; ii <= k; ii++) {
 		u[ii] = 0.0;
@@ -1004,10 +1026,6 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 		xabssum += (abs(u[level]));
 	}
 
-
-	//DBG
-	//s = t = j;
-
 	for(int tloc=j; tloc<=k; tloc++) { // for all relevant values of t
 		sig_cache[tloc] = 0;
 		for(int vv=k ; vv < rel_len; vv++) { //min(k+1,tloc+1)
@@ -1027,35 +1045,55 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 		s = t = j;
 	}
 
+	// Init the values of sigma and r
+	for(int i=0; i <= k; i++) {
+		sigma[myid][i][k+1] = sig_cache[i];
+		int max_t = max<int>(s, i);
+
+		for(int j=k+1; j > max_t+1; j--) {
+			sigma[myid][i][j-1] = sigma[myid][i][j] + u[j-1]  * mu[j-1][i];
+		}
+
+		r[myid][i + 1] = i+1;
+	}
 
 
 
 	while(true) {
-	//while (t <= k) {
 		l[myid][t] = l[myid][ t + 1 ] + ( (u[t]) + c[myid][t] ) * ( (u[t]) + c[myid][t] ) * bstarnorm[t];
 
 		double lt = l[myid][t];
-		if(lt < prunefunc_in[t]/*A*/) {
+		if(lt < prunefunc_in[t]) {
 			if(t > j) {
+
 				t = t - 1;
+
+				r[myid][t] = std::max<int>(r[myid][t], r[myid][t+1]);
+
+				for(int j = r[myid][t+1]; j > t + 1; j--) {
+					sigma[myid][t][j-1] = sigma[myid][t][j] + u[j-1] * mu[j-1][t];
+				}
+				r[myid][t+1] = t + 1;
+
+				c[myid][t] = sigma[myid][t][t+1];
+				double tempi = c[myid][t];
 
 				//c[myid][t] = muProdDouble(u.data(), mu, t, rel_len);
 				c[myid][t] = muProdDouble(u.data(), mu, t, k) + sig_cache[t];
-
-
-
-				/*if((abs(c[myid][t]) - abs(temp))/ c[myid][t] > 0.001) {
-					cerr << c[myid][t] << " / " << abs(temp) << endl;
-
-					c[myid][t] = muProdDouble(u.data(), mu, t, rel_len);
-
-					sig_cache[t] = 0;
-					for(int vv=k ; vv < rel_len; vv++) { //min(k+1,tloc+1)
-						sig_cache[t] += u[vv+1] * mu[vv+1][t];
-					}
-					temp = muProdDouble(u.data(), mu, t, k) + sig_cache[t];
-				}*/
-
+				if(abs(tempi - c[myid][t])/tempi > 0.001) {
+					cout << "t: " << t << endl;
+					cout << c[myid][t] <<" <-> " << tempi <<" \n ";
+					cout << u << endl;
+					cout << "k:" << k << endl;
+					cout << sig_cache << endl;
+					cout << sigma[myid][t][28] <<  " "
+							 << sigma[myid][t][28] <<  " "
+							 << sigma[myid][t][29] <<  " "
+							 << sigma[myid][t][30] <<  " "
+							 << sigma[myid][t][31] <<  endl;
+					int stop = 0;
+					cin >> stop;
+				}
 				u[t] = v[myid][t] = (ceil(-c[myid][t] - 0.5));
 
 				// For ZigZag
@@ -1098,7 +1136,7 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 
 			if(t > k)
 				break;
-
+			r[myid][t] = t+1;
 			s = max(s,t);
 
 			//if (t < s)
@@ -1127,13 +1165,10 @@ double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm
 	if(j==0 && k==dim-1)
 		fix_sign = true;*/
 
-	double sigma[52][52];
-	int r[52];
-
-	for(int i=0; i<52; i++) {
-		r[i] = i;
-		for(int j=0; j<52; j++) {
-			sigma[i][j] = 0.0;
+	for(int i=0; i< _dim + 2; i++) {
+		r[0][i] = i;
+		for(int j=0; j < _dim + 2; j++) {
+			sigma[0][i][j] = 0.0;
 		}
 	}
 
@@ -1170,19 +1205,25 @@ double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm
 	u[j] = umin[j] = 1;
 
 	while (true) {
-	//while (t <= k) {
+		//cout << "t is: " << t << endl;
 		l[t] = l[ t + 1 ] + ( (u[t]) + c[t] ) * ( (u[t]) + c[t] ) * bstarnorm[t];
 
 		if(l[t] < prunefunc_in[t]) {
 			if(t > j) {
 				t = t - 1;
 
-				r[t] = std::max<int>(r[t], r[t+1]);
-				for(int i = r[t]; i >= t + 1; i--)
-					sigma[i][t] = sigma[i+1][t] + u[i]*mu[i][t];
+				r[0][t] = std::max<int>(r[0][t], r[0][t+1]);
 
-				c[t] = sigma[t+1][t];
+				for(int j = r[0][t+1]; j > t + 1; j--) {
+					sigma[0][t][j-1] = sigma[0][t][j] + u[j-1] * mu[j-1][t];
+				}
+				r[0][t+1] = t + 1;
+
+				c[t] = sigma[0][t][t+1];
+
+				// Activate to not use caching
 				//c[t] = muProdDouble(u, mu, t, s/*dim-1*/);
+
 
 				u[t] = v[t] = (ceil(-c[t] - 0.5));
 
@@ -1211,30 +1252,27 @@ double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm
 				if(t > k)
 					break;
 
+				r[0][t] = t+1;
+
 				s = max(s,t);
 
 				if (t<s)
 					Delta[t] = -Delta[t];
 
 				if(Delta[t] * delta[t] >= 0) Delta[t] += delta[t];
-				// Choose sign for next round
-				/*if (-c[t] < u[t]) {
-					Delta[t] = -Delta[t] - 1;
-				} else {
-					Delta[t] = -Delta[t] + 1;
-				}*/
-
-				u[t] = v[t] + Delta[t];
+					u[t] = v[t] + Delta[t];
 			}
 		}
 
 
 		else {
 			t = t + 1;
+
+
 			if(t > k)
 				break;
 
-			r[t-1] = t;
+			r[0][t] = t+1;
 
 			s = max(s,t);
 
@@ -1242,12 +1280,6 @@ double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm
 				Delta[t] = -Delta[t];
 
 			if(Delta[t] * delta[t] >= 0) Delta[t] += delta[t];
-			/*if (-c[t] < u[t]) {
-				Delta[t] = -Delta[t] - 1;
-			} else {
-				Delta[t] = -Delta[t] + 1;
-			}*/
-
 			u[t] = v[t] + Delta[t];
 		}
 
@@ -1259,7 +1291,6 @@ double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm
 
 #ifdef VECDEBUG
 	VectorStorage::getInstance().printVecTable(VectorStorage::getInstance().tab1, "MyEnum.txt");
-
 #endif
 
 	// clean memory

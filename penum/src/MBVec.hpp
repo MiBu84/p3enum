@@ -91,8 +91,10 @@ private:
 
 template <typename T>
 std::ostream& operator<<( std::ostream& o, const Vec<T>& v) {
+	int pos = 0;
 	for(auto it=v._data.begin(); it!=v._data.end(); ++it) {
-		o << *it << " ";
+		o << "[" << pos << "]" <<*it << " ";
+		pos++;
 	}
 	o << endl;
    return o;
