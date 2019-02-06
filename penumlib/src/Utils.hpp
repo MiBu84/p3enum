@@ -176,6 +176,13 @@ template<class ZT, class FT> FT calcVectorLengthDouble(const NTL::Vec<FT>& coeff
 	return len;
 }
 
+template <class T> void printVector (T* vec, int len) {
+	for(int i=0; i < len; i++) {
+		cout << "[" << i << "]" << vec[i] << "   ";
+	}
+	cout << endl;
+}
+
 template <typename VT, typename FT> FT lengthOfVector(NTL::Vec<VT> vec) {
 	FT len;
 	len = 0.0;

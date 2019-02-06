@@ -659,7 +659,7 @@ int main(int argc, char** argv)
 #endif
 
 	if(readConfig("") < 0)
-		readConfig("/home/mburger/p3enum/penum/");
+		readConfig("/home/mburger/Dokumente/p3enum/penum/");
 		
 
 	std::string filepath=""; // Basisfile that is read

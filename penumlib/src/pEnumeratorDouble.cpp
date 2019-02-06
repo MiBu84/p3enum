@@ -15,6 +15,7 @@
 #include <iomanip>      // std::setprecision
 #include <math.h>
 #include "MBVec.hpp"
+#include "Utils.hpp"
 #include <omp.h>
 #include "pruningfunc.hpp"
 #include "VectorStorage.hpp"
@@ -758,7 +759,7 @@ double pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(double** mu, dou
     cout << "Enumerating with " << Configurator::getInstance().Enumthreads << " threads." << endl; 
 	long long locnodecnt = 0;
 
-//#pragma omp parallel shared(candidates_left) num_threads(enumt) reduction(+:locnodecnt)
+#pragma omp parallel shared(candidates_left) num_threads(enumt) reduction(+:locnodecnt)
 	{
 		bool do_candidate_search = false;
 		bool do_enumeration = false;
@@ -969,7 +970,7 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 		for(int j=0; j < _dim+2; j++) {
 			sigma[myid][i][j] = 0.0;
 		}
-		r[myid][i+1] = k;
+		r[myid][i+1] = k+1;
 	}
 
 	MB::MBVec<double> sig_cache;
@@ -1054,12 +1055,13 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 			sigma[myid][i][j-1] = sigma[myid][i][j] + u[j-1]  * mu[j-1][i];
 		}
 
-		r[myid][i + 1] = i+1;
+		r[myid][i + 1] = max_t + 1;
 	}
 
 
 
 	while(true) {
+		//cout << "t: " << t << endl;
 		l[myid][t] = l[myid][ t + 1 ] + ( (u[t]) + c[myid][t] ) * ( (u[t]) + c[myid][t] ) * bstarnorm[t];
 
 		double lt = l[myid][t];
@@ -1068,32 +1070,49 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 
 				t = t - 1;
 
-				r[myid][t] = std::max<int>(r[myid][t], r[myid][t+1]);
+				/*r[myid][t] = std::max<int>(r[myid][t], r[myid][t+1]);
 
 				for(int j = r[myid][t+1]; j > t + 1; j--) {
 					sigma[myid][t][j-1] = sigma[myid][t][j] + u[j-1] * mu[j-1][t];
 				}
 				r[myid][t+1] = t + 1;
 
-				c[myid][t] = sigma[myid][t][t+1];
-				double tempi = c[myid][t];
+				c[myid][t] = sigma[myid][t][t+1];*/
 
 				//c[myid][t] = muProdDouble(u.data(), mu, t, rel_len);
 				c[myid][t] = muProdDouble(u.data(), mu, t, k) + sig_cache[t];
-				if(abs(tempi - c[myid][t])/tempi > 0.001) {
-					cout << "t: " << t << endl;
+
+				/*if(abs(tempi - c[myid][t])/tempi > 0.001) {
+					cout << "k:" << k << endl;
+
 					cout << c[myid][t] <<" <-> " << tempi <<" \n ";
 					cout << u << endl;
-					cout << "k:" << k << endl;
 					cout << sig_cache << endl;
-					cout << sigma[myid][t][28] <<  " "
-							 << sigma[myid][t][28] <<  " "
-							 << sigma[myid][t][29] <<  " "
-							 << sigma[myid][t][30] <<  " "
-							 << sigma[myid][t][31] <<  endl;
+					cout << sigma[myid][t][35] <<  " "
+							 << sigma[myid][t][36] <<  " "
+							 << sigma[myid][t][37] <<  " "
+							 << sigma[myid][t][38] <<  " "
+							 << sigma[myid][t][39] <<  endl;
+					cout << endl;
+					cout << muProdDouble(u.data(), mu, t, k) << endl;
+					cout <<  muProdDouble(u.data(), mu, t, rel_len) << endl;
+
+					cout << endl << "\n";
+
+					cout << "j: " << r[myid][t+1] << endl;
+
+					cout << "\n" << "\n";
+					printVector<int>(r[myid], dim+1);
+					printVector<double>(sigma[myid][t], dim+1);
+
+					for(int j = r[myid][t+1]; j > t + 1; j--) {
+						cout << "j: " << j << " / "<< sigma[myid][t][j] + u[j-1] * mu[j-1][t] << endl;
+					}
+					cout << endl;
+
 					int stop = 0;
 					cin >> stop;
-				}
+				}*/
 				u[t] = v[myid][t] = (ceil(-c[myid][t] - 0.5));
 
 				// For ZigZag
@@ -1312,7 +1331,6 @@ inline double pEnumeratorDouble::muProdDouble (double* x, double** mu, const int
 	// Only small variant
 	double res(0);
 	for(int i = t + 1; i <= s; i++) {
-		//cout << i << " / " << t << endl;
 		res += x[i] * mu[i][t];
 //#pragma omp atomic
 		//VectorStorage::getInstance().mult_cnt++;
