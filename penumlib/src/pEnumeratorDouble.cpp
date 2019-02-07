@@ -1070,17 +1070,17 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 
 				t = t - 1;
 
-				/*r[myid][t] = std::max<int>(r[myid][t], r[myid][t+1]);
+				r[myid][t] = std::max<int>(r[myid][t], r[myid][t+1]);
 
 				for(int j = r[myid][t+1]; j > t + 1; j--) {
 					sigma[myid][t][j-1] = sigma[myid][t][j] + u[j-1] * mu[j-1][t];
 				}
 				r[myid][t+1] = t + 1;
 
-				c[myid][t] = sigma[myid][t][t+1];*/
+				c[myid][t] = sigma[myid][t][t+1];
 
 				//c[myid][t] = muProdDouble(u.data(), mu, t, rel_len);
-				c[myid][t] = muProdDouble(u.data(), mu, t, k) + sig_cache[t];
+				//c[myid][t] = muProdDouble(u.data(), mu, t, k) + sig_cache[t];
 
 				/*if(abs(tempi - c[myid][t])/tempi > 0.001) {
 					cout << "k:" << k << endl;
