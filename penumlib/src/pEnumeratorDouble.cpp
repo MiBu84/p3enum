@@ -134,10 +134,10 @@ pEnumeratorDouble::pEnumeratorDouble(int dim) {
 	this->sigma = new double**[this->_num_threads];
 
 	for (int nt = 0; nt < this->_num_threads; nt++) {
-		this->r[nt] = new int[ dim + 2];
-		this->sigma[nt] = new double*[ dim + 2 ];
-		for(int i = 0; i < dim + 2; i++) {
-			this->sigma[nt][i] = new double[ dim + 2 ];
+		this->r[nt] = new int[ _dim + 4];
+		this->sigma[nt] = new double*[ _dim + 4 ];
+		for(int i = 0; i < _dim + 4; i++) {
+			this->sigma[nt][i] = new double[ _dim + 4 ];
 		}
 	}
 
@@ -182,7 +182,7 @@ pEnumeratorDouble::~pEnumeratorDouble() {
 		if(this->r != NULL) {
 			for(int nt=0; nt < this->_num_threads; nt++ ) {
 				delete[] this->r[nt];
-				for(int i = 0; i < this->_dim + 2; i++) {
+				for(int i = 0; i < this->_dim + 4; i++) {
 					delete[] this->sigma[nt][i];
 				}
 				delete[] this->sigma[nt];
