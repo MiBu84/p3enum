@@ -65,7 +65,7 @@ reqs:
 clean:
 #	cd ../penumlib && make clean
 #	cd ../ntl/src/ && make clean
-	cd ../penum && rm -f $(SRCDIR)/*.d $(SRCDIR)/*.o
+	cd ../penum && rm -f $(SRCDIR)/*.d $(SRCDIR)/*.o penum
 
 echo:
 
