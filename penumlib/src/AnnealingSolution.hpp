@@ -552,13 +552,13 @@ public:
 				succ_prob_tmp[i] = _probs[i][_dim];
 
 				// We do _number_of_random_bases of shots in parallel an only at least 1 has to hit
-				FT1 prob_one_shot = FT1(1) - pow(FT1(1)-succ_prob_tmp[i], FT1(_ainfo._number_of_instances));
+				FT1 prob_one_shot = FT1(1) - pow(FT1(1)-succ_prob_tmp[i], FT1(_ainfo._number_of_parallel_reducing_threads));
 
 				// Like in the paper of Gama et al.
-				//base_costs_tmp[i] = (t_reduction_tmp[i] + t_enums_tmp[i]) / prob_one_shot;
+				base_costs_tmp[i] = (t_reduction_tmp[i] + t_enums_tmp[i]) / prob_one_shot;
 
 				// With Bernoulli and 0.99 chance as average
-				_base_costs[i] = (log(FT1(0.001)) / (log(FT1(1.0) - prob_one_shot))) * (_t_reduction[i] + _t_enums[i]);
+				//_base_costs[i] = (log(FT1(0.001)) / (log(FT1(1.0) - prob_one_shot))) * (_t_reduction[i] + _t_enums[i]);
 
 				costs += base_costs_tmp[i];
 			}
@@ -603,18 +603,23 @@ public:
 			_succ_prob[i] = _probs[i][_dim];
 
 			// We do _number_of_random_bases of shots in parallel an only at least 1 has to hit
-			FT1 prob_one_shot = FT1(1) - pow(FT1(1)-_succ_prob[i], FT1(_ainfo._number_of_instances));
+			FT1 prob_one_shot = _succ_prob[i] ;//FT1(1) - pow(FT1(1)-_succ_prob[i], FT1(_ainfo._number_of_instances));
+			FT1 prob_thread_shots =  FT1(1) - pow((FT1(1) - prob_one_shot), _ainfo._number_of_parallel_reducing_threads);
+
+			//cout << prob_one_shot << " vs. " << prob_thread_shots << endl;
 
 			// Like in the paper of Gama et al.
-			//_base_costs[i]= (_t_reduction[i] + _t_enums[i]) / prob_one_shot;
+			_base_costs[i]= (_t_reduction[i] + _t_enums[i]) / prob_thread_shots;
 
 			// With Bernoulli and 0.99 chance as average
-			_base_costs[i] = (log(FT1(0.001)) / (log(FT1(1.0) - prob_one_shot))) * (_t_reduction[i] + _t_enums[i]);
+			//_base_costs[i] = (log(FT1(0.0001)) / (log(FT1(1.0) - prob_one_shot))) * (_t_reduction[i] + _t_enums[i]);
 
 			_costs += _base_costs[i];
 		}
 		_costs /= FT1(_ainfo._number_of_random_bases);
+		//cout << "Bases: " << _ainfo._number_of_random_bases << endl;
 		_costs_calculated = true;
+		_costs = round( _costs * 1000.0) / 1000.0;
 		return this->_costs;
 	}
 
@@ -637,7 +642,7 @@ public:
 
 		int change_dim = dist_dim(engine);
 		// Select percentage if change Range [-3.0%, ..., +3.0%]
-		std::uniform_real_distribution<double> dist_val(-0.008, 0.008);
+		std::uniform_real_distribution<double> dist_val(-0.01, 0.01);
 		double perci = dist_val(engine);
 
 		while(abs(perci) < 10e-5 || (perci < 0 && change_dim==0)) {
@@ -652,15 +657,15 @@ public:
 		change_dim *=2;
 		int neigh_dim = -1;
 		FT1 dimval = _prun_func[ change_dim ];
-		//FT1 valchange;
+		FT1 valchange;
 		FT1 newval;
 
 		if(perc > 0.0) {
 			neigh_dim = change_dim + 2;
 			FT1 neighval = _prun_func[ neigh_dim ];
 
-			//valchange = dimval * perc;
-			newval = dimval + perc;
+			valchange = dimval * perc;
+			newval = dimval + valchange;
 
 			if(newval > neighval) {
 				if(change_dim > 0) {
@@ -668,8 +673,6 @@ public:
 				}
 				else
 					newval=neighval;//*0.999999;
-				/*cout << "Correct +:"
-						<< std::setprecision(std::numeric_limits<long double>::digits10 + 1) << neighval*0.999999 << endl;*/
 			}
 
 		}
@@ -677,12 +680,11 @@ public:
 			neigh_dim = change_dim - 2;
 			FT1 neighval = _prun_func[ neigh_dim ];
 
-			//valchange = dimval * abs(perc);
-			newval = dimval + perc;
+			valchange = dimval * perc;
+			newval = dimval + valchange;
 
 			if(newval < neighval) {
 				newval = std::min(neighval, _prun_func[change_dim + 2]);//*1.0000001;
-				//cout << "Correct -" << endl;
 			}
 		}
 

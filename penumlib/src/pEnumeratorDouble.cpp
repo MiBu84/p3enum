@@ -239,7 +239,8 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 			AnnealInfo<long double> ainfo;
 			ainfo._number_of_random_bases = Configurator::getInstance().ann_bkz_instances;
 			ainfo._number_of_annealing_threads = Configurator::getInstance().ann_annealing_threads;
-			ainfo._number_of_instances = Configurator::getInstance().ann_parallel_reducing_threads;
+			ainfo._number_of_parallel_reducing_threads = Configurator::getInstance().ann_parallel_reducing_threads;
+			ainfo._number_of_different_bases = Configurator::getInstance().ann_num_different_bases;
 			ainfo._time_per_node = Configurator::getInstance().ann_time_per_node; //4.145655e-8; //  3.082812277e-9
 
 			SimulatedAnnealer<long double> annealer = SimulatedAnnealer<long double>(ainfo);
@@ -298,12 +299,13 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 	    {
 #pragma omp atomic
         	act_trial++;
+
 			// Reset random basis
 			Bcands[tid] = B;
 			//Bcandsorder[tid] = tid;
-
-			if(omp_get_thread_num() == 0 && act_trial == 1 && Configurator::getInstance().test_original_basis) {
+			if(omp_get_thread_num() == 0 && ((act_trial) / (numt+1))  < 1 && Configurator::getInstance().test_original_basis) {
 				// Keep basis unrandomized
+				cout << "Keeping " << omp_get_thread_num()  << endl << std::flush;
 			}
 			else	{
 				int seed = ((act_trial+1)*numt + (tid+1)*time(NULL));
@@ -465,6 +467,7 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 				calcVectorLengthDouble<long int, double>(sol, Bd);
 				act_A = act_A_t;
 				do_searching = 0;
+				exit(5);
 
 			}
 
@@ -511,6 +514,7 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 
 
 double pEnumeratorDouble::solveSVP(mat_ZZ& B, vec_ZZ& vec) {
+	cout << "pEnumeratorDouble::solveSVP(mat_ZZ& B, vec_ZZ& vec)" << endl;
 		// Experimental use of fpllls strategizer functions
 		if (Configurator::getInstance().ext_pruning_function_file.compare("NOT") != 0) {
 			cout << "Reading pruning function from " << Configurator::getInstance().ext_pruning_function_file << endl;
@@ -607,9 +611,9 @@ double pEnumeratorDouble::solveSVP(mat_ZZ& B, vec_ZZ& vec) {
 			// Reset random basis
 			Bcands[tid] = B;
 			Bcandsorder[tid] = tid;
-
 			if(omp_get_thread_num() == 0 && trial == 0 && Configurator::getInstance().test_original_basis) {
 				// Keep basis unrandomized
+
 			}
 			else	{
 				int seed = ((trial+1)*numt + (omp_get_thread_num()+1)*time(NULL));
@@ -636,6 +640,8 @@ double pEnumeratorDouble::solveSVP(mat_ZZ& B, vec_ZZ& vec) {
 				else {
 					bool old_auto = Configurator::getInstance().do_bkz_auto_tuning;
 					for(int bval=Configurator::getInstance().glob_beta; bval<=Configurator::getInstance().glob_beta; bval++) {
+
+						//DGB
 						std::cout << "Thread " << tid << " is BKZ-" << bval << " reducing basis" << std::endl;
 
 						double tstartbkz = omp_get_wtime();

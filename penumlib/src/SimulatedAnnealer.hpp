@@ -109,13 +109,18 @@ public:
 		vector<double >T_init;
 		T_init.reserve(number_of_bkz_types); T_init.resize(number_of_bkz_types);
 
-		const long long numits = 80;
+		const long long numits = Configurator::getInstance().ann_iterations;
 		const int init_sample_size = 1000;
 
 		AnnealingSolution<FT> starting_sol = AnnealingSolution<FT>(&benchi, circ, _ainfo);
 
-		double T_target = 0.000008;
-		double cooling_rate = 0.992;
+		double T_target = Configurator::getInstance().ann_target_temp;
+		double cooling_rate = Configurator::getInstance().ann_cooling_rate;
+        
+        cout << "Target temp: " << T_target 
+            << ", cooling rate: " << cooling_rate
+            << ", iterations: " << numits << endl;
+        
 		long numcalcs;
 
 		auto t = std::time(nullptr);
@@ -181,7 +186,7 @@ public:
 					// This version of anneal always keeps its beta-config
 					act_sol.modifyToNeighborSolution(false);
 					// Accept solution since it is better
-					if (act_sol.getCost() < act_sol_back.getCost()) {
+					if (act_sol.getCost() <= act_sol_back.getCost()) {
 						act_sol_back = act_sol;
 
 						// No absolut minimum for thread
@@ -202,6 +207,13 @@ public:
 						FT accept_prob = FT(distreal(rng));
 
 						if (accept_prob < prob) {
+
+							/*cout << "Prob: " << prob << " and accept prob: " << accept_prob
+									<< "@ (T: " << T << ") , "
+									<< "(" << act_sol.getCost() << "), "
+									<< "(" << act_sol_back.getCost() << ")"
+									<< endl;*/
+
 							act_sol_back = act_sol;
 							breakcount=0;
 							if(tid==0)

@@ -476,6 +476,43 @@ int readConfig(string path) {
         		std::cerr << "Missing Amax for different bases to benchmark." << std::endl;
         	}
         }
+		
+		if(command == "--ann_target_temp") {
+        	try {
+        		linestream >> double_value;
+        		Configurator::getInstance().ann_target_temp = double_value;
+        		cout << "Setting annealing target temperature to " << double_value << "." << endl;
+        	}
+
+        	catch (exception& e) {
+        		std::cerr << "Missing annealing target temperature parameter in argument." << std::endl;
+        	}
+
+        }
+ 
+        if(command == "--ann_cooling_rate") {
+        	try {
+        		linestream >> double_value;
+        		Configurator::getInstance().ann_cooling_rate = double_value;
+        		cout << "Setting annealing cooling rate to " << double_value << "." << endl;
+        	}
+
+        	catch (exception& e) {
+        		std::cerr << "Missing annealing cooling rate parameter in argument." << std::endl;
+        	}
+        }
+
+        if(command == "--ann_iterations") {
+        	try {
+        		linestream >> int_value;
+        		Configurator::getInstance().ann_iterations = int_value;
+        		cout << "Setting annealing iterations to " << int_value << "." << endl;
+        	}
+
+        	catch (exception& e) {
+        		std::cerr << "Missing number for annealing iterations parameter." << std::endl;
+        	}
+        }        
 	}
 
 	// Fallback for annealing if nothing was given for the bases

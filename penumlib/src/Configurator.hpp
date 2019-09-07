@@ -76,6 +76,11 @@ public:
 	short ann_prebeta_end;
 	double ann_time_per_node;
 	int ann_num_different_bases;
+	
+	double ann_target_temp;
+    double ann_cooling_rate;
+    int ann_iterations;
+	
 	vector<int> ann_seeds_different_bases;
 	vector<int> ann_amax_different_bases;
 
@@ -117,7 +122,7 @@ private:
 		// Default: Use scaled pruning function
 		ext_pruning_function_file = "NOT";
 
-		test_original_basis = true; // false = randomization of initial base also in first trial
+		test_original_basis = false; // false = randomization of initial base also in first trial
 
 		// Annealer / Function optimizer
 		do_annealing = 0;
@@ -131,6 +136,10 @@ private:
 		ann_prebeta_end = -1;
 		ann_time_per_node = 4.0e-8;
 		ann_num_different_bases = 1;
+		
+		ann_target_temp = 0.0000001;
+        ann_cooling_rate = 0.999;
+        ann_iterations = 10;
 
 		// Setting max A's from the svpchallenge website
 		maxas[50] = 1881;

@@ -23,7 +23,7 @@
 #include <boost/algorithm/string/classification.hpp> // Include boost::for is_any_of
 #include <boost/algorithm/string/split.hpp>
 
-//mamespace fs = std::filesystem;
+namespace fs = std::filesystem;
 
 
 //#include "BKZBenchmarker.hpp"
@@ -740,7 +740,7 @@ void readRunningTimes(int argc, char** argv) {
     path p_;
 };*/
 
-/*int readResFile(std::string filestr, long long& nodes, int& node_entries)
+int readResFile(std::string filestr, long long& nodes, int& node_entries)
 {
 	std::string locpath = filestr;
 	std::ifstream file(locpath.c_str());
@@ -826,13 +826,13 @@ void readRunningTimes(int argc, char** argv) {
     }
 
 	cout << "Nodes in average: " << nodes / node_entries << endl;
-}*/
+}
 
 
 int main(int argc, char** argv)
 {
-	//readRunningTimes(argc, argv);
-	//exit(0);
+	readRunningTimes(argc, argv);
+	exit(0);
 
 
 #pragma omp parallel
@@ -1046,6 +1046,42 @@ int main(int argc, char** argv)
         if(input == "--anneal") {
         	Configurator::getInstance().do_annealing = true;
         }
+		
+		        // For Annealing Function generator
+        if(input == "--ann_target_temp") {
+            if(argc <= i) {
+                std::cerr << "Missing ann_target_temp in argument. Terminating." << std::endl;
+                exit(-1);
+            }
+
+            double ann_target_temp = atof(argv[i+1]);
+            Configurator::getInstance().ann_target_temp = ann_target_temp;
+            i++;
+        }
+        
+        if(input == "--ann_cooling_rate") {
+            if(argc <= i) {
+                std::cerr << "Missing ann_cooling_rate in argument. Terminating." << std::endl;
+                exit(-1);
+            }
+
+            double ann_cooling_rate = atof(argv[i+1]);
+            cout << "Setting ann_cooling_rate to " << ann_cooling_rate << "." << endl;
+            Configurator::getInstance().ann_cooling_rate = ann_cooling_rate;
+            i++;
+        }
+        
+        if(input == "--ann_iterations") {
+             if(argc <= i+1) {
+                std::cerr << "Missing ann_iterations in argument. Terminating." << std::endl;
+                exit(-1);
+            }   
+
+            int ann_iterations = atoi(argv[i+1]);
+            Configurator::getInstance().ann_iterations = ann_iterations;
+            cout << "Setting ann_iterations parameter to " << ann_iterations << "." << endl;
+            i++;  
+        } 
     }
 
     std::cout << "Delta: " << Configurator::getInstance().glob_delta << std::endl;

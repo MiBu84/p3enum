@@ -19,6 +19,8 @@
 #include <iostream>
 #include <fstream>
 
+#include "Utils.hpp"
+
 using namespace std;
 using namespace NTL;
 
@@ -29,40 +31,40 @@ class AnnealInfo {
 public:
 	int _number_of_random_bases; // Determines how many threads work in parallel on different solutions
 	int _number_of_annealing_threads; // How many threads will anneal to increase number of results
-	int _number_of_instances; // How many parallel BKZ-Instances will be executed in parallel afterward?
-	int _number_of_enum_threads; // How many threads will afterward work on parallel bases
+	int _number_of_parallel_reducing_threads; // How many threads will afterward work on parallel bases and in Benchmark
+	int _number_of_different_bases; // How many different seeds are considered
 
 	FT _time_per_node; // How long does it take to calculate one node in enumeration tree
 
 	AnnealInfo() {
 		_number_of_random_bases=1;
 		_number_of_annealing_threads=1;
-		_number_of_instances=1;
-		_number_of_enum_threads=1;
+		_number_of_parallel_reducing_threads=1;
+		_number_of_different_bases=1;
 		_time_per_node=FT(-1);
 	}
 
 	AnnealInfo(const AnnealInfo& other) {
 		_number_of_random_bases = other._number_of_random_bases;
 		_number_of_annealing_threads = other._number_of_annealing_threads;
-		_number_of_instances = other._number_of_instances;
-		_number_of_enum_threads =other._number_of_enum_threads;
+		_number_of_parallel_reducing_threads = other._number_of_parallel_reducing_threads;
+		_number_of_different_bases =other._number_of_different_bases;
 		_time_per_node = other._time_per_node;
 	}
 
 	AnnealInfo(AnnealInfo& other) {
 		_number_of_random_bases = other._number_of_random_bases;
 		_number_of_annealing_threads = other._number_of_annealing_threads;
-		_number_of_instances = other._number_of_instances;
-		_number_of_enum_threads =other._number_of_enum_threads;
+		_number_of_parallel_reducing_threads = other._number_of_parallel_reducing_threads;
+		_number_of_different_bases =other._number_of_different_bases;
 		_time_per_node = other._time_per_node;
 	}
 
 	AnnealInfo& operator= (const AnnealInfo & other) {
 		_number_of_random_bases = other._number_of_random_bases;
 		_number_of_annealing_threads = other._number_of_annealing_threads;
-		_number_of_instances = other._number_of_instances;
-		_number_of_enum_threads =other._number_of_enum_threads;
+		_number_of_parallel_reducing_threads = other._number_of_parallel_reducing_threads;
+		_number_of_different_bases =other._number_of_different_bases;
 		_time_per_node = other._time_per_node;
 		return *this;
 	}
@@ -71,8 +73,8 @@ public:
 	AnnealInfo& operator= (AnnealInfo & other) {
 		_number_of_random_bases = other._number_of_random_bases;
 		_number_of_annealing_threads = other._number_of_annealing_threads;
-		_number_of_instances = other._number_of_instances;
-		_number_of_enum_threads =other._number_of_enum_threads;
+		_number_of_parallel_reducing_threads = other._number_of_parallel_reducing_threads;
+		_number_of_different_bases =other._number_of_different_bases;
 		_time_per_node = other._time_per_node;
 		return *this;
 	}
@@ -145,7 +147,10 @@ public:
 		vector<mat_ZZ> Bs;
 		Bs.reserve(_ainfo._number_of_random_bases);
 		_dim = B_in.NumCols();
-		Bs.push_back(B_in);
+
+		mat_ZZ  B_read = B_in;
+		// Normally not the first attemp hits, so nearly all work is performed un randomized bases
+		Bs.push_back(randomizeMatrix(B_read, randint, _dim, 0));
 
 		// Create a bunch of randomized matrices to cover a broader range in analysis
 		// Different bases must be available in inppap folder!
@@ -153,63 +158,40 @@ public:
 
 		int act_seed = 0;
 		double act_amax = 0.0;
-		unsigned int seed_cnt = 0;
 
-		int seed_cnt_max = (int)ceil(((double)(_ainfo._number_of_random_bases)/(double)(diff_bases)));
-		mat_ZZ  B_read = B_in;
+		B_read = B_in;
 		std::string filebase = "inppap/svpc-e1-d";
 		filebase.append(to_string(_dim));
 		filebase.append("-");
 
-		act_seed = Configurator::getInstance().ann_seeds_different_bases[seed_cnt];
-		act_amax = Configurator::getInstance().ann_amax_different_bases[seed_cnt];
+		// Go in rounds over the seeds an distribute over the threads
+		int seedidx = 0;
+		for( int i=0; i < _ainfo._number_of_random_bases;i++)
+		{
+			act_seed = Configurator::getInstance().ann_seeds_different_bases[seedidx];
+			act_amax = Configurator::getInstance().ann_amax_different_bases[seedidx];
 
-		//cout << "Number of bases: " << _ainfo._number_of_random_bases << endl;
-		//cout << "Number of different bases: " << diff_bases << endl;
-		//cout << "Number of bases for one seed: " << seed_cnt_max << endl;
-
-		this->_seeds.push_back(act_seed);
-		this->_amax.push_back(act_amax);
-		//cout << act_seed << " / " << act_amax << endl;
-
-		for(int i=1; i < _ainfo._number_of_random_bases;i++) {
-			//cout << "i: " << i << endl;
-			if(i % seed_cnt_max == 0) {
-
-				// ToDo: Reed the correct seed from array
-				seed_cnt++;
-
-				if(seed_cnt > Configurator::getInstance().ann_seeds_different_bases.size() ||
-						seed_cnt > Configurator::getInstance().ann_amax_different_bases.size()) {
-					cerr << "More seeds for annealing requested than given! Sticking to seed 0" << endl;
-				}
-
-				else {
-					act_seed = Configurator::getInstance().ann_seeds_different_bases[seed_cnt];
-					act_amax = Configurator::getInstance().ann_amax_different_bases[seed_cnt];
-				}
-
-				//cout << "New seed: " << act_seed << endl;
-
-				std::string filen = filebase;
-				filen.append(to_string(act_seed));
-				filen.append(".txt");
-				std::cout << "Trying to read: " << filen << std::endl;
-				if(readRandomLattice(B_read, filen) < 0)
-				{
-					cerr << "Reading lattice for Benchmarking failed. Exiting." << endl;
-					exit(-4100);
-				}
-				Bs.push_back(B_read);
-			}
-			else {
-				Bs.push_back(randomizeMatrix(B_read, randint, _dim, i));
-			}
 			this->_seeds.push_back(act_seed);
 			this->_amax.push_back(act_amax);
-			//cout << act_seed << " / " << act_amax << endl;
-		}
 
+			std::string filen = filebase;
+			filen.append(to_string(act_seed));
+			filen.append(".txt");
+			std::cout << "Trying to read: " << filen << std::endl;
+
+			if(readRandomLattice(B_read, filen) < 0)
+			{
+				cerr << "Reading lattice for Benchmarking failed. Exiting." << endl;
+				exit(-4100);
+			}
+
+			// Normally not the first attemp hits, so nearly all work is performed un randomized bases
+			//Bs.push_back(B_read);
+			Bs.push_back(randomizeMatrix(B_read, randint, _dim, i));
+
+			// Update the seed index
+			seedidx = (seedidx + 1) % diff_bases;
+		}
 
 		// Copy matrices to local fplll format
 		for(int i=0; i < _ainfo._number_of_random_bases; i++) {
@@ -229,7 +211,6 @@ public:
 				}
 			}
 		}
-
 
 		readTablesFromFile<FT1>(bconfig);
 		return doBenchmark(bconfig);
@@ -272,10 +253,10 @@ public:
 		filename.append(std::to_string(this->_dim));
 		filename.append("_bases");
 		filename.append(std::to_string(_ainfo._number_of_random_bases));
-		if(_ainfo._number_of_random_bases != _ainfo._number_of_instances)
+		if(_ainfo._number_of_random_bases != _ainfo._number_of_parallel_reducing_threads)
 		{
-			filename.append("_instances");
-			filename.append(std::to_string(_ainfo._number_of_instances));
+			filename.append("_threads");
+			filename.append(std::to_string(_ainfo._number_of_parallel_reducing_threads));
 		}
 		filename.append(".bf");
 		return filename;
@@ -286,6 +267,7 @@ public:
 		ofstream myfile;
 		myfile.open (createFilenameForConfig());
 
+		int overall_cnt = 1;
 		for(auto it = _data.begin(); it != _data.end(); it++) {
 			myfile << it->second.betas.first << " , ";
 			myfile << it->second.betas.second << endl;
@@ -295,7 +277,8 @@ public:
 				myfile << it->second.betas.second << " , ";
 				myfile << it->second.rtime[i] << " , ";
 				myfile << it->second.seed[i] << " , ";
-				myfile << it->second.amax[i] << endl;
+				myfile << it->second.amax[i] << " , ";
+				myfile << (overall_cnt++) << endl;
 
 				const vector<vector<FT1>>& bs_temp = _bs_data[it->second.betas];
 				for(auto it2 = bs_temp[i].begin(); it2 != bs_temp[i].end(); it2++) {
@@ -316,6 +299,9 @@ public:
 		int number_of_base = 0;
 
 		ifstream myfile (createFilenameForConfig());
+
+		cout << "Reading BenchResults from " << createFilenameForConfig() << endl;
+
 		char delim = ',';
 		std::string item;
 
@@ -342,7 +328,7 @@ public:
 					tmp.rtime[number_of_base] = std::stod(elems[2]);
 
 					// Read the Amax for the corresponding dimension AND seed
-					if(elems.size() == 5) {
+					if(elems.size() == 6) {
 						tmp.seed[number_of_base] = std::stoi(elems[3]);
 						tmp.amax[number_of_base] = std::stod(elems[4]);
 					}
@@ -413,7 +399,7 @@ public:
 
 	int doBenchmark(const BetaConfig& bconfig) {
 		double benchstart = omp_get_wtime();
-		cout << "Benchmarking with " << _ainfo._number_of_instances << " threads." << endl;
+		cout << "Benchmarking with " << _ainfo._number_of_parallel_reducing_threads << " threads." << endl;
 		boost::progress_display show_progress(
 				(((bconfig.prebeta_end - bconfig.prebeta_start)/2 + 1) * ((bconfig.beta_end - bconfig.beta_start)/2 + 1))*_ainfo._number_of_random_bases);
 
@@ -454,9 +440,8 @@ public:
 					continue;
 				}
 
-		#pragma omp parallel for num_threads( _ainfo._number_of_instances )
+		#pragma omp parallel for num_threads( _ainfo._number_of_parallel_reducing_threads   )
 				for(int i=0; i < _ainfo._number_of_random_bases; i++) {
-					// Make temporary copy of input matrix
 					ZZ_mat<mpz_t> B_loc = B_org[i];
 					ZZ_mat<mpz_t> empty1, empty2;
 
@@ -479,8 +464,11 @@ public:
 					// BKZ 2.0 reduction
 					BKZParam paramval(bet, strategies_full);
 					paramval.delta = Configurator::getInstance().glob_delta;
+					//DBG
 					paramval.flags |= BKZ_AUTO_ABORT;
+					//paramval.flags |= BKZ_VERBOSE;
 					bkz_reduction 	(&B_loc, &empty2,  paramval, FT_DEFAULT, 0);
+
 					//BKZReduction<Z_NR<mpz_t>, FP_NR<FT1>> bkz_obj2(mygso2, lll_obj, paramval);
 					//bkz_obj2.bkz();
 
@@ -525,8 +513,10 @@ public:
 		cout << endl << "Size of map: " << _data.size() << " (Calc: " << calculated_new
 				<< " / Read: " << already_read << ")"
 				<< " in " <<  omp_get_wtime() - benchstart << " seconds." << endl;
-		//printMap();
+		//DBG
+		printMap();
 		writeTablesToFile<double>();
+		//exit(-2);
 		return 0;
 	}
 
