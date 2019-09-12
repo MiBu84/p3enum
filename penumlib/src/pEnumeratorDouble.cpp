@@ -29,6 +29,7 @@
 #include <cstdlib>
 #include <fplll.h>
 
+#define auxCeil(x) ((double)(long)((x)+1))
 
 void printVector(double* v, int s, int e) {
 	for(int i=s; i<=e; i++)
@@ -77,27 +78,27 @@ pEnumeratorDouble::pEnumeratorDouble(int dim) {
 	_dim = dim;
 	_num_threads = omp_get_max_threads();
 
-	cand_umin=new double[dim + 3];
-	cand_v=new double[dim + 3]; // next coordinate
+	cand_umin=new int[dim + 3];
+	cand_v=new int[dim + 3]; // next coordinate
 	cand_l=new double[dim + 3]; // actual costs
 	cand_c=new double[dim + 3]; // centers of all levels in tree
-	cand_Delta=new double[dim + 3]; // sign
-	cand_delta=new double[dim + 3]; // offset
+	cand_Delta=new int[dim + 3]; // sign
+	cand_delta=new int[dim + 3]; // offset
 	cand_s = 0; // highest non-zero entry
 	cand_t = 0; // actual visited level in tree
 
 	//candidates_queue = MBVecQueue2<double>(Configurator::getInstance().cand_queue_size);
-	candidates_queue = new MBVecQueue3(Configurator::getInstance().cand_queue_size);// storage for the candidates for SVs
+	candidates_queue = new MBVecQueue3<int>(Configurator::getInstance().cand_queue_size);// storage for the candidates for SVs
 
 	prunfunc.SetLength(_dim+3);
 	_conf = pruning_conf {NO, 1.05};
 
-	umin = new double*[_num_threads + 3];
-	v = new double*[_num_threads + 3];
+	umin = new int*[_num_threads + 3];
+	v = new int*[_num_threads + 3];
 	l = new double*[_num_threads + 3];
 	c = new double*[_num_threads + 3];
-	Delta = new double*[_num_threads + 3];
-	delta = new double*[_num_threads + 3];
+	Delta = new int*[_num_threads + 3];
+	delta = new int*[_num_threads + 3];
 
 	for(int i=0; i<=_dim+1; i++) {
 		cand_umin[i] = 0;
@@ -111,20 +112,20 @@ pEnumeratorDouble::pEnumeratorDouble(int dim) {
 	}
 
 	for(int i=0; i < _num_threads+2; i++) {
-		umin[i] = new double[_dim + 3];
-		v[i] = new double[_dim + 3];
+		umin[i] = new int[_dim + 3];
+		v[i] = new int[_dim + 3];
 		l[i] = new double[_dim + 3];
 		c[i] = new double[_dim + 3];
-		Delta[i] = new double[_dim + 3];
-		delta[i]  = new double[_dim + 3];
+		Delta[i] = new int[_dim + 3];
+		delta[i]  = new int[_dim + 3];
 
 		for(int j=0; j <_dim+2; j++) {
-			umin[i][j] = 0.0;
-			v[i][j] = 0.0;
+			umin[i][j] = 0;
+			v[i][j] = 0;
 			l[i][j] = 0.0;
 			c[i][j] = 0.0;
-			Delta[i][j] = 0.0;
-			delta[i][j] = 0.0;
+			Delta[i][j] = 0;
+			delta[i][j] = 0;
 		}
 	}
 
@@ -291,7 +292,7 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 			p_mu[i] = new double[B.NumRows()];
 
 		double* p_bstar = new double[B.NumRows()];
-		double* p_u = new double[B.NumRows()+2];
+		int* p_u = new int[B.NumRows()+2];
 		double* p_prunfunc = new double[B.NumRows()+1];
 
         while(do_searching > 0)
@@ -305,7 +306,7 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 			//Bcandsorder[tid] = tid;
 			if(omp_get_thread_num() == 0 && ((act_trial) / (numt+1))  < 1 && Configurator::getInstance().test_original_basis) {
 				// Keep basis unrandomized
-				cout << "Keeping " << omp_get_thread_num()  << endl << std::flush;
+				cout << "Keeping org. base by thread " << omp_get_thread_num()  << endl << std::flush;
 			}
 			else	{
 				int seed = ((act_trial+1)*numt + (tid+1)*time(NULL));
@@ -313,7 +314,6 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 			}
 
 			// Do BKZ in parallel and generate a bunch
-			//std::cout << "What reduction?" << std::endl;
 			int prebeta=Configurator::getInstance().prebeta;
 			if(Configurator::getInstance().dolll)
 			{
@@ -421,7 +421,6 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 			procnum++;
 			// Calculate Gram-Schmidt
 			GSO(Bcands[tid], mu, bstar);
-			//double tstart1 = omp_get_wtime();
 
 			for(int i=0; i < B.NumCols(); i++) {
 				p_u[i] = 0;
@@ -446,10 +445,6 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 					Bd[i][j] = NTL::conv<long int>(Bcands[tid][i][j]);
 				}
 			}
-
-			//double tend1 = omp_get_wtime();
-			//std::cout << "Runtime of ENUM: " <<
-			//		tend1 - tstart1 << " s." << std::endl;
 
 			// Standard behavior of Extreme Pruning
 			// End if a vector smaller than target found
@@ -515,62 +510,63 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 
 double pEnumeratorDouble::solveSVP(mat_ZZ& B, vec_ZZ& vec) {
 	cout << "pEnumeratorDouble::solveSVP(mat_ZZ& B, vec_ZZ& vec)" << endl;
-		// Experimental use of fpllls strategizer functions
-		if (Configurator::getInstance().ext_pruning_function_file.compare("NOT") != 0) {
-			cout << "Reading pruning function from " << Configurator::getInstance().ext_pruning_function_file << endl;
-			readPruning(Configurator::getInstance().ext_pruning_function_file);
-		}
 
-		// Several runs to test the difference
-		double** p_mu = new double*[B.NumRows()];
-		for(int i=0; i<B.NumRows(); i++)
-			p_mu[i] = new double[B.NumRows()];
+	// Experimental use of fpllls strategizer functions
+	if (Configurator::getInstance().ext_pruning_function_file.compare("NOT") != 0) {
+		cout << "Reading pruning function from " << Configurator::getInstance().ext_pruning_function_file << endl;
+		readPruning(Configurator::getInstance().ext_pruning_function_file);
+	}
 
-		double* p_bstar = new double[B.NumRows()];
-		double* p_u = new double[B.NumRows()+2];
-		double* p_prunfunc = new double[B.NumRows()+1];
+	// Several runs to test the difference
+	double** p_mu = new double*[B.NumRows()];
+	for(int i=0; i<B.NumRows(); i++)
+		p_mu[i] = new double[B.NumRows()];
 
-		vec_ZZ randint;
-		randint.SetLength(5);
-		randint[0]=-2; randint[1]=-1; randint[2]=0; randint[3]=1; randint[4]=2;
-		double act_A = -1;
+	double* p_bstar = new double[B.NumRows()];
+	int* p_u = new int[B.NumRows()+2];
+	double* p_prunfunc = new double[B.NumRows()+1];
 
-		double tstart_oall = omp_get_wtime();
+	vec_ZZ randint;
+	randint.SetLength(5);
+	randint[0]=-2; randint[1]=-1; randint[2]=0; randint[3]=1; randint[4]=2;
+	double act_A = -1;
 
-		mat_RR mu;
-		vec_RR bstar;
-		std::vector<mat_ZZ> Bcands;
-		std::vector<int> Bcandsorder;
+	double tstart_oall = omp_get_wtime();
 
-		int numt = 1;
-		int procnum = 0;
-		bool iterative_enumeration = Configurator::getInstance().iterative_enumeration;
+	mat_RR mu;
+	vec_RR bstar;
+	std::vector<mat_ZZ> Bcands;
+	std::vector<int> Bcandsorder;
 
-        double BKZmaxtime = 9000;
-        bool shortest_time_set = false;
+	int numt = 1;
+	int procnum = 0;
+	bool iterative_enumeration = Configurator::getInstance().iterative_enumeration;
+
+	double BKZmaxtime = 9000;
+	bool shortest_time_set = false;
         
-		double target_a = -1;
-		int dimen = B.NumCols();
+	double target_a = -1;
+	int dimen = B.NumCols();
 
-		double theAval = Configurator::getInstance().Amax;
-		if(theAval != numeric_limits<double>::max() && theAval > 0)	{
-			target_a = theAval * theAval;
-		}
-		else if (Configurator::getInstance().do_gauss_estimate && Configurator::getInstance().gauss_estimate > 1e-5) {
-			target_a = Configurator::getInstance().gauss_estimate;
-		}
-        else if(theAval < 0) {
-           target_a = calcGaussHeuristicChallenge<ZZ>(B, dimen);
-           target_a = target_a * target_a;
-        }
-		else
-			target_a = p_bstar[0] * 1.00001;
-		
-        act_A = target_a;
-        
-    	_conf = pruning_conf {Configurator::getInstance().enum_prune,
-    		Configurator::getInstance().prune_param};
-    	updatePruningFuncLoc(prunfunc.data(), _conf, act_A, dimen, 0, dimen-1);
+	double theAval = Configurator::getInstance().Amax;
+	if(theAval != numeric_limits<double>::max() && theAval > 0)	{
+		target_a = theAval * theAval;
+	}
+	else if (Configurator::getInstance().do_gauss_estimate && Configurator::getInstance().gauss_estimate > 1e-5) {
+		target_a = Configurator::getInstance().gauss_estimate;
+	}
+	else if(theAval < 0) {
+	   target_a = calcGaussHeuristicChallenge<ZZ>(B, dimen);
+	   target_a = target_a * target_a;
+	}
+	else
+		target_a = p_bstar[0] * 1.00001;
+
+	act_A = target_a;
+
+	_conf = pruning_conf {Configurator::getInstance().enum_prune,
+		Configurator::getInstance().prune_param};
+	updatePruningFuncLoc(prunfunc.data(), _conf, act_A, dimen, 0, dimen-1);
 
 #pragma omp parallel
 #pragma omp single
@@ -596,7 +592,7 @@ double pEnumeratorDouble::solveSVP(mat_ZZ& B, vec_ZZ& vec) {
 		}
 		srand (time(NULL));
 
-        omp_set_num_threads(numt); // Use 4 threads for all consecutive parallel regions
+        omp_set_num_threads(numt); // Use numt threads for all consecutive parallel regions
 	    for(int trial=0; trial < Configurator::getInstance().trials; trial++)
 	    {
 			double tprepstart = omp_get_wtime();
@@ -787,8 +783,6 @@ double pEnumeratorDouble::solveSVP(mat_ZZ& B, vec_ZZ& vec) {
 				// Calculate Gram-Schmidt
 				GSO(Bcands[tid], mu, bstar);
 
-
-
 				double tstart1 = omp_get_wtime();
 
 				/*** Begin former EnumTester ***/
@@ -818,7 +812,7 @@ double pEnumeratorDouble::solveSVP(mat_ZZ& B, vec_ZZ& vec) {
 
 				NTL::Vec<double> sol;	sol.SetLength(B.NumCols());
 				for(int ii=0; ii<B.NumCols(); ii++)
-					sol[ii] = p_u[ii];
+					sol[ii] = (double)p_u[ii];
 
 				calcVectorLengthDouble<long int, double>(sol, Bd);
 			    double tend1 = omp_get_wtime();
@@ -900,12 +894,12 @@ void pEnumeratorDouble::resetEnumerator() {
 
 	for(int i=0; i < _num_threads+2; i++) {
 		for(int j=0; j <_dim+2; j++) {
-			umin[i][j] = 0.0;
+			umin[i][j] = 0;
 			v[i][j] = 0.0;
 			l[i][j] = 0.0;
 			c[i][j] = 0.0;
-			Delta[i][j] = 0.0;
-			delta[i][j] = 0.0;
+			Delta[i][j] = 0;
+			delta[i][j] = 0;
 		}
 	}
 
@@ -914,7 +908,7 @@ void pEnumeratorDouble::resetEnumerator() {
 }
 
 
-double pEnumeratorDouble::EnumTuner(double** mu, double* bstar, double* u, int beta, int dim, double A,
+double pEnumeratorDouble::EnumTuner(double** mu, double* bstar, int* u, int beta, int dim, double A,
 		int vec_offset, int jj, int kk) {
 	if(jj<0 || kk <0) {
 		jj = (dim - beta) / 2;
@@ -998,7 +992,7 @@ double pEnumeratorDouble::EnumTuner(double** mu, double* bstar, double* u, int b
 	return 0;
 }
 
-double pEnumeratorDouble::EnumDouble(double** mu, double* bstar, double* u, int jj, int kk, int dim,
+double pEnumeratorDouble::EnumDouble(double** mu, double* bstar, int* u, int jj, int kk, int dim,
 		double A, int vec_offset, bool is_bkz_enum) {
 
 	cout << setprecision(5);
@@ -1057,13 +1051,13 @@ double pEnumeratorDouble::EnumDouble(double** mu, double* bstar, double* u, int 
 }
 
 double pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(double** mu, double* bstar,
-		double* u, int jj, int kk, int dim, const double A, int candidate_height, bool is_bkz_enum) {
+		int* u, int jj, int kk, int dim, const double A, int candidate_height, bool is_bkz_enum) {
 
     _cand_cnt = 0;    
     _cnt2 = 0;
 	VectorStorage::getInstance().cand_count = 0;
-	MB::MBVec<double> startmin; startmin.SetLength(dim+2);
-	MB::MBVec<double> ures; ures.SetLength(dim+2);
+	MB::MBVec<int> startmin; startmin.SetLength(dim+2);
+	MB::MBVec<int> ures; ures.SetLength(dim+2);
 	for(int i=0; i <= dim+1; i++) {
 		u[i] = 0;
 		ures[i] = 0;
@@ -1102,7 +1096,7 @@ double pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(double** mu, dou
 	{
 		bool do_candidate_search = false;
 		bool do_enumeration = false;
-		MB::MBVec<double> u_loc; u_loc.SetLength(dim+2);
+		MB::MBVec<int> u_loc; u_loc.SetLength(dim+2);
 		MB::MBVec<double> prunfuncloc; prunfuncloc.SetLength(dim+2);
 		prunfuncloc = prunfunc;
 		double Aret = Amin;
@@ -1218,7 +1212,7 @@ void pEnumeratorDouble::resetCandidateSearch() {
 return: Integer indicating if candidates are left. If 0 is returned, no candidates are left in the tree
 */
 int pEnumeratorDouble::BurgerEnumerationCandidateSearch(double** mu, double* bstarnorm,
-		MB::MBVec<double>& u, const double* prun_func, const int min, int j, int k, int dim, 
+		MB::MBVec<int>& u, const double* prun_func, const int min, int j, int k, int dim, 
 		long long& locnodecnt, double Ain) {
 
 	while (cand_t <= k) {
@@ -1301,7 +1295,7 @@ int pEnumeratorDouble::BurgerEnumerationCandidateSearch(double** mu, double* bst
 
 
 double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* bstarnorm,
-		MB::MBVec<double>& u, double* prunefunc_in, int j, int k, int rel_len, int dim, long long& locnodecnt, double Ain) {
+		MB::MBVec<int>& u, double* prunefunc_in, int j, int k, int rel_len, int dim, long long& locnodecnt, double Ain) {
 
 	const int myid = omp_get_thread_num();
 	double A = bstarnorm[j] * 1.0001 ;//Ain;
@@ -1325,10 +1319,11 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 		A = Ain;
 
 	for(long ii=0; ii <= dim+1; ii++) {
-		c[myid][ii] = l[myid][ii] = 0.0;
-		Delta[myid][ii] = v[myid][ii] = 0.0;
-		delta[myid][ii] = 1.0;
-		umin[myid][ii] = 0.0;
+		c[myid][ii] = l[myid][ii] = 0;
+		v[myid][ii] = 0;
+        Delta[myid][ii] = 0;
+		delta[myid][ii] = 1;
+		umin[myid][ii] = 0;
 	}
 
 	for(long ii=j; ii <= k; ii++) {
@@ -1453,7 +1448,7 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 					int stop = 0;
 					cin >> stop;
 				}*/
-				u[t] = v[myid][t] = (ceil(-c[myid][t] - 0.5));
+				u[t] = v[myid][t] = (optroundF(-c[myid][t] - 0.5));
 
 				// For ZigZag
 				Delta[myid][t] = 0;
@@ -1521,7 +1516,7 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 
 
 double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm,
-		double* u, MBVec<double> prunefunc_in, int j, int k, int dim, double Ain=-1) {
+		int* u, MBVec<double> prunefunc_in, int j, int k, int dim, double Ain=-1) {
 
 	int tid = omp_get_thread_num();
 	long long nodecnt = 0;
@@ -1533,14 +1528,14 @@ double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm
 		}
 	}
 
-	double* umin = new double[dim + 2];
-	double* v = new double[dim + 2];
+	int* umin = new int[dim + 2];
+	int* v = new int[dim + 2];
 	double* l = new double[dim + 2];
 	double* c = new double[dim + 2];
 
 	// To decide the zigzag pattern
-	double* Delta = new double[dim + 2];
-	double* delta = new double[dim + 2];
+	int* Delta = new int[dim + 2];
+	int* delta = new int[dim + 2];
 
 	int s;
 	int t; // s d for zigzagpattern
@@ -1552,16 +1547,17 @@ double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm
 		A = Ain;
 
 	for(long i=0; i <= dim + 1; i++) {
-		c[i] = l[i] = 0.0;
+		c[i] = 0.0;
+        l[i] = 0;
 		Delta[i] = v[i] = 0.0;
 		delta[i] = 1.0;
-		umin[i] = u[i] = 0.0;
+		umin[i] = u[i] = 0;
 	}
 
 	s = t = j;
 
 	for(long i=j; i <= k+1; i++) {
-		umin[i] = u[i] = 0.0;
+		umin[i] = u[i] = 0;
 	}
 	u[j] = umin[j] = 1;
 
@@ -1586,7 +1582,9 @@ double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm
 
 				// Activate to not use caching
 				//c[t] = muProdDouble(u, mu, t, s/*dim-1*/);
-				u[t] = v[t] = (ceil(-c[t] - 0.5));
+				//u[t] = v[t] = (ceil(-c[t] - 0.5));
+                
+                u[t] = v[t] = optroundF(-c[t] - 0.5);        
 
 				// For ZigZag
 				Delta[t] = 0;
@@ -1599,7 +1597,6 @@ double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm
 			}
 
 			else {
-				//updatePruningFuncLoc(prunefunc_in.data(), _conf, l[t], dim, j, k);
 				A = l[t];
 
 				for(long i=j; i <= k; i++) {
@@ -1681,3 +1678,14 @@ inline double pEnumeratorDouble::muProdDouble (double* x, double** mu, const int
 	return res;
 }
 
+inline double pEnumeratorDouble::muProdDouble (int* x, double** mu, const int t, const int s) {
+
+	// Only small variant
+	double res(0);
+	for(int i = t + 1; i <= s; i++) {
+		res += x[i] * mu[i][t];
+//#pragma omp atomic
+		//VectorStorage::getInstance().mult_cnt++;
+	}
+	return res;
+}

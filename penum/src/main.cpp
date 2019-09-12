@@ -6,9 +6,7 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-//#include "parallelDagdalen.hpp"
 #include "pEnumeratorDouble.hpp"
-#include "BurgerEnum.hpp"
 #include "Configurator.hpp"
 #include "Utils.hpp"
 #include "GramSchmidtObject.hpp"
@@ -799,22 +797,31 @@ int readResFile(std::string filestr, long long& nodes, int& node_entries)
 	return 0;
 }
 
-void readRunningTimes(int argc, char** argv) {
+int readRunningTimes(int argc, char** argv) {
 	long long nodes = 0;
 	int node_entries = 0;
 	std::string filepath;
 
+	bool do_result_reading = false;
+
     for(int i = 1; i < argc; i++) {
     	std::string input = std::string(argv[i]);
+
 		if(input == "--resultDir") {
+			do_result_reading = true;
+
 			if(argc <= i) {
 				std::cerr << "Missing basisfile in argument. Terminating." << std::endl;
-				exit(-1);
+				return 1;
 			}
 
 			filepath = std::string(argv[i+1]);
-			i++;
+			break;
 		}
+    }
+
+    if(!do_result_reading) {
+    	return 0;
     }
 
     cout << "Got filepath: " << filepath << endl;
@@ -826,14 +833,13 @@ void readRunningTimes(int argc, char** argv) {
     }
 
 	cout << "Nodes in average: " << nodes / node_entries << endl;
+	return 0;
 }
 
 
 int main(int argc, char** argv)
 {
 	readRunningTimes(argc, argv);
-	exit(0);
-
 
 #pragma omp parallel
 #pragma omp single nowait
@@ -1127,14 +1133,22 @@ int main(int argc, char** argv)
         exit(0);
     }
 
-	int dim = B.NumCols();
+	const int dim = B.NumCols();
 
 	pEnumeratorDouble pener = pEnumeratorDouble(dim);
 
 	vec_ZZ vec; vec.SetLength(B.NumRows() + 3);
 
-	pener.solveSVPMP(B,vec);
+	 // Reduce n-bases in parallel, enumerate one base after the other with m threads
+	if (Configurator::getInstance().par_threshold < dim) {
+		pener.solveSVP(B,vec);
+	}
 
+
+	// reduce n-bases in parallel and enumerate in parallel with one thread for each
+	else {
+		pener.solveSVPMP(B,vec);
+	}
 
    return 0;
 }

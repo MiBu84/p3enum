@@ -16,7 +16,7 @@ using namespace std;
 
 namespace MB {
 
-class MBVecQueue3 {
+template <class T> class MBVecQueue3 {
 public:
 	MBVecQueue3(int size) {
 		_write_pointer=0;
@@ -40,7 +40,7 @@ public:
 		_thresval=0.25 * 0;
 	}
 
-	int push(const MBVec<double>& v, const int start=-1, const int end=-1) {
+	int push(const MBVec<T>& v, const int start=-1, const int end=-1) {
 		{
 			//cout << "Pushing: " << _elems << endl;
 			_data[_write_pointer] = v;
@@ -58,7 +58,7 @@ public:
 	}
 
 
-	bool next (MBVec<double>& input, const int start, const int end) {
+	bool next (MBVec<T>& input, const int start, const int end) {
 		{
 			if(_elems > 0 && _read_pointer >= 0) {
 				int old_pointer = _read_pointer;
@@ -136,7 +136,7 @@ private:
 	int _elems;
 	int _thresval;
 
-	std::vector<MBVec<double> > _data;
+	std::vector<MBVec<T> > _data;
 };
 
 

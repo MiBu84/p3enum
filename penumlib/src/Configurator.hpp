@@ -105,7 +105,7 @@ private:
 		bkz_height = 10;
 
 		enum_prune = NO;
-		prune_param = 1.00;
+		prune_param = 0.00;
 		Amax = numeric_limits<double>::max();
 		trials = 40; // Following Paper of Schneider and Dagdalen this garantuees success of 99%
         

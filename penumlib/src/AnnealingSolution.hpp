@@ -641,7 +641,7 @@ public:
 		std::uniform_int_distribution<int> dist_dim(0, (_dim-3) / 2);
 
 		int change_dim = dist_dim(engine);
-		// Select percentage if change Range [-3.0%, ..., +3.0%]
+		// Select percentage if change Range [-1.0%, ..., +1.0%]
 		std::uniform_real_distribution<double> dist_val(-0.01, 0.01);
 		double perci = dist_val(engine);
 
@@ -669,7 +669,8 @@ public:
 
 			if(newval > neighval) {
 				if(change_dim > 0) {
-					newval = std::max(neighval, _prun_func[change_dim-2]);
+					//newval = std::max(neighval, _prun_func[change_dim-2]);
+                    newval = neighval;
 				}
 				else
 					newval=neighval;//*0.999999;
@@ -684,7 +685,8 @@ public:
 			newval = dimval + valchange;
 
 			if(newval < neighval) {
-				newval = std::min(neighval, _prun_func[change_dim + 2]);//*1.0000001;
+				//newval = std::min(neighval, _prun_func[change_dim + 2]);//*1.0000001;
+                newval = neighval;
 			}
 		}
 
