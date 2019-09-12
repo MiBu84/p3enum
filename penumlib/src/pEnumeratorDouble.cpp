@@ -1079,7 +1079,13 @@ double pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(double** mu, dou
 
 	int ret = BurgerEnumerationCandidateSearch(mu, bstar,
 			startmin, NULL, jj, kk-serial_height, kk, dim, locnodeinit, Amin);
-            
+
+	if(candidates_queue->checkForDuplicates())
+		cout << "Duplicates!!!" << endl;
+	else
+		cout << "No duplicates." << endl;
+	exit(-9);
+
 	if(ret == 0) {
 		candidates_left = false;
 	}
@@ -1110,10 +1116,6 @@ double pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(double** mu, dou
 #pragma omp single nowait
 {
 			below_thres = candidates_queue->isBelowThres();
-			/*if(candidates_vec.size() < 50)
-				below_thres=true;
-			else
-				below_thres=false;*/
 
 			if(!search_is_executed) {
 				if(candidates_left && below_thres) {
@@ -1125,7 +1127,7 @@ double pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(double** mu, dou
 
 			if(do_candidate_search) {                   
 				int ret = BurgerEnumerationCandidateSearch(mu, bstar,
-						startmin, NULL, jj, kk-serial_height, kk, dim, locnodecnt, Amin); 
+						startmin, NULL, jj, kk-serial_height, kk, dim, locnodecnt, Amin);
                         
 				//candidates_queue.checkDuplicates();
 				// Mark for all that there are no candidates and that no thread needs to do the search again
@@ -1220,7 +1222,7 @@ int pEnumeratorDouble::BurgerEnumerationCandidateSearch(double** mu, double* bst
 					( (u[cand_t]) + cand_c[cand_t] ) * ( (u[cand_t]) + cand_c[cand_t] ) * bstarnorm[cand_t];
 
 			if(cand_l[cand_t] < prunfunc[cand_t]) {
-				//locnodecnt++;
+				locnodecnt++;
 				if(cand_t > j) {
 					cand_t = cand_t - 1;
 

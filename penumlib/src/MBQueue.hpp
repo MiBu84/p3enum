@@ -100,6 +100,38 @@ public:
 		cout << "End of queue:" << endl;
 	}
 
+	bool checkForDuplicates() {
+		int i = _read_pointer;
+		int j = _read_pointer;
+
+		while(i != _write_pointer) {
+			j=(i+1) % _size;
+
+			while(j != _write_pointer) {
+				//cout << "Checking " << i << " vs. " << j << endl;
+				if(compareTwoVectors(_data[i], _data[j]))
+					return true;
+				j=(j+1) % _size;
+			}
+
+			i=(i+1) % _size;
+		}
+		return false;
+	}
+
+	bool compareTwoVectors (const MBVec<T>& veca, const MBVec<T>& vecb) {
+		bool are_equal = true;
+		//cout << veca.length() << "//" << vecb.length() << endl;
+		for(unsigned int i=0; i < veca.length(); i++) {
+			//cout << veca[i] << "/" << vecb[i] << "\t";
+			if(veca[i] != vecb[i]) {
+				are_equal=false;
+			}
+		}
+
+		return are_equal;
+	}
+
 	/**
 	 * Indicate whether queue is full
 	 * To be sure there is a slide security buffer between size and number of elements

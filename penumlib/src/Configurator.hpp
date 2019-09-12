@@ -122,7 +122,7 @@ private:
 		// Default: Use scaled pruning function
 		ext_pruning_function_file = "NOT";
 
-		test_original_basis = false; // false = randomization of initial base also in first trial
+		test_original_basis = true; // false = randomization of initial base also in first trial
 
 		// Annealer / Function optimizer
 		do_annealing = 0;
