@@ -595,7 +595,7 @@ double pEnumeratorDouble::solveSVP(mat_ZZ& B, vec_ZZ& vec) {
         omp_set_num_threads(numt); // Use numt threads for all consecutive parallel regions
 	    for(int trial=0; trial < Configurator::getInstance().trials; trial++)
 	    {
-			double tprepstart = omp_get_wtime();
+			//double tprepstart = omp_get_wtime();
 
 #pragma omp parallel num_threads(numt)
 			{
@@ -638,7 +638,7 @@ double pEnumeratorDouble::solveSVP(mat_ZZ& B, vec_ZZ& vec) {
 					for(int bval=Configurator::getInstance().glob_beta; bval<=Configurator::getInstance().glob_beta; bval++) {
 
 						//DGB
-						std::cout << "Thread " << tid << " is BKZ-" << bval << " reducing basis" << std::endl;
+						//std::cout << "Thread " << tid << " is BKZ-" << bval << " reducing basis" << std::endl;
 
 						double tstartbkz = omp_get_wtime();
                         double tbkzexact_start = 1;
@@ -772,7 +772,7 @@ double pEnumeratorDouble::solveSVP(mat_ZZ& B, vec_ZZ& vec) {
 			//writeBasisQuality<ZZ>(Bcands[0], "");
 
 			double tprepend = omp_get_wtime();
-			cout << "Time for preprocessing: " << tprepend-tprepstart << " seconds." << endl;
+			//cout << "Time for preprocessing: " << tprepend-tprepstart << " seconds." << endl;
 
 			// Now walk through all randomized bases and enumerate
 			for(int tidi=0; tidi < (int)ceil(numt*1.0); tidi ++) {
@@ -1064,13 +1064,18 @@ double pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(double** mu, dou
 		startmin[i] = 0;
 	}
 
+	u[0] = 1;
+	startmin[0] = -2;
 	int serial_height = candidate_height;
 
 	// Newest version
 	bool candidates_left = true;
 	bool below_thres = false;
 	resetCandidateSearch();
+
 	cand_t = kk-serial_height;
+	//cand_t = 0;
+
 	double Amin = prunfunc[jj] * 1.000;
 	long long locnodeinit = 0;
 	double enumtime_start = omp_get_wtime();
@@ -1078,13 +1083,18 @@ double pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(double** mu, dou
 	cout << "Searching candidates in depth " << serial_height << endl;
 
 	int ret = BurgerEnumerationCandidateSearch(mu, bstar,
-			startmin, NULL, jj, kk-serial_height, kk, dim, locnodeinit, Amin);
+	 		startmin, NULL, jj, kk-serial_height, kk, dim, locnodeinit, Amin);
 
-	if(candidates_queue->checkForDuplicates())
+	//int ret = BurgerEnumerationCandidateSearch(mu, bstar,
+	//	 		startmin, NULL, jj, jj, serial_height, dim, locnodeinit, Amin);
+
+	/*if(candidates_queue->checkForDuplicates())
 		cout << "Duplicates!!!" << endl;
 	else
 		cout << "No duplicates." << endl;
-	exit(-9);
+
+	candidates_queue->print();*/
+
 
 	if(ret == 0) {
 		candidates_left = false;
@@ -1142,13 +1152,9 @@ double pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(double** mu, dou
 #pragma omp critical (QueueAccess)
 {
 			if(!candidates_queue->isEmpty()) {
-	 	 	//if(!candidates_vec.size() == 0) {
 				do_enumeration=true;
 				candidates_queue->next(u_loc, kk-serial_height, kk);
                 _cnt2++;
-				//u_loc = candidates_vec.back();
-				//candidates_vec.pop_back();
-				//u_loc[kk-serial_height - 1] = 0;
 			}
 }
 
@@ -1215,11 +1221,15 @@ return: Integer indicating if candidates are left. If 0 is returned, no candidat
 */
 int pEnumeratorDouble::BurgerEnumerationCandidateSearch(double** mu, double* bstarnorm,
 		MB::MBVec<int>& u, const double* prun_func, const int min, int j, int k, int dim, 
-		long long& locnodecnt, double Ain) {
+		long long& locnodecnt,
+		double Ain) {
 
-	while (cand_t <= k) {
+	while (cand_t < k) {
+			//cout << u << endl;
 			cand_l[cand_t] = cand_l[ cand_t + 1 ] +
 					( (u[cand_t]) + cand_c[cand_t] ) * ( (u[cand_t]) + cand_c[cand_t] ) * bstarnorm[cand_t];
+
+			//cout << cand_l[cand_t] << "\t" << prunfunc[cand_t] << "@" << cand_t <<endl;
 
 			if(cand_l[cand_t] < prunfunc[cand_t]) {
 				locnodecnt++;
@@ -1247,7 +1257,7 @@ int pEnumeratorDouble::BurgerEnumerationCandidateSearch(double** mu, double* bst
 					candidates_queue->push(u, min, k); // Pushing vectors with full length
                     _cand_cnt++;
 }
-					//candidates_vec.push_back(u);
+
 #ifdef VECDEBUG
 					VectorStorage::getInstance().cand_count++;
 #endif
@@ -1263,7 +1273,7 @@ int pEnumeratorDouble::BurgerEnumerationCandidateSearch(double** mu, double* bst
 					cand_t = cand_t + 1;
 
 					cand_s = max(cand_s,cand_t);
-					if (cand_t < cand_s) // If active: Half
+					//if (cand_t < cand_s) // If active: Half
 						cand_Delta[cand_t] = -cand_Delta[cand_t];
 
 					if(cand_Delta[cand_t] * cand_delta[cand_t] >= 0)
@@ -1280,7 +1290,7 @@ int pEnumeratorDouble::BurgerEnumerationCandidateSearch(double** mu, double* bst
 
 				cand_s = max(cand_s,cand_t);
 
-				if (cand_t < cand_s) // If active: Half
+				//if (cand_t < cand_s) // If active: Half
 					cand_Delta[cand_t] = -cand_Delta[cand_t];
 
 				if(cand_Delta[cand_t] * cand_delta[cand_t] >= 0)
@@ -1292,6 +1302,7 @@ int pEnumeratorDouble::BurgerEnumerationCandidateSearch(double** mu, double* bst
 		}
 
 
+	//cout << locnodecnt << " nodes for search." << endl;
 	return 0;
 }
 
@@ -1300,7 +1311,7 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 		MB::MBVec<int>& u, double* prunefunc_in, int j, int k, int rel_len, int dim, long long& locnodecnt, double Ain) {
 
 	const int myid = omp_get_thread_num();
-	double A = bstarnorm[j] * 1.0001 ;//Ain;
+
 
 	for(int i=0; i <_dim+2; i++) {
 		for(int j=0; j < _dim+2; j++) {
@@ -1315,6 +1326,7 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 	int s;
 	int t = j; // s required for zigzagpattern
 
+	double A = 0;
 	if(Ain == -1)
 		A = bstarnorm[j] * 1.0001;
 	else
@@ -1349,15 +1361,14 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 		}
 
 		//DBG
-		if (l[myid][level+1] > prunefunc_in[level+1] && level+1 < k) {
+		/*if (l[myid][level+1] > prunefunc_in[level+1] && level+1 < k) {
 			s = t = level + 1;
 			break; // Stop at the level, where cost > A, because you have to change tree above
-		}
+		}*/
 
 		double ctmp = 0.0;
 		ctmp = muProdDouble(u.data(), mu, level, rel_len);
 		c[myid][level] = ctmp;
-		//v[myid][level] = (ceil(-c[myid][level] - 0.5));
 		y = u[level] + c[myid][level];
 		l[myid][level] = l[myid][level+1] + y * y * bstarnorm[level];
 
@@ -1398,11 +1409,11 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 
 
 	while(true) {
-		locnodecnt++;
 		l[myid][t] = l[myid][ t + 1 ] + ( (u[t]) + c[myid][t] ) * ( (u[t]) + c[myid][t] ) * bstarnorm[t];
 
 		double lt = l[myid][t];
 		if(lt < prunefunc_in[t]) {
+			locnodecnt++;
 			if(t > j) {
 
 				t = t - 1;
@@ -1419,37 +1430,6 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 				//c[myid][t] = muProdDouble(u.data(), mu, t, rel_len);
 				//c[myid][t] = muProdDouble(u.data(), mu, t, k) + sig_cache[t];
 
-				/*if(abs(tempi - c[myid][t])/tempi > 0.001) {
-					cout << "k:" << k << endl;
-
-					cout << c[myid][t] <<" <-> " << tempi <<" \n ";
-					cout << u << endl;
-					cout << sig_cache << endl;
-					cout << sigma[myid][t][35] <<  " "
-							 << sigma[myid][t][36] <<  " "
-							 << sigma[myid][t][37] <<  " "
-							 << sigma[myid][t][38] <<  " "
-							 << sigma[myid][t][39] <<  endl;
-					cout << endl;
-					cout << muProdDouble(u.data(), mu, t, k) << endl;
-					cout <<  muProdDouble(u.data(), mu, t, rel_len) << endl;
-
-					cout << endl << "\n";
-
-					cout << "j: " << r[myid][t+1] << endl;
-
-					cout << "\n" << "\n";
-					printVector<int>(r[myid], dim+1);
-					printVector<double>(sigma[myid][t], dim+1);
-
-					for(int j = r[myid][t+1]; j > t + 1; j--) {
-						cout << "j: " << j << " / "<< sigma[myid][t][j] + u[j-1] * mu[j-1][t] << endl;
-					}
-					cout << endl;
-
-					int stop = 0;
-					cin >> stop;
-				}*/
 				u[t] = v[myid][t] = (optroundF(-c[myid][t] - 0.5));
 
 				// For ZigZag
@@ -1480,7 +1460,7 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 				r[myid][t] = t+1;
 				s = max(s,t);
 
-				//if (t < s)
+				if (t < s)
 					Delta[myid][t] = -Delta[myid][t];
 
 				if(Delta[myid][t] * delta[myid][t] >= 0)
@@ -1499,7 +1479,7 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 			r[myid][t] = t+1;
 			s = max(s,t);
 
-			//if (t < s)
+			if (t < s)
 				Delta[myid][t] = -Delta[myid][t];
 
 			if(Delta[myid][t] * delta[myid][t] >= 0)
@@ -1566,6 +1546,7 @@ double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm
 
 	double tstart = omp_get_wtime();
 	while (true) {
+
 		l[t] = l[ t + 1 ] + ( (u[t]) + c[t] ) * ( (u[t]) + c[t] ) * bstarnorm[t];
 
 		if(l[t] < prunefunc_in[t]) {
@@ -1609,8 +1590,9 @@ double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm
 				// When bound is not updated
 				t = t + 1;
 
-				if(t > k)
+				if(t > k) {
 					break;
+				}
 
 				r[tid][t] = t+1;
 
@@ -1628,8 +1610,9 @@ double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm
 			t = t + 1;
 
 
-			if(t > k)
+			if(t > k) {
 				break;
+			}
 
 			r[tid][t] = t+1;
 

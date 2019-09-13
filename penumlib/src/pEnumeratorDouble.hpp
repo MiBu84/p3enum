@@ -18,8 +18,6 @@ using namespace std;
 using namespace NTL;
 using namespace MB;
 
-inline int optroundI(const double &src) { return (int)round(src); }
-
 /**
     Assumes resulting value fits into short!
 */
