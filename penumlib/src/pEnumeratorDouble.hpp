@@ -13,6 +13,7 @@
 #include "MBQueue.hpp"
 #include "MBVec.hpp"
 #include "pruningfunc.hpp"
+#include "boost/multi_array.hpp"
 
 using namespace std;
 using namespace NTL;
@@ -24,6 +25,22 @@ using namespace MB;
 inline int optroundF(const double &src) {
     return (32768 - (int)(32768. - src));
 }
+
+typedef boost::multi_array<double, 3> Dim3Array;
+
+template<class T>
+class MatrixDim3 {
+	MatrixDim3 (int x, int y, int z) {
+		_vals = new T[x*y*z];
+		dim1=x;
+		dim2=y;
+		dim3=z;
+	}
+
+private:
+	T* _vals;
+	int dim1, dim2, dim3;
+};
 
 class pEnumeratorDouble {
 public:
@@ -103,6 +120,7 @@ private:
 
 	// To reduce number of multiplications
 	int** r;
+	//Dim3Array sigma;
 	double*** sigma;
 
 	MBVecQueue3<int>* candidates_queue;

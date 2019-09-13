@@ -17,12 +17,12 @@ CPP_DEPS += \
 src/main.d 
 
 
-LANG=-std=c++0x
+LANG=-std=c++17
 CXXFLAGS= -O3 -g -Wall -c -fmessage-length=0 -fopenmp -MMD -MP
 DEFINES= -DUSE_VECQUEUE
 LDFLAGS=-fopenmp -g
 INCLUDE=-I../penumlib/src -I../ntl/include
-LIBS=-lparntl -lpenumlib -lgmp -lfplll -lm
+LIBS=-lparntl -lpenumlib -lgmp -lfplll -lm  -lstdc++fs
 LIBPATH=-L../penumlib -L../ntl/Release
 
 src/%.o: src/%.cpp

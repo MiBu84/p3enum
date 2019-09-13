@@ -22,7 +22,7 @@ CXXFLAGS= -O3 -g -Wall -c -fmessage-length=0 -fopenmp -MMD -MP
 DEFINES= -DUSE_VECQUEUE
 LDFLAGS=-fopenmp -g
 INCLUDE=-I../penumlib/src -I../ntl/include
-LIBS=-lntl -lpenumlib -lgmp -lfplll -lm -lmpfr
+LIBS=-lntl -lpenumlib -lgmp -lfplll -lm -lmpfr -lstdc++fs
 LIBPATH=-L../penumlib -L../ntl/Release
 
 src/%.o: src/%.cpp
