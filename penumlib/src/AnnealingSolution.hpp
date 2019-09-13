@@ -609,10 +609,10 @@ public:
 			//cout << prob_one_shot << " vs. " << prob_thread_shots << endl;
 
 			// Like in the paper of Gama et al.
-			_base_costs[i]= (_t_reduction[i] + _t_enums[i]) / prob_thread_shots;
+			//_base_costs[i]= (_t_reduction[i] + _t_enums[i]) / prob_thread_shots;
 
 			// With Bernoulli and 0.99 chance as average
-			//_base_costs[i] = (log(FT1(0.0001)) / (log(FT1(1.0) - prob_one_shot))) * (_t_reduction[i] + _t_enums[i]);
+			_base_costs[i] = (log(FT1(0.0001)) / (log(FT1(1.0) - prob_one_shot))) * (_t_reduction[i] + _t_enums[i]);
 
 			_costs += _base_costs[i];
 		}

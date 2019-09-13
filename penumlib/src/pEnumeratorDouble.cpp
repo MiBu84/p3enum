@@ -1433,7 +1433,7 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 				r[myid][t] = t+1;
 				s = max(s,t);
 
-				if (t < s)
+				//if (t < s)
 					Delta[myid][t] = -Delta[myid][t];
 
 				if(Delta[myid][t] * delta[myid][t] >= 0)
@@ -1452,7 +1452,7 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 			r[myid][t] = t+1;
 			s = max(s,t);
 
-			if (t < s)
+			//if (t < s)
 				Delta[myid][t] = -Delta[myid][t];
 
 			if(Delta[myid][t] * delta[myid][t] >= 0)
