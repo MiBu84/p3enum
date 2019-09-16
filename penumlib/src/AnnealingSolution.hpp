@@ -604,7 +604,7 @@ public:
 
 			// We do _number_of_random_bases of shots in parallel an only at least 1 has to hit
 			FT1 prob_one_shot = _succ_prob[i] ;//FT1(1) - pow(FT1(1)-_succ_prob[i], FT1(_ainfo._number_of_instances));
-			FT1 prob_thread_shots =  FT1(1) - pow((FT1(1) - prob_one_shot), _ainfo._number_of_parallel_reducing_threads);
+			//FT1 prob_thread_shots =  FT1(1) - pow((FT1(1) - prob_one_shot), _ainfo._number_of_parallel_reducing_threads);
 
 			//cout << prob_one_shot << " vs. " << prob_thread_shots << endl;
 

@@ -23,6 +23,7 @@
 #include <fstream>
 #include <stdlib.h>     /* srand, rand */
 #include <time.h>       /* time */
+#include <ctime>
 #include <vector>
 
 // fpllltest
@@ -424,6 +425,14 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 				}
 			} // Todo: Should be the same until here like in solveSVP
 
+
+			// If wished for debug, the first basis is replaced by an external reduced one
+			if(tid==0) {
+				if(Configurator::getInstance().prereduced_base != "") {
+					readRandomLattice(Bcands[0], Configurator::getInstance().prereduced_base);
+				}
+			}
+
 			// Now each thread processes the base it has reduced
 
 			// Now walk through all randomized bases and enumerate
@@ -471,6 +480,19 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 				calcVectorLengthDouble<long int, double>(sol, Bd);
 				act_A = act_A_t;
 				do_searching = 0;
+
+		    	if(Configurator::getInstance().output_success_base) {
+					auto t = std::time(nullptr);
+					auto tm = *std::localtime(&t);
+					std::ostringstream oss;
+					oss << std::put_time(&tm, "%d-%m-%Y %H-%M-%S");
+					auto str = oss.str();
+
+					string filename = "Dimension-" + std::to_string(dim) + "-A-" + to_string((long)(act_A))
+							+ "-" + str + ".txt";
+					writeNTLLatticeToFile(Bcands[tid], filename);
+		    	}
+
 				exit(5);
 
 			}
@@ -753,7 +775,7 @@ double pEnumeratorDouble::solveSVP(mat_ZZ& B, vec_ZZ& vec) {
 						{
 							std::ofstream basestream2;
 							basestream2.open(Configurator::getInstance().reducedfilepath.c_str(), ios_base::out);
-							basestream2 << Bcands[tid];
+							//basestream2 << Bcands[tid];
 							cout << "Exported the base" << endl;
 						}
 						else if(Configurator::getInstance().reducedfilepath!="" && numt>1) {
@@ -777,6 +799,11 @@ double pEnumeratorDouble::solveSVP(mat_ZZ& B, vec_ZZ& vec) {
 			// Sort by quality
 			//sortBasesByQuality(Bcands, Bcandsorder);
 			//writeBasisQuality<ZZ>(Bcands[0], "");
+
+			// If wished for debug, the first basis is replaced by an external reduced one
+			if(Configurator::getInstance().prereduced_base != "") {
+				readRandomLattice(Bcands[0], Configurator::getInstance().prereduced_base);
+			}
 
 			//double tprepend = omp_get_wtime();
 			//cout << "Time for preprocessing: " << tprepend-tprepstart << " seconds." << endl;
@@ -1047,7 +1074,7 @@ double pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(double** mu, dou
 	}
 
 	u[0] = 1;
-	startmin[0] = -2;
+	startmin[0] = 0;
 	int serial_height = candidate_height;
 
 	// Newest version
@@ -1206,7 +1233,7 @@ int pEnumeratorDouble::BurgerEnumerationCandidateSearch(double** mu, double* bst
 		long long& locnodecnt,
 		double Ain) {
 
-	while (cand_t < k) {
+	while (cand_t <= k) {
 			cand_l[cand_t] = cand_l[ cand_t + 1 ] +
 					( (u[cand_t]) + cand_c[cand_t] ) * ( (u[cand_t]) + cand_c[cand_t] ) * bstarnorm[cand_t];
 
@@ -1252,7 +1279,7 @@ int pEnumeratorDouble::BurgerEnumerationCandidateSearch(double** mu, double* bst
 					cand_t = cand_t + 1;
 
 					cand_s = max(cand_s,cand_t);
-					//if (cand_t < cand_s) // If active: Half
+					if (cand_t < cand_s) // If active: Half
 						cand_Delta[cand_t] = -cand_Delta[cand_t];
 
 					if(cand_Delta[cand_t] * cand_delta[cand_t] >= 0)
@@ -1269,7 +1296,7 @@ int pEnumeratorDouble::BurgerEnumerationCandidateSearch(double** mu, double* bst
 
 				cand_s = max(cand_s,cand_t);
 
-				//if (cand_t < cand_s) // If active: Half
+				if (cand_t < cand_s) // If active: Half
 					cand_Delta[cand_t] = -cand_Delta[cand_t];
 
 				if(cand_Delta[cand_t] * cand_delta[cand_t] >= 0)
@@ -1288,7 +1315,7 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 		MB::MBVec<int>& u, double* prunefunc_in, int j, int k, int rel_len, int dim, long long& locnodecnt, double Ain) {
 
 	const int myid = omp_get_thread_num();
-	double** sigma_ptr = sigma[myid];
+	//double** sigma_ptr = sigma[myid];
 
 	for(int i=0; i <_dim+2; i++) {
 		for(int j=0; j < _dim+2; j++) {

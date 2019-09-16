@@ -136,6 +136,25 @@ int readRandomLattice(NTL::mat_ZZ& B, std::string filepath) {
     return 0;
 }
 
+int writeNTLLatticeToFile(const NTL::mat_ZZ& B, std::string filepath) {
+    std::ofstream basestream;
+    basestream.open(filepath.c_str()/*, ios_base::out*/);
+
+    if(!basestream) {
+    	return BASEFILE_NOT_FOUND;
+    }
+
+    try {
+    	basestream << B;
+    }
+    catch (std::exception & e) {
+    	return BASESTREAM_ERROR;
+    	cout << "Error";
+    }
+    basestream.close();
+    return 0;
+}
+
 
 int readPruning(string path) {
 	std::ifstream file(path.c_str());
@@ -512,7 +531,8 @@ int readConfig(string path) {
         	catch (exception& e) {
         		std::cerr << "Missing number for annealing iterations parameter." << std::endl;
         	}
-        }        
+        }
+
 	}
 
 	// Fallback for annealing if nothing was given for the bases

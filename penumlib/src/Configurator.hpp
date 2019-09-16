@@ -84,6 +84,10 @@ public:
 	vector<int> ann_seeds_different_bases;
 	vector<int> ann_amax_different_bases;
 
+	// Debugging
+	bool output_success_base; // If on, then after finding a shortes vector, the corresponding reduce basis is written to file
+	string prereduced_base; // Read the given filename from disk and replace the matrix before enumeration
+
 private:
 	Configurator() {
 		dolll=true;
@@ -140,6 +144,10 @@ private:
 		ann_target_temp = 0.0000001;
         ann_cooling_rate = 0.999;
         ann_iterations = 10;
+
+        // Debugging
+        prereduced_base = "";
+        output_success_base = false;
 
 		// Setting max A's from the svpchallenge website
 		maxas[50] = 1881;

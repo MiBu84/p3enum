@@ -40,6 +40,8 @@ Pruning to_prune(const std::string& s);
 int readConfig(string path);
 int readPruning(string path);
 int readRandomLattice(NTL::mat_ZZ& B, std::string filepath);
+int writeNTLLatticeToFile(const NTL::mat_ZZ& B, std::string filepath);
+
 mat_RR GSO(const mat_ZZ& input, mat_RR& mu, vec_RR& c);
 mat_ZZ randomizeMatrix(const mat_ZZ A, const vec_ZZ randoms, const int dim, const int seed);
 void searchShortestSeedCandidates(int dim, int startseed, int endseed);

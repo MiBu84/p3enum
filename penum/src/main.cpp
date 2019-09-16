@@ -1088,6 +1088,21 @@ int main(int argc, char** argv)
             cout << "Setting ann_iterations parameter to " << ann_iterations << "." << endl;
             i++;  
         } 
+
+        if(input == "--prereduced_base") {
+             if(argc <= i+1) {
+                std::cerr << "Missing prereduced_base in argument. Terminating." << std::endl;
+            }
+
+            Configurator::getInstance().prereduced_base = string(argv[i+1]);
+            cout << "Will replace reduced base by: " << string(argv[i+1]) << "." << endl;
+            i++;
+        }
+
+        if(input == "--write_success") {
+        	Configurator::getInstance().output_success_base = true;
+        	cout << "Base with shortest vector will be outputted." << endl;
+        }
     }
 
     std::cout << "Delta: " << Configurator::getInstance().glob_delta << std::endl;
@@ -1134,7 +1149,6 @@ int main(int argc, char** argv)
     }
 
 	const int dim = B.NumCols();
-
 	pEnumeratorDouble pener = pEnumeratorDouble(dim);
 
 	vec_ZZ vec; vec.SetLength(B.NumRows() + 3);
