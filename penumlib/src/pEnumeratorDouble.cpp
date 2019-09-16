@@ -1148,7 +1148,6 @@ double pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(double** mu, dou
 				int ret = BurgerEnumerationCandidateSearch(mu, bstar,
 						startmin, NULL, jj, kk-serial_height, kk, dim, locnodecnt, Amin);
                         
-				//candidates_queue.checkDuplicates();
 				// Mark for all that there are no candidates and that no thread needs to do the search again
 				if(ret == 0) {
 					candidates_left = false;
@@ -1355,10 +1354,10 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 	long long xabssum = 0;
 	double y;
 
-	s = t = j;
+	s = t = k;
 
-	for (level = rel_len; level >= j; level--) {
-	//for (level = rel_len; level >= k; level--) {
+	//NEWfor (level = rel_len; level >= j; level--) {
+	for (level = rel_len; level >= k; level--) {
 		if (l[myid][level+1] > prunefunc_in[level+1] && level+1 > k) {
 			s = t = level + 1;
 			return std::numeric_limits<double>::max(); // A shorter vector has been found by another thread
@@ -1410,9 +1409,11 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 		r[myid][i + 1] = max_t + 1;
 	}
 
-
+	//cout << u << "@t:" << t << endl;
 
 	while(true) {
+
+
 		l[myid][t] = l[myid][ t + 1 ] + ( (u[t]) + c[myid][t] ) * ( (u[t]) + c[myid][t] ) * bstarnorm[t];
 
 		if(l[myid][t] < prunefunc_in[t]) {
