@@ -272,7 +272,7 @@ namespace EvenSimplex {
 	    if (diag!=0) {
 	        for (int i=1;i<=dim;i++) diag[i] = boost::lexical_cast<DFLOAT>(F[i][0]);
 	    }
-	    DFLOAT ret;
+	    DFLOAT ret=0;
 
 	    if ((option==opt_volume) || (option==opt_volume_prob)) {
 	        ret = boost::lexical_cast<DFLOAT>(F[dim][0]);

@@ -429,14 +429,12 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 			// If wished for debug, the first basis is replaced by an external reduced one
 			if(tid==0) {
 				if(Configurator::getInstance().prereduced_base != "") {
-					readRandomLattice(Bcands[0], Configurator::getInstance().prereduced_base);
+					//readRandomLattice(Bcands[0], Configurator::getInstance().prereduced_base);
 				}
 			}
 
 			// Now each thread processes the base it has reduced
 
-			// Now walk through all randomized bases and enumerate
-			procnum++;
 			// Calculate Gram-Schmidt
 			GSO(Bcands[tid], mu, bstar);
 
@@ -455,7 +453,7 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 			int dim = B.NumCols();
 
 			act_A_t = EnumDouble(p_mu, p_bstar, p_u, 0, dim-1, dim, act_A_t, 0);
-
+			procnum++;
 			NTL::Mat<long int> Bd; Bd.SetDims(B.NumRows(), B.NumCols());
 
 			for(int i = 0; i < B.NumRows(); i++) {
@@ -482,15 +480,21 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 				do_searching = 0;
 
 		    	if(Configurator::getInstance().output_success_base) {
-					auto t = std::time(nullptr);
-					auto tm = *std::localtime(&t);
-					std::ostringstream oss;
-					oss << std::put_time(&tm, "%d-%m-%Y %H-%M-%S");
-					auto str = oss.str();
+		    		string filename = "";
+		    		if(Configurator::getInstance().prereduced_base=="") {
+						auto t = std::time(nullptr);
+						auto tm = *std::localtime(&t);
+						std::ostringstream oss;
+						oss << std::put_time(&tm, "%d-%m-%Y %H-%M-%S");
+						auto str = oss.str();
 
-					string filename = "Dimension-" + std::to_string(dim) + "-A-" + to_string((long)(act_A))
-							+ "-" + str + ".txt";
-					writeNTLLatticeToFile(Bcands[tid], filename);
+						filename = "Dimension-" + std::to_string(dim) + "-A-" + to_string((long)(act_A))
+								+ "-" + str + ".txt";
+		    		}
+		    		else {
+		    			filename = Configurator::getInstance().prereduced_base;
+		    		}
+		    		writeNTLLatticeToFile(Bcands[tid], filename);
 		    	}
 
 				exit(5);
@@ -523,7 +527,7 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 			    			<< tend_oall - tstart_oall << " s (processed "
 							<< procnum << " bases)."
 			    			<< endl;
-			    	act_A = act_A_t;
+			    	act_A = -1;
 			}
 	    }
 		delete[] p_bstar;
@@ -596,6 +600,18 @@ double pEnumeratorDouble::solveSVP(mat_ZZ& B, vec_ZZ& vec) {
 	_conf = pruning_conf {Configurator::getInstance().enum_prune,
 		Configurator::getInstance().prune_param};
 	updatePruningFuncLoc(prunfunc.data(), _conf, act_A, dimen, 0, dimen-1);
+
+	if(Configurator::getInstance().do_annealing) {
+		AnnealInfo<long double> ainfo;
+		ainfo._number_of_random_bases = Configurator::getInstance().ann_bkz_instances;
+		ainfo._number_of_annealing_threads = Configurator::getInstance().ann_annealing_threads;
+		ainfo._number_of_parallel_reducing_threads = Configurator::getInstance().ann_parallel_reducing_threads;
+		ainfo._number_of_different_bases = Configurator::getInstance().ann_num_different_bases;
+		ainfo._time_per_node = Configurator::getInstance().ann_time_per_node; //4.145655e-8; //  3.082812277e-9
+
+		SimulatedAnnealer<long double> annealer = SimulatedAnnealer<long double>(ainfo);
+		annealer.anneal(B, prunfunc);
+	}
 
 #pragma omp parallel
 #pragma omp single
@@ -893,7 +909,7 @@ double pEnumeratorDouble::solveSVP(mat_ZZ& B, vec_ZZ& vec) {
 	    			<< tend_oall - tstart_oall << " s (processed "
 					<< procnum << " bases)."
 	    			<< endl;
-	    	return act_A;
+	    	return -1;
 
 		delete[] p_bstar;
 		delete[] p_u;
@@ -1100,9 +1116,19 @@ double pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(double** mu, dou
 	/*if(candidates_queue->checkForDuplicates())
 		cout << "Duplicates!!!" << endl;
 	else
-		cout << "No duplicates." << endl;
+		cout << "No duplicates." << endl;*/
 
-	candidates_queue->print();*/
+	//DBG
+	/*resetCandidateSearch();
+	candidates_queue->clear();
+	MB::MBVec<int> u_s; u_s.SetLength(dim+2);
+	u_s[79] = 1;
+	u_s[73] = -1;
+	u_s[72] = -1;
+	u_s[70] = -1;
+	u_s[69] = 1;
+	candidates_queue->push(u_s);
+	candidates_queue->print(kk-serial_height);*/
 
 
 	if(ret == 0) {
@@ -1144,7 +1170,7 @@ double pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(double** mu, dou
 			}
 }
 
-			if(do_candidate_search) {                   
+			if(do_candidate_search) {
 				int ret = BurgerEnumerationCandidateSearch(mu, bstar,
 						startmin, NULL, jj, kk-serial_height, kk, dim, locnodecnt, Amin);
                         
@@ -1184,15 +1210,24 @@ double pEnumeratorDouble::BurgerEnumerationDoubleParallelDriver(double** mu, dou
 
 					updatePruningFuncLoc(prunfunc.data(), _conf, Amin, kk-jj+1, jj, kk);
                     
-                    if(Configurator::getInstance().enum_prune == EXTREME) {
+                    if(Configurator::getInstance().enum_prune == EXTREME ||
+                    		Configurator::getInstance().enum_prune == EVENLINEAR) {
+
+                    	double enumtime_end = omp_get_wtime();
+                    	cout << "Fastest solution: " << enumtime_end - enumtime_start << " s." << endl;
+                        //cout << "Processed " << _cnt2 << " candidate-subtrees." << endl;
+                    	//cout << "Speed:  " << (double)(locnodeinit + locnodecnt) / (enumtime_end - enumtime_start) << " nodes/s ("
+                    	//		<< locnodeinit + locnodecnt << " nodes)." << endl;
                         early_out = true;
                     }
 				}
 			}
 
 
-			if((!candidates_left && !do_enumeration) || early_out)
+			if((!candidates_left && !do_enumeration) || early_out) {
+#pragma omp cancel parallel
 				break;
+			}
 
 		} // End main loop
 
@@ -1363,12 +1398,6 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 			return std::numeric_limits<double>::max(); // A shorter vector has been found by another thread
 		}
 
-		//DBG
-		/*if (l[myid][level+1] > prunefunc_in[level+1] && level+1 < k) {
-			s = t = level + 1;
-			break; // Stop at the level, where cost > A, because you have to change tree above
-		}*/
-
 		double ctmp = 0.0;
 		ctmp = muProdDouble(u.data(), mu, level, rel_len);
 		c[myid][level] = ctmp;
@@ -1385,7 +1414,17 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 		}
 	}
 
-	u[t] = (ceil(-c[myid][t] - 0.5));
+	// Prepare the highest entry which may be changed
+	u[t] = v[myid][t] = (optroundF(-c[myid][t] - 0.5));
+
+	Delta[myid][t] = 0;
+
+	if(u[t] > -c[myid][t]) {
+		delta[myid][t] = - 1;
+	}
+	else {
+		delta[myid][t] = 1;
+	}
 
 	// It is impossible that length is zero for non-zero vector
 	// To prevent finding zero vector, then set [1, 0, 0, ... 0]
@@ -1409,10 +1448,14 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 		r[myid][i + 1] = max_t + 1;
 	}
 
-	//cout << u << "@t:" << t << endl;
 
+	//cout << u << "@t:" << t << endl;
+	//int stop = 0;
+	//cin >> stop;
 	while(true) {
 
+		//if(t > 67)
+		//	cout << t << "\n";
 
 		l[myid][t] = l[myid][ t + 1 ] + ( (u[t]) + c[myid][t] ) * ( (u[t]) + c[myid][t] ) * bstarnorm[t];
 
@@ -1421,6 +1464,8 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 			if(t > j) {
 
 				t = t - 1;
+				//if(t==68)
+				//	cout << u[68] << "@t:" << t << " (above)" << endl;
 
 				r[myid][t] = std::max<int>(r[myid][t], r[myid][t+1]);
 
@@ -1455,13 +1500,16 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 				// When bound is not updated
 				t = t + 1;
 
+				//if(t==68)
+				//	cout << u[68] << "@t:" << t << " (below)" << endl;
+
 				if(t > k)
 					break;
 
 				r[myid][t] = t+1;
 				s = max(s,t);
 
-				//if (t < s)
+				//if (t < s) If ative: half
 					Delta[myid][t] = -Delta[myid][t];
 
 				if(Delta[myid][t] * delta[myid][t] >= 0)
@@ -1475,6 +1523,9 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 		else {
 			t = t + 1;
 
+			//if(t==68)
+			//	cout << u[68] << "@t:" << t << " (below)" << endl;
+
 			if(t > k)
 				break;
 			r[myid][t] = t+1;
@@ -1487,10 +1538,12 @@ double pEnumeratorDouble::BurgerEnumerationDoubleRemainder(double** mu, double* 
 				Delta[myid][t] += delta[myid][t];
 
 			u[t] = v[myid][t] + Delta[myid][t];
+			//if(t==68)
+			//	cout << "u[68]: " << u[68] << endl;
 		}
 
 	}
-
+	//cout << u << "@t (END):" << t << endl;
 	for(long i=j; i <= rel_len; i++) {
 		u[i] = umin[myid][i];
 	}

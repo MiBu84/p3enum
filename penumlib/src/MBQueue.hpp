@@ -9,7 +9,9 @@
 #define SRC_MBQUEUE2_HPP_
 
 #include <queue>
+#include <ostream>
 #include <iostream>
+#include <iomanip>
 #include "MBVec.hpp"
 
 using namespace std;
@@ -87,13 +89,20 @@ public:
 	}
 
 
-	void print() {
+	void print(int start=-1) {
 		cout << "Printing queue:" << endl;
 		int i = _read_pointer;
 		while(i != _write_pointer) {
 
 			if(i >= 0) {
-				cout << _data[i]  << endl;;
+				if(start==-1)
+					cout << _data[i]  << endl;
+				else {
+					for(unsigned int ii=start; ii<_data[i].length()-2; ii++) {
+						cout << "["<<ii<<"]" << setw(4) << setfill(' ') << _data[i][ii] << " ";
+					}
+					cout << endl;
+				}
 			}
 			i=(i+1) % _size;
 		}

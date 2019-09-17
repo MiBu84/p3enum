@@ -1025,6 +1025,27 @@ int main(int argc, char** argv)
             i++;
         }
 
+        if(input == "--trials") {
+            if(argc <= i+1) {
+                std::cerr << "Missing trials in argument. Terminating." << std::endl;
+                exit(-1);
+            }
+
+            Configurator::getInstance().trials = atoi(argv[i+1]);
+            cout << "Trials is " << Configurator::getInstance().trials << endl;
+            i++;
+        }
+
+        if(input == "--BKZinstances") {
+            if(argc <= i+1) {
+                std::cerr << "Missing trials in BKZinstances. Terminating." << std::endl;
+                exit(-1);
+            }
+
+            Configurator::getInstance().BKZinstances = atoi(argv[i+1]);
+            i++;
+        }
+
         if(input == "--mbenum") {
             Configurator::getInstance().use_ntl_enum = false;
         }
@@ -1152,17 +1173,22 @@ int main(int argc, char** argv)
 	pEnumeratorDouble pener = pEnumeratorDouble(dim);
 
 	vec_ZZ vec; vec.SetLength(B.NumRows() + 3);
+	double retA = 0.0;
 
 	 // Reduce n-bases in parallel, enumerate one base after the other with m threads
 	if (Configurator::getInstance().par_threshold < dim) {
-		pener.solveSVP(B,vec);
+		retA = pener.solveSVP(B,vec);
 	}
 
 
 	// reduce n-bases in parallel and enumerate in parallel with one thread for each
 	else {
-		pener.solveSVPMP(B,vec);
+		retA = pener.solveSVPMP(B,vec);
 	}
 
+	if(retA <= 0.0)
+		return NO_VECTOR_FOUND;
+
+	cout << "Aret: " << retA << endl;
    return 0;
 }

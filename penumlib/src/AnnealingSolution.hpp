@@ -602,22 +602,36 @@ public:
 
 			_succ_prob[i] = _probs[i][_dim];
 
-			// We do _number_of_random_bases of shots in parallel an only at least 1 has to hit
-			FT1 prob_one_shot = _succ_prob[i] ;//FT1(1) - pow(FT1(1)-_succ_prob[i], FT1(_ainfo._number_of_instances));
-			//FT1 prob_thread_shots =  FT1(1) - pow((FT1(1) - prob_one_shot), _ainfo._number_of_parallel_reducing_threads);
+			// If each thread enumerates for itself
+			bool parstrat_instance = (Configurator::getInstance().par_threshold > _dim);
+			if (parstrat_instance) {
+				FT1 prob_one_shot = _succ_prob[i];
+				FT1 prob_thread_shots =  FT1(1) - pow((FT1(1) - prob_one_shot), _ainfo._number_of_parallel_reducing_threads);
 
-			//cout << prob_one_shot << " vs. " << prob_thread_shots << endl;
+				// Like in the paper of Gama et al.
+				//_base_costs[i]= (_t_reduction[i] + _t_enums[i]) / prob_thread_shots;
 
-			// Like in the paper of Gama et al.
-			//_base_costs[i]= (_t_reduction[i] + _t_enums[i]) / prob_thread_shots;
+				// With Bernoulli and 0.99 chance as average
+				_base_costs[i] = (log(FT1(0.0001)) / (log(FT1(1.0) - prob_thread_shots))) * (_t_reduction[i] + _t_enums[i]);
 
-			// With Bernoulli and 0.99 chance as average
-			_base_costs[i] = (log(FT1(0.0001)) / (log(FT1(1.0) - prob_one_shot))) * (_t_reduction[i] + _t_enums[i]);
+			}
+
+			// n-parallel BKZs and then parallelized enumerations one after the other
+			else {
+				// How many trials do we expect?
+				int expec_trials = (log(FT1(0.0001)) / (log(FT1(1.0) - _succ_prob[i])));
+
+				// Since several BKZ can be done in parallel, less calls compared to enumeration will be required
+				int expec_bkzs = expec_trials / _ainfo._number_of_parallel_reducing_threads;
+				_base_costs[i] = expec_bkzs * _t_reduction[i] + expec_trials * _t_enums[i];
+
+				//cout << "Expected Enums: " << expec_trials << " / expected BKZs: " << expec_bkzs
+				//		<< " / expected time: " << _base_costs[i] << "s." << endl;
+			}
 
 			_costs += _base_costs[i];
 		}
 		_costs /= FT1(_ainfo._number_of_random_bases);
-		//cout << "Bases: " << _ainfo._number_of_random_bases << endl;
 		_costs_calculated = true;
 		_costs = round( _costs * 1000.0) / 1000.0;
 		return this->_costs;

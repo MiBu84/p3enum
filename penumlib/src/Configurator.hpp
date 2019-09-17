@@ -16,6 +16,9 @@
 
 #include "pruningfunc.hpp"
 
+// Error Codes
+#define NO_VECTOR_FOUND 1
+
 class Configurator {
 public:
 	static Configurator& getInstance()
