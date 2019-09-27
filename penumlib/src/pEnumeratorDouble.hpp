@@ -95,6 +95,10 @@ private:
 	double* cand_l; // actual costs
 	double* cand_c; // centers of all levels in tree
 
+	// Cache optimization
+	int* cand_r;
+	double** cand_sigma;
+
 	// To decide the zigzag pattern
 	int* cand_Delta; // sign
 	int* cand_delta; // offset

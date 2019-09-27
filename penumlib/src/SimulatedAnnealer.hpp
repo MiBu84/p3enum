@@ -73,7 +73,7 @@ public:
 
 	}
 
-	void anneal(const mat_ZZ& Bi, MBVec<double>& pruningfuction) {
+	void anneal(const mat_ZZ& Bi) {
 		BKZBenchmarker<FT> benchi = BKZBenchmarker<FT>(_ainfo);
 		mat_ZZ B = Bi;
 		int dim = B.NumCols();
@@ -81,7 +81,7 @@ public:
 
 		// Start with an EvenLinear function
 		//Todo: Unfify both loops to one
-		MBVec<double> loc_prunfunc =  pruningfuction;
+		MBVec<double> loc_prunfunc = MBVec<double>(dim);
 		for(int i=0; i<=dim-1; i++) {
 			int multiplier = (i+2) / 2;
 			loc_prunfunc[dim-1-i] = 1.0 * double(multiplier)/double(dim/2);

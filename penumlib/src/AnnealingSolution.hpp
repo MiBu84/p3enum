@@ -610,9 +610,11 @@ public:
 
 				// Like in the paper of Gama et al.
 				//_base_costs[i]= (_t_reduction[i] + _t_enums[i]) / prob_thread_shots;
+				//_base_costs[i]= (_t_reduction[i] + _t_enums[i]) / _succ_prob[i];
 
 				// With Bernoulli and 0.99 chance as average
 				_base_costs[i] = (log(FT1(0.0001)) / (log(FT1(1.0) - prob_thread_shots))) * (_t_reduction[i] + _t_enums[i]);
+				//cout << "Arsch" << endl;
 
 			}
 
@@ -625,8 +627,9 @@ public:
 				int expec_bkzs = expec_trials / _ainfo._number_of_parallel_reducing_threads;
 				_base_costs[i] = expec_bkzs * _t_reduction[i] + expec_trials * _t_enums[i];
 
-				//cout << "Expected Enums: " << expec_trials << " / expected BKZs: " << expec_bkzs
-				//		<< " / expected time: " << _base_costs[i] << "s." << endl;
+				// DBG
+				//_base_costs[i] = (_t_reduction[i] + _t_enums[i]) / _succ_prob[i];
+				//cout << "Sack" << endl;
 			}
 
 			_costs += _base_costs[i];

@@ -50,6 +50,8 @@ pEnumeratorDouble::pEnumeratorDouble() {
 	cand_delta=NULL; // offset
 	cand_s = -1; // highest non-zero entry
 	cand_t = -1; // actual visited level in tree
+	cand_r = NULL;
+	cand_sigma = NULL;
 
 
 	umin = NULL;
@@ -88,6 +90,19 @@ pEnumeratorDouble::pEnumeratorDouble(int dim) {
 	cand_delta=new int[dim + 3]; // offset
 	cand_s = 0; // highest non-zero entry
 	cand_t = 0; // actual visited level in tree
+
+	cand_r = new int[dim + 3];
+	cand_sigma = new double*[dim + 3];
+	for(int i=0; i<dim+3; i++) {
+		cand_sigma[i] = new double[dim+3];
+	}
+
+	for(int i=0; i< _dim + 3; i++) {
+		cand_r[i] = i;
+		for(int j=0; j < _dim + 3; j++) {
+			cand_sigma[i][j] = 0.0;
+		}
+	}
 
 	//candidates_queue = MBVecQueue2<double>(Configurator::getInstance().cand_queue_size);
 	candidates_queue = new MBVecQueue3<int>(Configurator::getInstance().cand_queue_size);// storage for the candidates for SVs
@@ -205,6 +220,19 @@ pEnumeratorDouble::~pEnumeratorDouble() {
 
 
 double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
+	// Annealing mode was chosen
+	if(Configurator::getInstance().do_annealing) {
+		AnnealInfo<long double> ainfo;
+		ainfo._number_of_random_bases = Configurator::getInstance().ann_bkz_instances;
+		ainfo._number_of_annealing_threads = Configurator::getInstance().ann_annealing_threads;
+		ainfo._number_of_parallel_reducing_threads = Configurator::getInstance().ann_parallel_reducing_threads;
+		ainfo._number_of_different_bases = Configurator::getInstance().ann_num_different_bases;
+		ainfo._time_per_node = Configurator::getInstance().ann_time_per_node; //4.145655e-8; //  3.082812277e-9
+
+		SimulatedAnnealer<long double> annealer = SimulatedAnnealer<long double>(ainfo);
+		annealer.anneal(B);
+	}
+
 		// Use external pruning functions
 		if (Configurator::getInstance().ext_pruning_function_file.compare("NOT") != 0) {
 			cout << "Reading pruning function from " << Configurator::getInstance().ext_pruning_function_file << endl;
@@ -245,18 +273,6 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
     	_conf = pruning_conf {Configurator::getInstance().enum_prune,
     		Configurator::getInstance().prune_param};
     	updatePruningFuncLoc(prunfunc.data(), _conf, act_A, dimen, 0, dimen-1);
-
-		if(Configurator::getInstance().do_annealing) {
-			AnnealInfo<long double> ainfo;
-			ainfo._number_of_random_bases = Configurator::getInstance().ann_bkz_instances;
-			ainfo._number_of_annealing_threads = Configurator::getInstance().ann_annealing_threads;
-			ainfo._number_of_parallel_reducing_threads = Configurator::getInstance().ann_parallel_reducing_threads;
-			ainfo._number_of_different_bases = Configurator::getInstance().ann_num_different_bases;
-			ainfo._time_per_node = Configurator::getInstance().ann_time_per_node; //4.145655e-8; //  3.082812277e-9
-
-			SimulatedAnnealer<long double> annealer = SimulatedAnnealer<long double>(ainfo);
-			annealer.anneal(B, prunfunc);
-		}
 
 #pragma omp parallel
 #pragma omp single
@@ -544,6 +560,19 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 
 
 double pEnumeratorDouble::solveSVP(mat_ZZ& B, vec_ZZ& vec) {
+	// Annealing mode was chosen
+	if(Configurator::getInstance().do_annealing) {
+		AnnealInfo<long double> ainfo;
+		ainfo._number_of_random_bases = Configurator::getInstance().ann_bkz_instances;
+		ainfo._number_of_annealing_threads = Configurator::getInstance().ann_annealing_threads;
+		ainfo._number_of_parallel_reducing_threads = Configurator::getInstance().ann_parallel_reducing_threads;
+		ainfo._number_of_different_bases = Configurator::getInstance().ann_num_different_bases;
+		ainfo._time_per_node = Configurator::getInstance().ann_time_per_node; //4.145655e-8; //  3.082812277e-9
+
+		SimulatedAnnealer<long double> annealer = SimulatedAnnealer<long double>(ainfo);
+		annealer.anneal(B);
+	}
+
 	// Experimental use of fpllls strategizer functions
 	if (Configurator::getInstance().ext_pruning_function_file.compare("NOT") != 0) {
 		cout << "Reading pruning function from " << Configurator::getInstance().ext_pruning_function_file << endl;
@@ -600,18 +629,6 @@ double pEnumeratorDouble::solveSVP(mat_ZZ& B, vec_ZZ& vec) {
 	_conf = pruning_conf {Configurator::getInstance().enum_prune,
 		Configurator::getInstance().prune_param};
 	updatePruningFuncLoc(prunfunc.data(), _conf, act_A, dimen, 0, dimen-1);
-
-	if(Configurator::getInstance().do_annealing) {
-		AnnealInfo<long double> ainfo;
-		ainfo._number_of_random_bases = Configurator::getInstance().ann_bkz_instances;
-		ainfo._number_of_annealing_threads = Configurator::getInstance().ann_annealing_threads;
-		ainfo._number_of_parallel_reducing_threads = Configurator::getInstance().ann_parallel_reducing_threads;
-		ainfo._number_of_different_bases = Configurator::getInstance().ann_num_different_bases;
-		ainfo._time_per_node = Configurator::getInstance().ann_time_per_node; //4.145655e-8; //  3.082812277e-9
-
-		SimulatedAnnealer<long double> annealer = SimulatedAnnealer<long double>(ainfo);
-		annealer.anneal(B, prunfunc);
-	}
 
 #pragma omp parallel
 #pragma omp single
@@ -1267,7 +1284,7 @@ int pEnumeratorDouble::BurgerEnumerationCandidateSearch(double** mu, double* bst
 		long long& locnodecnt,
 		double Ain) {
 
-	while (cand_t <= k) {
+	while (/*cand_t <= k*/true) {
 			cand_l[cand_t] = cand_l[ cand_t + 1 ] +
 					( (u[cand_t]) + cand_c[cand_t] ) * ( (u[cand_t]) + cand_c[cand_t] ) * bstarnorm[cand_t];
 
@@ -1276,9 +1293,29 @@ int pEnumeratorDouble::BurgerEnumerationCandidateSearch(double** mu, double* bst
 				if(cand_t > j) {
 					cand_t = cand_t - 1;
 
+					cand_r[cand_t] = std::max<int>(cand_r[cand_t], cand_r[cand_t+1]);
+
+					for(int j = cand_r[cand_t+1]; j > cand_t + 1; j--) {
+						cand_sigma[cand_t][j-1] = cand_sigma[cand_t][j] + u[j-1] * mu[j-1][cand_t];
+					}
+					cand_r[cand_t+1] = cand_t + 1;
+
+					cand_c[cand_t] = cand_sigma[cand_t][cand_t+1];
+
 					// Old: Recalculate everything
-					cand_c[cand_t] = muProdDouble(u.data(), mu, cand_t, k);
+					//cand_c[cand_t] = muProdDouble(u.data(), mu, cand_t, k);
+
 					u[cand_t] = cand_v[cand_t] = (optroundF(-cand_c[cand_t] - 0.5));
+
+					/*if(abs(cand_sigma[cand_t][cand_t+1] - cand_c[cand_t]) < 1e-5) {
+						cout << "Check" << endl;
+					}
+
+					else {
+						cout << "cand_t: " << cand_t << endl;
+						cout << cand_c[cand_t] << " vs. " << cand_sigma[cand_t][cand_t+1] << endl;
+						exit(-1);
+					}*/
 
 					// For ZigZag
 					cand_Delta[cand_t] = 0;
@@ -1306,11 +1343,16 @@ int pEnumeratorDouble::BurgerEnumerationCandidateSearch(double** mu, double* bst
 						return 1;
 					}
 
-
 					// Avoid visiting short vector twice
 					// When bound is not updated
 
 					cand_t = cand_t + 1;
+
+					if(cand_t > k) {
+						return 0;
+					}
+
+					cand_r[cand_t] = cand_t+1;
 
 					cand_s = max(cand_s,cand_t);
 					if (cand_t < cand_s) // If active: Half
@@ -1327,6 +1369,12 @@ int pEnumeratorDouble::BurgerEnumerationCandidateSearch(double** mu, double* bst
 
 			else {
 				cand_t = cand_t + 1;
+
+				if(cand_t > k) {
+					return 0;
+				}
+
+				cand_r[cand_t] = cand_t+1;
 
 				cand_s = max(cand_s,cand_t);
 
