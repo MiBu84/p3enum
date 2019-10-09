@@ -13,6 +13,8 @@
 #include "BKZBenchmarker.hpp"
 #include "extremePruningFunction.hpp"
 #include <limits>
+#include <boost/algorithm/string/classification.hpp> // Include boost::for is_any_of
+#include <boost/algorithm/string/split.hpp>
 
 using namespace std;
 
@@ -288,6 +290,137 @@ public:
 	~AnnealingSolution() {
 	}
 
+	int readSolutionFromFile(string filepath, const int dim, const int bkz_entry) {
+		//cout << "Called Reader from " << bkz_entry << endl;
+		std::string locpath = filepath;
+		std::ifstream file(locpath.c_str());
+
+		if (!file)
+		{
+		    cerr << "No valid pruningfile to continue from found " << locpath << endl;
+		    return 11001;
+		}
+
+		std::string   line;
+
+		string str1="PreBeta:";
+		string str2="final";
+
+		int entrycount = 0;
+		int act_prun_entry = -1;
+		int mode = -1;
+
+		while(std::getline(file, line))
+		{
+			//cout << line << endl;
+			std::vector<std::string> words;
+			boost::split(words, line, boost::is_any_of(", "), boost::token_compress_on);
+
+			if(words.size() == 0)	continue;
+
+			// The last solution was processed, now only the best solution follows
+			if(words.size() > 1) {
+				if(str2.compare(words[1]) == 0) {
+						break;
+					}
+			}
+
+			if (str1.compare(words[0]) == 0) {
+				mode = 1;
+			}
+
+			// Check if this is the entry, we are interested in
+			// If not, skip to next entry
+			if(mode==1 && entrycount != bkz_entry) {
+				mode = -1;
+				entrycount++;
+			}
+
+			// Check betas for correctness
+			if(mode==1) {
+				cout << "I found a solution for instance number " << entrycount << endl;
+				if(words.size() != 5) {
+					cerr << "Configfile Beta-line invalid" << endl;
+					return 11002;
+				}
+
+				int prebeta = (int) std::stoi(words[1]);
+				int beta = (int) std::stoi(words[4]);
+
+				if(prebeta != this->_bkz_info.betas.first || beta != this->_bkz_info.betas.second) {
+					cerr << "Betas differ: " << prebeta << " / " << this->_bkz_info.betas.first
+							<< " ; " << beta << " / " << this->_bkz_info.betas.second << endl;
+					return 11003;
+				}
+				mode = 2;
+			}
+			// The next line gives the BKZ Times, should be read from the BKZ Benchmarker
+			else if (mode == 2) {
+				//cout << words[0] << " " << words[1] << endl;
+				mode = 3;
+			}
+
+			// The next line gives the number of nodes, should be recalculated below
+			else if (mode == 3) {
+				//cout << words[0] << " " << words[1] << endl;
+				mode = 4;
+			}
+
+			// The next line gives the time of ENUM, should be recalculated below
+			else if (mode == 4) {
+				//cout << words[0] << " " << words[1] << endl;
+				mode = 5;
+			}
+
+			// The next line gives the success probs, should be recalculated below
+			else if (mode == 5) {
+				//cout << words[0] << " " << words[1] << endl;
+				mode = 6;
+			}
+
+			// The next line gives the total costs, should be recalculated below
+			else if (mode == 6) {
+				//cout << words[0] << " " << words[1] << endl;
+				mode = 7;
+				this->_prun_func.clear();
+				this->_prun_func.reserve(dim);
+				this->_prun_func.resize(dim);
+				act_prun_entry = dim - 1;
+			}
+
+			// Now the actual pruning function starts
+			else if (mode==7) {
+				if(words.size() != 1) {
+					cerr << "Error in prunfunc in file" << endl;
+					return 11004;
+				}
+				this->_prun_func[act_prun_entry] = (FT1)std::atof(words[0].c_str());
+				//cout << words[0].c_str() << endl;
+				act_prun_entry--;
+
+				if(act_prun_entry < 0) {
+					mode=8;
+				}
+			}
+
+			else if (mode==8) {
+				for (auto it = _probs_initialized.begin(); it != _probs_initialized.end(); ++it) {
+					*it = false;
+				}
+
+				this->calculateCosts();
+				cout << "Costs are now: " << this->getCost()
+						<< " before: " << words[2] <<
+						endl;
+				mode = -1;
+				entrycount++;
+			}
+		}
+
+		return 0;
+
+	}
+
 	void printSolutionToSStream(stringstream& ss)
 	{
 		ss << "PreBeta: " << this->_bkz_info.betas.first << " / " << "Beta: " << this->_bkz_info.betas.second << endl;
@@ -326,6 +459,8 @@ public:
 		for(auto it=_prun_func.rbegin(); it != _prun_func.rend(); ++it) {
 			ss << *it << endl;
 		}
+
+		ss << "Overall cost: " << _costs << endl;
 	}
 
 	void printSolution() {
@@ -388,21 +523,21 @@ public:
         
 		if(no >= length) {
 			unsigned int middle = (int)floor(the_map.size()/2.0);
-            
+			// Uneven
             if(length%2 != 0) {
-                if(ass_num == middle) {
-                    // Do nothing because mapping already correct
+                if(ass_num == 0) {
+                	ass_num = middle;
                 }
                 
-                else if(ass_num%2 != 0) {
-                    ass_num = middle - (int)(ceil(ass_num / 2.0));
+                else if(ass_num % 2 != 0) {
+                    ass_num = middle - (ass_num+1) / 2;
                 }
                 
                 else  {
-                    ass_num = middle + (int)(ceil(ass_num / 2.0));
+                    ass_num = middle + ass_num/2;
                 }
             }
-            
+
             // even length
             else {
                 cerr << "Assigment of threads to even number of beta-configs not implemented yet!" << endl;
@@ -417,8 +552,6 @@ public:
 		}
 
 		this->_bkz_info = it->second;
-        //#pragma omp critical
-        //cout << "Assiging " << _bkz_info.betas.second << " to " << no << " with ass_num " << ass_num  << endl << std::flush;
 
 		// If beta changed, the costs also changed
 		this->calculateCosts();
@@ -607,14 +740,17 @@ public:
 			if (parstrat_instance) {
 				FT1 prob_one_shot = _succ_prob[i];
 				FT1 prob_thread_shots =  FT1(1) - pow((FT1(1) - prob_one_shot), _ainfo._number_of_parallel_reducing_threads);
+				
+				// New trial including parallelism
+				// How many rounds do we expect in average?
+				int expec_rounds = std::max<int>((int)((log(FT1(0.01)) / (log(FT1(1.0) - prob_thread_shots)))),1);
+				_base_costs[i] = ((_t_reduction[i] + _t_enums[i]) * (double)expec_rounds);
 
 				// Like in the paper of Gama et al.
 				//_base_costs[i]= (_t_reduction[i] + _t_enums[i]) / prob_thread_shots;
-				//_base_costs[i]= (_t_reduction[i] + _t_enums[i]) / _succ_prob[i];
 
 				// With Bernoulli and 0.99 chance as average
-				_base_costs[i] = (log(FT1(0.0001)) / (log(FT1(1.0) - prob_thread_shots))) * (_t_reduction[i] + _t_enums[i]);
-				//cout << "Arsch" << endl;
+				//_base_costs[i] = (log(FT1(0.0001)) / (log(FT1(1.0) - prob_thread_shots))) * (_t_reduction[i] + _t_enums[i]);
 
 			}
 
@@ -627,9 +763,8 @@ public:
 				int expec_bkzs = expec_trials / _ainfo._number_of_parallel_reducing_threads;
 				_base_costs[i] = expec_bkzs * _t_reduction[i] + expec_trials * _t_enums[i];
 
-				// DBG
-				//_base_costs[i] = (_t_reduction[i] + _t_enums[i]) / _succ_prob[i];
-				//cout << "Sack" << endl;
+				//cout << "Expected Enums: " << expec_trials << " / expected BKZs: " << expec_bkzs
+				//		<< " / expected time: " << _base_costs[i] << "s." << endl;
 			}
 
 			_costs += _base_costs[i];
@@ -659,10 +794,10 @@ public:
 
 		int change_dim = dist_dim(engine);
 		// Select percentage if change Range [-1.0%, ..., +1.0%]
-		std::uniform_real_distribution<double> dist_val(-0.01, 0.01);
+		std::uniform_real_distribution<double> dist_val(-0.1, 0.1);
 		double perci = dist_val(engine);
 
-		while(abs(perci) < 10e-5 || (perci < 0 && change_dim==0)) {
+		while(abs(perci) < 2e-2 || (perci < 0 && change_dim==0)) {
 			perci = dist_val(engine);
 		}
 
@@ -737,6 +872,10 @@ public:
 
 
 		return 0;
+	}
+
+	BetaPair& getBetaPair() {
+		return this->_bkz_info.betas;
 	}
 
 protected:

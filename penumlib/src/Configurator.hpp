@@ -80,9 +80,11 @@ public:
 	double ann_time_per_node;
 	int ann_num_different_bases;
 	
+	double ann_start_temp;
 	double ann_target_temp;
     double ann_cooling_rate;
     int ann_iterations;
+    string ann_old_result;
 	
 	vector<int> ann_seeds_different_bases;
 	vector<int> ann_amax_different_bases;
@@ -115,6 +117,7 @@ private:
 		prune_param = 0.00;
 		Amax = numeric_limits<double>::max();
 		trials = 40; // Following Paper of Schneider and Dagdalen this garantuees success of 99%
+
         
         #pragma omp parallel
         #pragma omp single
@@ -144,9 +147,11 @@ private:
 		ann_time_per_node = 4.0e-8;
 		ann_num_different_bases = 1;
 		
+		ann_start_temp = -1.0;
 		ann_target_temp = 0.0000001;
         ann_cooling_rate = 0.999;
         ann_iterations = 10;
+        ann_old_result="";
 
         // Debugging
         prereduced_base = "";

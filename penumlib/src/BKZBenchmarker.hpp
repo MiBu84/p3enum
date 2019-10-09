@@ -149,7 +149,7 @@ public:
 		_dim = B_in.NumCols();
 
 		mat_ZZ  B_read = B_in;
-		// Normally not the first attemp hits, so nearly all work is performed un randomized bases
+		// Normally not the first attemp hits, so nearly all work is performed on randomized bases
 		Bs.push_back(randomizeMatrix(B_read, randint, _dim, 0));
 
 		// Create a bunch of randomized matrices to cover a broader range in analysis

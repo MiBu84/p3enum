@@ -1075,6 +1075,17 @@ int main(int argc, char** argv)
         }
 		
 		        // For Annealing Function generator
+        if(input == "--ann_start_temp") {
+            if(argc <= i) {
+                std::cerr << "Missing ann_start_temp in argument. Terminating." << std::endl;
+                exit(-1);
+            }
+
+            double ann_start_temp = atof(argv[i+1]);
+            Configurator::getInstance().ann_start_temp = ann_start_temp;
+            i++;
+        }
+
         if(input == "--ann_target_temp") {
             if(argc <= i) {
                 std::cerr << "Missing ann_target_temp in argument. Terminating." << std::endl;
@@ -1108,7 +1119,17 @@ int main(int argc, char** argv)
             Configurator::getInstance().ann_iterations = ann_iterations;
             cout << "Setting ann_iterations parameter to " << ann_iterations << "." << endl;
             i++;  
-        } 
+        }
+
+        if(input == "--ann_old_result") {
+            if(argc <= i) {
+                std::cerr << "Missing old pruning result in argument. Terminating." << std::endl;
+                exit(-1);
+            }
+
+            Configurator::getInstance().ann_old_result = std::string(argv[i+1]);
+            i++;
+        }
 
         if(input == "--prereduced_base") {
              if(argc <= i+1) {

@@ -41,7 +41,8 @@ public:
 	}
 
 	int writeTempResultToFile(std::string ident, AnnealingSolution<FT>* sol_per_thread,
-			const int numthreads, const int step) {
+			const int number_of_bkz_types, const int steps, const double algstart) {
+		stringstream ss;
 		std::string fname = "anneal-log-";
 		fname.append(ident);
 		fname.append(".txt");
@@ -52,25 +53,28 @@ public:
 
 		FT mincost = FT(std::numeric_limits<long double>::max());
 		int idx = -1;
-		for(int i=0; i<numthreads;i++) {
+		for(int i=0; i<number_of_bkz_types;i++) {
 			if(sol_per_thread[i].getCost() < mincost) {
 				mincost = sol_per_thread[i].getCost();
 				idx = i;
 			}
 		}
 
-		stringstream ss;
+		ss << "Time for Annealing: " << omp_get_wtime() - algstart << " s." << endl;
+		ss << "All solutions: " << endl;
+		for(int i=0; i<number_of_bkz_types;i++) {
+			sol_per_thread[i].printSolutionToSStream(ss);
+		}
 
-		ss << "Found final Solution of thread " << idx <<": " << endl;
+		ss << "Found final best Solution of thread " << idx <<": " << endl;
 		sol_per_thread[idx].printSolutionToSStream(ss);
 		ss << "Final costs: " << mincost << endl;
-		ss << "In " << step << " steps." << endl;
+		ss << "After " << steps << " steps." << endl;
 
 		myfile << ss.str();
 		myfile.close();
 
 		return 0;
-
 	}
 
 	void anneal(const mat_ZZ& Bi) {
@@ -80,7 +84,6 @@ public:
 		vector<double> cost_prot;
 
 		// Start with an EvenLinear function
-		//Todo: Unfify both loops to one
 		MBVec<double> loc_prunfunc = MBVec<double>(dim);
 		for(int i=0; i<=dim-1; i++) {
 			int multiplier = (i+2) / 2;
@@ -91,7 +94,7 @@ public:
 		for(int i=0; i<dim; i++) {
 			FT tmp = ((FT)(loc_prunfunc.data()[dim-i-1]));
 			circ.push_back(tmp);
-			cout << tmp << endl;
+			//cout << tmp << endl;
 		}
 
 		BetaConfig binfo {Configurator::getInstance().ann_prebeta_start,
@@ -104,15 +107,12 @@ public:
 		// If there are more threads than BKZ-Configs, some threads will do the same Conig
 		const unsigned int number_of_bkz_types = std::max(benchi.size(), (unsigned int)numthreads);
 
-
 		AnnealingSolution<FT>* sol_per_thread = new AnnealingSolution<FT>[number_of_bkz_types];
 		vector<double >T_init;
 		T_init.reserve(number_of_bkz_types); T_init.resize(number_of_bkz_types);
 
 		const long long numits = Configurator::getInstance().ann_iterations;
-		const int init_sample_size = 1000;
-
-		AnnealingSolution<FT> starting_sol = AnnealingSolution<FT>(&benchi, circ, _ainfo);
+		const int init_sample_size = 100;
 
 		double T_target = Configurator::getInstance().ann_target_temp;
 		double cooling_rate = Configurator::getInstance().ann_cooling_rate;
@@ -123,6 +123,7 @@ public:
         
 		long numcalcs;
 
+		// Create a filename for the output file
 		auto t = std::time(nullptr);
 		auto tm = *std::localtime(&t);
 		std::stringstream ss;
@@ -133,24 +134,48 @@ public:
 		unsigned long long steps = 0;
 
 		boost::progress_display show_progress(1);
+
 #pragma omp parallel num_threads (numthreads)
 {
 		int tid = omp_get_thread_num();
+		AnnealingSolution<FT> starting_sol = AnnealingSolution<FT>(&benchi, circ, _ainfo);
 		AnnealingSolution<FT> act_sol;
 		double t_temp_init_start=0;
 		double t_temp_init_end=0;
 
 #pragma omp for
 		for(unsigned int ci = 0; ci < number_of_bkz_types; ci++) {
+
+			// Each type is overwritten by the file
+#pragma omp critical
+			if(Configurator::getInstance().ann_old_result.length() > 0) {
+				if(starting_sol.readSolutionFromFile(Configurator::getInstance().ann_old_result, dim, ci)!=0) {
+					starting_sol = AnnealingSolution<FT>(&benchi, circ, _ainfo);
+				}
+			}
+
 			// Every thread should start from the same point in a first trial
 			act_sol = starting_sol;
+
 			// Distribute the BKZ-Config around initial starting depending on thread's iteration
 			act_sol.setToNumberedBetaPair(ci);
 			// From here on temperature can be calculated
 			t_temp_init_start = omp_get_wtime();
-			T_init[ci] = calculateStartingTemperature(act_sol, init_sample_size);
+			FT calc_start_temp = calculateStartingTemperature(act_sol, init_sample_size);
 			t_temp_init_end = omp_get_wtime();
-			cout << "T_init[" << ci << "]" << endl << std::flush;
+
+			if(Configurator::getInstance().ann_target_temp >= 0.0) {
+				T_init[ci] = 1.0;
+			}
+			else if (Configurator::getInstance().ann_target_temp == 2.0) {
+				T_init[ci] = calc_start_temp;
+			}
+			else {
+				T_init[ci] = Configurator::getInstance().ann_target_temp;
+			}
+
+			//cout << "T_init[" << ci << "]" << endl
+			//		<< std::flush;
 		}
 
 		// Find the largest temp since it determines the highest runtime
@@ -171,6 +196,11 @@ public:
 			act_sol = starting_sol;
 			act_sol.setToNumberedBetaPair(ci);
 
+			/*cout << "Thread " << tid << " works on " << "(" << act_sol.getBetaPair().first
+					<< "," << act_sol.getBetaPair().second << ")"
+					<< " and ci: " << ci
+					<< endl << std::flush;*/
+
 			AnnealingSolution<FT> act_sol_back = act_sol;
 			AnnealingSolution<FT> min_sol_thread = act_sol; // absolute minimal solution of thread
 			sol_per_thread[ci] = min_sol_thread;
@@ -181,13 +211,20 @@ public:
 			std::uniform_real_distribution<double> distreal(0.0, 1.0);
 			int breakcount = 0;
 
+			long long mysteps = 0;
+			long long steps_with_positive_change = 0;
+			long long steps_with_negative_change = 0;
+
 			while (T > T_target && breakcount < 1000 * numits) {
 				for (int i = 0; i < numits; i++) {
+					mysteps++;
 					// This version of anneal always keeps its beta-config
 					act_sol.modifyToNeighborSolution(false);
+
 					// Accept solution since it is better
 					if (act_sol.getCost() <= act_sol_back.getCost()) {
 						act_sol_back = act_sol;
+						steps_with_positive_change++;
 
 						// No absolut minimum for thread
 						if (act_sol.getCost() < min_sol_thread.getCost()) {
@@ -206,14 +243,14 @@ public:
 						FT prob = exp(-(act_sol.getCost() - act_sol_back.getCost()) / T);
 						FT accept_prob = FT(distreal(rng));
 
+						/*cout << "Prob: " << prob << " and accept prob: " << accept_prob
+								<< "@ (T: " << T << ") , "
+								<< "(" << act_sol.getCost() << "), "
+								<< "(" << act_sol_back.getCost() << ")"
+								<< endl;*/
+
 						if (accept_prob < prob) {
-
-							/*cout << "Prob: " << prob << " and accept prob: " << accept_prob
-									<< "@ (T: " << T << ") , "
-									<< "(" << act_sol.getCost() << "), "
-									<< "(" << act_sol_back.getCost() << ")"
-									<< endl;*/
-
+							steps_with_negative_change++;
 							act_sol_back = act_sol;
 							breakcount=0;
 							if(tid==0)
@@ -235,6 +272,9 @@ public:
 				T = T * cooling_rate;
 			}
 			sol_per_thread[tid] = min_sol_thread;
+			cout << "This run with: " << mysteps << "(Positive: "
+					<< steps_with_positive_change << " / Negative: "
+					<< steps_with_negative_change << ")" << endl;
 		}
 
 } // End parallel
@@ -260,7 +300,7 @@ public:
 		cout << "Final costs: " << mincost << endl;
 		cout << "After " << steps << " steps." << endl;
 
-		writeTempResultToFile(starttimestr, sol_per_thread, number_of_bkz_types, steps);
+		writeTempResultToFile(starttimestr, sol_per_thread, number_of_bkz_types, steps, algstart);
 
 
 		/*ofstream myfile;
