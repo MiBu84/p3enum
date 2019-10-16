@@ -305,7 +305,7 @@ public:
 
 //	}
 
-private:
+protected:
 	FT calculateStartingTemperature(AnnealingSolution<FT>& input_sol, int sample_size=100) {
 		vector<AnnealingSolution<FT>> sol_array;
 		sol_array.reserve(sample_size);

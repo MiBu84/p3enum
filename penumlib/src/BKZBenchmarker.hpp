@@ -37,10 +37,10 @@ public:
 	FT _time_per_node; // How long does it take to calculate one node in enumeration tree
 
 	AnnealInfo() {
-		_number_of_random_bases=1;
-		_number_of_annealing_threads=1;
-		_number_of_parallel_reducing_threads=1;
-		_number_of_different_bases=1;
+		_number_of_random_bases=0;
+		_number_of_annealing_threads=0;
+		_number_of_parallel_reducing_threads=0;
+		_number_of_different_bases=0;
 		_time_per_node=FT(-1);
 	}
 

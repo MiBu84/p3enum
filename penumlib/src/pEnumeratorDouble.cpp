@@ -14,6 +14,7 @@
 #include "pruningfunc.hpp"
 #include "VectorStorage.hpp"
 #include "SimulatedAnnealer.hpp"
+#include "EvolutionaryOptimizer.hpp"
 
 #include <iostream>
 #include <iomanip>      // std::setprecision
@@ -254,8 +255,12 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 			ainfo._number_of_different_bases = Configurator::getInstance().ann_num_different_bases;
 			ainfo._time_per_node = Configurator::getInstance().ann_time_per_node; //4.145655e-8; //  3.082812277e-9
 
-			SimulatedAnnealer<long double> annealer = SimulatedAnnealer<long double>(ainfo);
-			annealer.anneal(B, prunfunc);
+			EvolutionaryOptimizer<long double> evo_opt = EvolutionaryOptimizer<long double>(ainfo);
+			evo_opt.doEvolution(B, prunfunc);
+			return 0;
+
+			/*SimulatedAnnealer<long double> annealer = SimulatedAnnealer<long double>(ainfo);
+			annealer.anneal(B, prunfunc);*/
 		}
 
 #pragma omp parallel

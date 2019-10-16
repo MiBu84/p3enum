@@ -24,6 +24,7 @@ public:
 		setRandomID();
 		_costs_calculated = false;
 		_ainfo = AnnealInfo<FT1>();
+		_costs = std::numeric_limits<FT1>::max();
 	}
 
 	AnnealingSolution(BKZBenchmarker<FT1>* bench_mark, const vector<FT1>& prun_func, const AnnealInfo<FT1>& ainfo) {
@@ -151,7 +152,7 @@ public:
 			_bkz_info.amax[i] = other._bkz_info.amax[i];
 		}
 
-		setRandomID();
+		this->_id = other._id;
 	}
 
 	AnnealingSolution(const AnnealingSolution& other) {
@@ -217,7 +218,7 @@ public:
 			_bkz_info.amax[i] = other._bkz_info.amax[i];
 		}
 
-		setRandomID();
+		this->_id = other._id;
 	}
 
 	AnnealingSolution& operator= (const AnnealingSolution & other) {
@@ -281,7 +282,7 @@ public:
 			_bkz_info.amax[i] = other._bkz_info.amax[i];
 		}
 
-		setRandomID();
+		this->_id = other._id;
 		return *this;
 	}
 
@@ -328,6 +329,10 @@ public:
 		}
 	}
 
+	void printCosts() {
+		cout << "Overall cost: " << _costs << endl;
+	}
+
 	void printSolution() {
 		cout << "PreBeta: " << this->_bkz_info.betas.first << " / " << "Beta: " << this->_bkz_info.betas.second << endl;
 
@@ -371,6 +376,10 @@ public:
 
 	FT1 getCost() {
 		return _costs;
+	}
+
+	int getRandomID() const {
+		return this->_id;
 	}
 
 	int setToNumberedBetaPair (unsigned int no) {
@@ -587,6 +596,7 @@ public:
 	}
 
 	FT1 calculateCosts() {
+		this->setRandomID();
 		_costs = FT1(0.0);
 		for(int i=0; i<_ainfo._number_of_random_bases; i++) {
 			// We can calculate bases in parallel but with a time penalty of factor 1.5
@@ -646,7 +656,7 @@ public:
 		return configstr;
 	}
 
-	int modifyToNeighborSolution(bool update_beta_pair=true) {
+	int modifyToNeighborSolution(bool update_beta_pair=true, bool calc_costs=false) {
 		std::random_device seeder_mod;
 		std::mt19937 engine(seeder_mod());
 
@@ -708,7 +718,7 @@ public:
 		_prun_func[ change_dim+1 ] = newval;
 
 		// Check feasiability
-		for(long unsigned int i=0; i<_prun_func.size()-1; i++) {
+		/*for(long unsigned int i=0; i<_prun_func.size()-1; i++) {
 				if(_prun_func[i] > _prun_func[i+1]) {
 					cerr << "Prunfunc invalid! :" << std::setprecision(std::numeric_limits<long double>::digits10 + 1)
 					<< i << " (" << _prun_func[i] << " / " << _prun_func[i+1] << ")"
@@ -716,7 +726,7 @@ public:
 							<< neigh_dim << " with value: " << _prun_func[ change_dim + 2 ] << endl;
 					exit(-1000);
 				}
-		}
+		}*/
 		//cout << "Test passed" << endl;
 
 		// Through the change in pruning function, the probability changes
@@ -728,7 +738,7 @@ public:
 		if(update_beta_pair) {
 			setOpimtalBetaPair();
 		}
-		else {
+		else if (calc_costs) {
 			calculateCosts();
 		}
 
@@ -736,7 +746,14 @@ public:
 		return 0;
 	}
 
-protected:
+	void resetProbs() {
+		for (auto it_vecs =_probs_initialized.begin(); it_vecs != _probs_initialized.end(); ++it_vecs) {
+			*it_vecs = false;
+		}
+		_costs_calculated = false;
+	}
+
+public:
 	void setRandomID() {
 		// Set a random id
 		std::random_device seeder;
@@ -757,9 +774,6 @@ protected:
 	vector<FT1> _base_costs;
 	vector<FT1> _probs_initialized;
 	vector<vector<FT1>> _probs;
-
-
-private:
 	BKZInfo<FT1> _bkz_info;
 	BKZBenchmarker<FT1>* _bench_mark;
 	vector<FT1> _prun_func;
