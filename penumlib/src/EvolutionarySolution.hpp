@@ -219,6 +219,72 @@ public:
 		return *this;
 	}
 
+	EvolutionarySolution& operator= (EvolutionarySolution & other) {
+			this->_bench_mark = other._bench_mark;
+			this->_costs = other._costs;
+			this->_ainfo = other._ainfo;
+			this->_dim = other._dim;
+
+			this->_succ_prob.reserve(other._ainfo._number_of_random_bases);
+			this->_t_nodes.reserve(other._ainfo._number_of_random_bases);
+			this->_est_nodes.reserve(other._ainfo._number_of_random_bases);
+			this->_t_reduction.reserve(other._ainfo._number_of_random_bases);
+			this->_t_enums.reserve(other._ainfo._number_of_random_bases);
+			this->_base_costs.reserve(other._ainfo._number_of_random_bases);
+
+			this->_succ_prob.resize(other._ainfo._number_of_random_bases);
+			this->_t_nodes.resize(other._ainfo._number_of_random_bases);
+			this->_est_nodes.resize(other._ainfo._number_of_random_bases);
+			this->_t_reduction.resize(other._ainfo._number_of_random_bases);
+			this->_t_enums.resize(other._ainfo._number_of_random_bases);
+			this->_base_costs.resize(other._ainfo._number_of_random_bases);
+
+			this->_probs_initialized.reserve(other._ainfo._number_of_random_bases);
+			this->_probs_initialized.resize(other._ainfo._number_of_random_bases);
+			this->_probs.reserve(other._ainfo._number_of_random_bases);
+			this->_probs.resize(other._ainfo._number_of_random_bases);
+
+			for(int i=0; i < other._ainfo._number_of_random_bases; i++) {
+				this->_probs_initialized[i] = other._probs_initialized[i];
+				this->_succ_prob[i] = other._succ_prob[i];
+				this->_t_nodes[i] = other._t_nodes[i];
+				this->_est_nodes[i] = other._est_nodes[i];
+				this->_t_reduction[i] = other._t_reduction[i];
+				this->_t_enums[i] = other._t_enums[i];
+				this->_base_costs[i] = other._base_costs[i];
+				this->_probs[i].clear();
+				for(auto it = other._probs[i].begin(); it != other._probs[i].end(); it++) {
+					this->_probs[i].push_back(*it);
+				}
+			}
+
+			this->_costs_calculated = other._costs_calculated;
+
+			this->_prun_func.clear();
+			for(auto it = other._prun_func.begin(); it != other._prun_func.end(); it++) {
+				this->_prun_func.push_back(*it);
+			}
+
+			this->_bkz_info.betas.first = other._bkz_info.betas.first;
+			this->_bkz_info.betas.second = other._bkz_info.betas.second ;
+			this->_bkz_info.rtime.reserve(other._ainfo._number_of_random_bases);
+			this->_bkz_info.rtime.resize(other._ainfo._number_of_random_bases);
+			this->_bkz_info.seed.reserve(other._ainfo._number_of_random_bases);
+			this->_bkz_info.seed.resize(other._ainfo._number_of_random_bases);
+			this->_bkz_info.amax.reserve(other._ainfo._number_of_random_bases);
+			this->_bkz_info.amax.resize(other._ainfo._number_of_random_bases);
+
+			for(int i=0; i < this->_ainfo._number_of_random_bases; i++) {
+				this->_bkz_info.rtime[i] = other._bkz_info.rtime[i];
+				this->_bkz_info.seed[i] = other._bkz_info.seed[i];
+				this->_bkz_info.amax[i] = other._bkz_info.amax[i];
+			}
+
+			//this->_id = other._id;
+			this->setRandomID();
+			return *this;
+		}
+
 
 
 	/** Checks whether the solution is valid **/

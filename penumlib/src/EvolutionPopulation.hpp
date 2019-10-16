@@ -91,8 +91,9 @@ public:
 		std::set<EvolutionarySolution<FT>, classcomp<FT>> parents;
 
 		for(int i=0; i<_target_size/1; i++) {
-			//cout << i << "/" << _target_size << endl;
-			parents.insert( selectionWithRoullette() );
+			// Make copy with new ID
+			EvolutionarySolution<FT> tmp = selectionWithRoullette();
+			parents.insert( tmp );
 		}
 
 		_population = parents;
