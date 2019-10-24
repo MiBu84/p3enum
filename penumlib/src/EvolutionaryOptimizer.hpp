@@ -92,10 +92,11 @@ public:
 		const int generations = 400;
 		boost::progress_display show_progress(generations);
 
+		double tstart = omp_get_wtime();
+
 #pragma omp parallel num_threads (numthreads)
 {
 		int tid = omp_get_thread_num();
-		//cout << "My tid: " << tid << endl;
 
 #pragma omp for
 		for(unsigned int ci = 0; ci < number_of_bkz_types; ci++) {
@@ -146,6 +147,7 @@ public:
 		}
 
 	} // end parallel
+	cout << "Evolution's duration: " << omp_get_wtime() - tstart << " sec." << endl;
 	}
 
 
