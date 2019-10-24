@@ -149,6 +149,7 @@ public:
 			// From here on temperature can be calculated
 			t_temp_init_start = omp_get_wtime();
 			T_init[ci] = calculateStartingTemperature(act_sol, init_sample_size);
+			T_init[ci] = 1.0;
 			t_temp_init_end = omp_get_wtime();
 			cout << "T_init[" << ci << "]" << endl << std::flush;
 		}
@@ -167,7 +168,7 @@ public:
 		// Run over all considered beta-configurations
 #pragma omp for
 		for(unsigned int ci = 0; ci < number_of_bkz_types; ci++) {
-			double T = T_init[ci];
+			double T = 1.0;//T_init[ci];
 			act_sol = starting_sol;
 			act_sol.setToNumberedBetaPair(ci);
 
@@ -184,7 +185,7 @@ public:
 			while (T > T_target && breakcount < 1000 * numits) {
 				for (int i = 0; i < numits; i++) {
 					// This version of anneal always keeps its beta-config
-					act_sol.modifyToNeighborSolution(false);
+					act_sol.modifyToNeighborSolution(false, true);
 					// Accept solution since it is better
 					if (act_sol.getCost() <= act_sol_back.getCost()) {
 						act_sol_back = act_sol;

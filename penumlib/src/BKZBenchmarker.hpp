@@ -126,6 +126,7 @@ public:
 
 		this->B_org.reserve(ainfo._number_of_random_bases);
 		this->B_org.resize(ainfo._number_of_random_bases);
+		createRNG();
 	}
 	~BKZBenchmarker() {
 
@@ -536,7 +537,21 @@ public:
 		return _amax[pos];
 	}
 
+	int getRandomDim() {
+		return dist_dim(engine);
+	}
+
+
 private:
+	void createRNG()  {
+		std::random_device seeder_mod;
+		engine = std::mt19937(seeder_mod());
+		dist_dim = std::uniform_int_distribution<int>(0, (_dim-3) / 2);
+
+	}
+	std::mt19937 engine;
+	std::uniform_int_distribution<int> dist_dim;
+
 	std::map<BetaPair, BKZInfo<FT1>> _data;
 	std::map<BetaPair, vector<vector<FT1>>> _bs_data;
 

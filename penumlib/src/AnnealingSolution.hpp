@@ -13,6 +13,7 @@
 #include "BKZBenchmarker.hpp"
 #include "extremePruningFunction.hpp"
 #include <limits>
+#include <cstdlib>
 
 using namespace std;
 
@@ -721,22 +722,22 @@ public:
 		return configstr;
 	}
 
-	int modifyToNeighborSolution(bool update_beta_pair=true, bool calc_costs=false) {
-		std::random_device seeder_mod;
-		std::mt19937 engine(seeder_mod());
-
-		// Select the dimension to change
-		// Always two neighboring values are changed at once
-		std::uniform_int_distribution<int> dist_dim(0, (_dim-3) / 2);
-
-		int change_dim = dist_dim(engine);
+	int modifyToNeighborSolution(bool update_beta_pair=false, bool calc_costs=true) {
+		int change_dim = (rand()%(_dim-3) / 2);
 		// Select percentage if change Range [-1.0%, ..., +1.0%]
-		std::uniform_real_distribution<double> dist_val(-0.01, 0.01);
-		double perci = dist_val(engine);
+
+		//std::random_device seeder_mod;
+		//std::mt19937 engine (seeder_mod());
+		//std::uniform_real_distribution<double> dist_val(-0.01, 0.01);
+		//double perci = dist_val(engine);
+
+		double perci = (double)((rand() % 201) - 100) / 10000.0;
 
 		while(abs(perci) < 10e-5 || (perci < 0 && change_dim==0)) {
-			perci = dist_val(engine);
+			perci = (double)((rand() % 201) - 100) / 10000.0;
 		}
+
+		//cout << "Perc " << perci << endl;
 
 		//FT1 perc = (FT1(perci) / 2.0) / 100.0;
 		FT1 perc = FT1(perci);
@@ -758,7 +759,6 @@ public:
 
 			if(newval > neighval) {
 				if(change_dim > 0) {
-					//newval = std::max(neighval, _prun_func[change_dim-2]);
                     newval = neighval;
 				}
 				else
@@ -821,10 +821,11 @@ public:
 public:
 	void setRandomID() {
 		// Set a random id
-		std::random_device seeder;
+		/*std::random_device seeder;
 		std::mt19937 engine(seeder());
 		std::uniform_int_distribution<int> dist(1, 999999);
-		this->_id = dist(engine);
+		this->_id = dist(engine);*/
+		this->_id = rand() % 9999999;
 	}
 
 	int _id;

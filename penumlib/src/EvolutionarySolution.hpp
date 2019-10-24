@@ -320,7 +320,7 @@ public:
 	}
 
 	FT1 getFitness() const {
-		return FT1(1.0) / this->_costs;
+		return FT1(100000.0) / this->_costs;
 	}
 
 	//void setFitness(FT1 f) {
@@ -331,6 +331,8 @@ public:
 	friend	EvolutionarySolution<FT> recombine(const EvolutionarySolution<FT>& sol1, const EvolutionarySolution<FT>& sol2);
 	template <class FT>
 	friend	EvolutionarySolution<FT> crossingOver(const EvolutionarySolution<FT>& sol1, const EvolutionarySolution<FT>& sol2);
+	template <class FT>
+	friend	EvolutionarySolution<FT> shift(const EvolutionarySolution<FT>& sol1);
 
 private:
 	//FT1 _fitness;
