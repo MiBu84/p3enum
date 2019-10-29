@@ -459,31 +459,31 @@ public:
         unsigned int length = the_map.size();
 		unsigned int ass_num = no % length;
 
-		//
-        
 		if(no >= length) {
 			unsigned int middle = (int)floor(the_map.size()/2.0);
-            
             if(length%2 != 0) {
                 if(ass_num == middle) {
                     // Do nothing because mapping already correct
                 }
                 
                 else if(ass_num%2 != 0) {
-                    ass_num = middle - (int)(ceil(ass_num / 2.0));
+                    ass_num = middle - (int)(ceil((double)ass_num / 2.0));
                 }
                 
                 else  {
-                    ass_num = middle + (int)(ceil(ass_num / 2.0));
+                    ass_num = middle + (int)(ceil((double)ass_num / 2.0));
                 }
             }
             
             // even length
             else {
-                cerr << "Assigment of threads to even number of beta-configs not implemented yet!" << endl;
+                //cerr << "Assigment of threads to even number of beta-configs not implemented yet!" << endl;
                 ass_num = no % length;
             }
 		}
+
+		//cout << "Calling setToNumberedBetaPair ass: " << ass_num
+		//		  << " / length: " << length << endl;
 
 		// Find the numbered entry
 		auto it = the_map.begin();

@@ -91,7 +91,7 @@ public:
 		for(int i=0; i<dim; i++) {
 			FT tmp = ((FT)(loc_prunfunc.data()[dim-i-1]));
 			circ.push_back(tmp);
-			cout << tmp << endl;
+			//cout << tmp << endl;
 		}
 
 		BetaConfig binfo {Configurator::getInstance().ann_prebeta_start,

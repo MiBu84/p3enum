@@ -54,7 +54,7 @@ public:
 	EvolutionPopulation(unsigned int target_size) {
 		this->_population.clear();
 		this->_target_size = target_size;
-		cout << "Setting target size to " << this->_target_size << endl;
+		//cout << "Setting target size to " << this->_target_size << endl;
 		this->_best_individual = EvolutionarySolution<FT>();
 		this->_max_costs = 0;
 	}
@@ -62,7 +62,7 @@ public:
 	EvolutionPopulation() {
 		this->_population.clear();
 		this->_target_size = 101;
-		cout << "Setting default target size to " << this->_target_size << endl;
+		//cout << "Setting default target size to " << this->_target_size << endl;
 		this->_best_individual = EvolutionarySolution<FT>();
 		this->_max_costs = 0;
 	}
@@ -117,7 +117,6 @@ public:
 	EvolutionarySolution<FT> returnRandomIndividual() {
 
 	}
-
 
 	int reducePopulation () {
 		return 0;

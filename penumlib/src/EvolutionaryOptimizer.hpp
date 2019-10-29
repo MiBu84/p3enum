@@ -21,14 +21,16 @@ public:
 		this->_ainfo = ainfo;
 		_threads=ainfo._number_of_annealing_threads;
 
+		//cout << "Creating " << _threads << " populations." << endl;
+
 		for(int i=0; i<_threads; i++)
-			_populations.push_back(EvolutionPopulation<FT>(200));
+			_populations.push_back(EvolutionPopulation<FT>(250));
 
 	}
 
 	EvolutionaryOptimizer() {
 		this->_ainfo = AnnealInfo<FT>();
-		_populations.push_back(EvolutionPopulation<FT>(200));
+		_populations.push_back(EvolutionPopulation<FT>(250));
 		_threads=1;
 	}
 
@@ -89,24 +91,34 @@ public:
 		const unsigned int number_of_bkz_types = std::max(benchi.size(), (unsigned int)numthreads);
 		srand(time(0));
 
-		const int generations = 400;
-		boost::progress_display show_progress(generations);
+		const int generations = 1500;
+		const int generations_to_process = generations*number_of_bkz_types;
+		int generations_done = 0;
+		const int one_percent_of_generations = (int)ceil(((double)generations_to_process*0.01));
+		int next_generation_target = one_percent_of_generations;
+		int print_cnt = 0;
+
+		//boost::progress_display show_progress(generations);
+
 
 		double tstart = omp_get_wtime();
+		EvolutionarySolution<FT> starting_sol_glob = EvolutionarySolution<FT>(&benchi, circ, _ainfo);
+		EvolutionarySolution<FT> glob_best_sol;
 
-#pragma omp parallel num_threads (numthreads)
+#pragma omp parallel num_threads (numthreads) shared(generations_done)
 {
 		int tid = omp_get_thread_num();
+		EvolutionarySolution<FT> starting_sol_loc = starting_sol_glob;
 
 #pragma omp for
 		for(unsigned int ci = 0; ci < number_of_bkz_types; ci++) {
-			EvolutionarySolution<FT> starting_sol = EvolutionarySolution<FT>(&benchi, circ, _ainfo);
-			starting_sol.setToNumberedBetaPair(ci);
+
+			starting_sol_loc.setToNumberedBetaPair(ci);
 
 			int attempcnt = 0;
 			int succcnt = 0;
 
-			EvolutionarySolution<FT> tomodify_sol = starting_sol;
+			EvolutionarySolution<FT> tomodify_sol = starting_sol_loc;
 
 			// Generate target_size random solutions
 			_populations[tid].clear();
@@ -118,7 +130,7 @@ public:
 				}
 				tomodify_sol.calculateCosts();
 				_populations[tid].insertIndividual(tomodify_sol);
-				tomodify_sol = starting_sol;
+				tomodify_sol = starting_sol_loc;
 
 			}
 
@@ -132,8 +144,33 @@ public:
 				}
 				attempcnt++;
 
-				if(tid==0)
-					++show_progress;
+#pragma omp critical
+				{
+					if(glob_best_sol.getCost() > _populations[tid].getBestIndiviual().getCost()) {
+						glob_best_sol = _populations[tid].getBestIndiviual();
+					}
+				}
+
+				// Verbosity
+#pragma omp atomic
+				generations_done++;
+
+				if(tid==0) {
+					if(generations_done > next_generation_target) {
+						next_generation_target += one_percent_of_generations;
+						print_cnt++;
+
+						double tend_consumed = omp_get_wtime() - tstart;
+						double time_per_gen = tend_consumed / generations_done;
+						int generations_remaining = generations_to_process - generations_done;
+						double expected_remaining_time = time_per_gen * (double)generations_remaining;
+
+						cout << "(" << print_cnt << " \%): " << generations_done << "/" << generations_to_process
+								<< ", lowest costs: " << _populations[tid].getBestIndiviual().getCost()
+								<< ", remaining: " << expected_remaining_time << "s." << endl;
+					}
+					//++show_progress;
+				}
 			}
 
 			cout << succcnt << " out of " << attempcnt << endl;
