@@ -229,6 +229,7 @@ public:
 				this->_best_individual = new_gen_child;
 			}
 
+
 			next_gen.insert(new_gen_child);
 			_population = next_gen;
 		}
@@ -362,7 +363,7 @@ private:
 		FT shiftfloat = (FT)shiftint / FT(100.0);
 
 		for(int i=0; i < sol1._dim; i++) {
-			sol_res._prun_func[i] = std::max<FT> (sol1._prun_func[i] + shiftfloat, FT(1e-4));
+			sol_res._prun_func[i] = std::max<FT> (sol1._prun_func[i] + shiftfloat, FT(1e-3));
 		}
 
 		return sol_res;
@@ -387,14 +388,59 @@ private:
 		}
 
 		// Invalid solutions have to be repaired
-		for(int i=cut_dim*2; i < sol1._dim-2; i++) {
-			if(sol_res._prun_func[i] > sol_res._prun_func[i+1]) {
-				sol_res._prun_func[i+1] = sol_res._prun_func[i];
+		//ToDO: Copy the highest value from before towards the higher entries, until function is valid
+		for(int i=cut_dim*2; i > 0; i--) {
+			if(sol_res._prun_func[i] < sol_res._prun_func[i-1]) {
+				sol_res._prun_func[i-1] = sol_res._prun_func[i];
+				// Slight increment because of numerical stability
+				/*if(i%2!=0)
+					sol_res._prun_func[i+1] += sol_res._prun_func[i+1] * 1e-8;*/
 			}
 			else {
 				break;
 			}
 		}
+
+		// Check feasiability
+		/*for(long unsigned int i=0; i<sol_res._prun_func.size()-1; i++) {
+				if(sol_res._prun_func[i] > sol_res._prun_func[i+1]) {
+					cout << "Prunfunc invalid! :" << std::setprecision(std::numeric_limits<long double>::digits10 + 1)
+					<< i << " (" << sol_res._prun_func[i] << " / " << sol_res._prun_func[i+1] << ")" << endl << std::flush;
+
+
+					cout << "EvolutionarySolutionRecombine with cut at " << cut_dim*2
+							<< " with ID(" << sol1.getRandomID() << ") and ID("
+							<< sol2.getRandomID() << ")"
+							<< endl << std::flush;
+
+					// Copy the values
+					cout << "Start writing: " << endl;
+					for(int i = cut_dim*2; i < sol1._dim-2; i++) {
+						sol_res._prun_func[i] = sol2._prun_func[i];
+						cout << "[" << i << "]: " << sol2._prun_func[i] << endl;
+					}
+					cout << "End writing" << endl;
+
+					sol_res.printSolution(true);
+
+					cout << endl << "Above: ";
+					// Check above
+					FT high_crossval = sol_res._prun_func[cut_dim*2+1];
+					for(int i=cut_dim*2+1; i < sol1._dim-2; i++) {
+						cout << high_crossval << "/" << sol_res._prun_func[i+1] << " ";
+						if(high_crossval > sol_res._prun_func[i+1]) {
+							cout << i << endl;
+						}
+						else {
+							break;
+						}
+					}
+					cout << endl;
+
+
+					exit(-1000);
+				}
+		}*/
 
 		// Recalc probs and costs!
 		sol_res.resetProbs();
@@ -429,21 +475,16 @@ private:
 			cin >> stop;
 		}
 
-		/*cout << "EvolutionarySolutionCrossing over with start " << start_dim
-				<< " and end " << end_dim
-				<< " with ID(" << sol1.getRandomID() << ") and ID("
-				<< sol2.getRandomID() << ")"
-				<< endl;*/
-
 		// Copy the values
 		for(int i = start_dim*2; i <= end_dim*2+1; i++) {
 			sol_res._prun_func[i] = sol2._prun_func[i];
 		}
 
 		// Invalid solutions have to be repaired
-		FT low_crossval = sol2._prun_func[start_dim*2];
-		FT high_crossval = sol2._prun_func[end_dim*2];
+		FT low_crossval = sol_res._prun_func[start_dim*2];
+		FT high_crossval = sol_res._prun_func[end_dim*2];
 
+		// Check below
 		for(int i=start_dim*2; i>=1; i--) {
 			if(low_crossval < sol_res._prun_func[i-1]) {
 				sol_res._prun_func[i-1] = low_crossval;
@@ -453,7 +494,8 @@ private:
 			}
 		}
 
-		for(int i=end_dim*2; i <= sol_res._dim-3; i++) {
+		// Check above
+		for(int i=end_dim*2+1; i <= sol_res._dim-3; i++) {
 			if(high_crossval > sol_res._prun_func[i+1]) {
 				sol_res._prun_func[i+1] = high_crossval;
 			}
@@ -461,6 +503,60 @@ private:
 				break;
 			}
 		}
+
+		// Check feasiability
+		/*for(long unsigned int i=0; i<sol_res._prun_func.size()-1; i++) {
+				if(sol_res._prun_func[i] > sol_res._prun_func[i+1]) {
+					cout << "Prunfunc invalid! :" << std::setprecision(std::numeric_limits<long double>::digits10 + 1)
+					<< i << " (" << sol_res._prun_func[i] << " / " << sol_res._prun_func[i+1] << ")" << endl << std::flush;
+
+
+					cout << "EvolutionarySolutionCrossing over with start " << start_dim*2
+							<< " and end " << end_dim*2
+							<< " with ID(" << sol1.getRandomID() << ") and ID("
+							<< sol2.getRandomID() << ")"
+							<< endl << std::flush;
+
+					// Copy the values
+					cout << "Start writing: " << endl;
+					for(int i = start_dim*2; i <= end_dim*2+1; i++) {
+						sol_res._prun_func[i] = sol2._prun_func[i];
+						cout << "[" << i << "]: " << sol2._prun_func[i] << endl;
+					}
+					cout << "End writing" << endl;
+
+					sol_res.printSolution(true);
+
+					// Check below
+					cout << "Below: ";
+					for(int i=start_dim*2; i>=1; i--) {
+						cout << low_crossval << "/" << sol_res._prun_func[i-1] << " ";
+						if(low_crossval < sol_res._prun_func[i-1]) {
+							cout << i << endl;
+						}
+						else {
+							break;
+						}
+					}
+
+					cout << endl << "Above: ";
+					// Check above
+					for(int i=end_dim*2+1; i <= sol_res._dim-3; i++) {
+						cout << high_crossval << "/" << sol_res._prun_func[i+1] << " ";
+						if(high_crossval > sol_res._prun_func[i+1]) {
+							cout << i << endl;
+						}
+						else {
+							break;
+						}
+					}
+					cout << endl;
+
+
+					exit(-1000);
+				}
+		}*/
+		//cout << "Test passed" << endl;
 
 		// Recalc probs and costs!
 		sol_res.resetProbs();

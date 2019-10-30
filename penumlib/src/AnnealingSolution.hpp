@@ -399,7 +399,7 @@ public:
 		cout << "Overall cost: " << _costs << endl;
 	}
 
-	void printSolution() {
+	void printSolution(bool number_entries=false) {
 		cout << "PreBeta: " << this->_bkz_info.betas.first << " / " << "Beta: " << this->_bkz_info.betas.second << endl;
 
 		cout << "Time BKZ: [ ";
@@ -433,7 +433,12 @@ public:
 		cout << "]" << endl;
 
 		// Print the probability values
+		int i=_prun_func.size()-1;
 		for(auto it=_prun_func.rbegin(); it != _prun_func.rend(); ++it) {
+			if(number_entries) {
+				cout << "[" << i << "]: ";
+			}
+			i--;
 			cout << *it << endl;
 		}
 
