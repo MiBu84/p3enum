@@ -16,6 +16,10 @@
 
 #include "pruningfunc.hpp"
 
+typedef std::pair<int, double> amax_for_seed;
+typedef std::map<int,double> amax_per_dim;
+typedef std::map<int, amax_per_dim> amax_table; // Seeds/Amax per dim
+
 // Error Codes
 #define NO_VECTOR_FOUND 1
 
@@ -25,6 +29,57 @@ public:
 	{
 		static Configurator instance;
 		return instance;
+	}
+
+	int insertAmaxEntry(int dim, int seed, double amax) {
+		amax_per_dim& entr = this->_amax_per_seed[dim];
+		entr[seed] = amax;
+		this->_amax_per_seed[dim] = entr;
+		return 0;
+	}
+
+	double getAmaxEntry (int dim, int seed) {
+		auto outer_it = this->_amax_per_seed.find(dim);
+		if(outer_it == _amax_per_seed.end()) {
+			cout << "No entry for dimension " << dim << " and seed " << seed << endl;
+			return -1;
+		}
+
+		std::map<int,double>& seedentr = outer_it->second;
+		auto inner_it = seedentr.find(seed);
+
+		if(inner_it == seedentr.end()) {
+			cout << "No entry for dimension " << dim << " and seed " << seed << endl;
+			return -2;
+		}
+
+		return inner_it->second;
+	}
+
+	amax_for_seed getAmaxEntryByNumber(int dim, int num) {
+		auto outer_it = this->_amax_per_seed.find(dim);
+		if(outer_it == _amax_per_seed.end()) {
+			cout << "No entry for dimension " << dim << " and number " << num << endl;
+			return amax_for_seed(-1, -1);
+		}
+
+		std::map<int,double>& seedentr = outer_it->second;
+		auto inner_it = seedentr.begin();
+
+		if(inner_it == seedentr.end()) {
+			cout << "No entry for dimension " << dim << " and number " << num << endl;
+			return amax_for_seed(-2, -2);
+		}
+
+		int advance_no = num-1;
+		std::advance(inner_it, advance_no);
+
+		if(inner_it == seedentr.end()) {
+			inner_it = seedentr.begin();
+		}
+
+		return amax_for_seed(inner_it->first, inner_it->second);
+
 	}
 
 	static Configurator* _instance;
@@ -84,14 +139,16 @@ public:
     double ann_cooling_rate;
     int ann_iterations;
 	
-	vector<int> ann_seeds_different_bases;
-	vector<int> ann_amax_different_bases;
+	//vector<int> ann_seeds_different_bases;
+	//vector<int> ann_amax_different_bases;
 
 	// Debugging
 	bool output_success_base; // If on, then after finding a shortes vector, the corresponding reduce basis is written to file
 	string prereduced_base; // Read the given filename from disk and replace the matrix before enumeration
 
 private:
+	amax_table _amax_per_seed;
+
 	Configurator() {
 		dolll=true;
 		reducedfilepath="";

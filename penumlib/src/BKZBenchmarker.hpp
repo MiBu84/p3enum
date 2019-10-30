@@ -169,8 +169,10 @@ public:
 		int seedidx = 0;
 		for( int i=0; i < _ainfo._number_of_random_bases;i++)
 		{
-			act_seed = Configurator::getInstance().ann_seeds_different_bases[seedidx];
-			act_amax = Configurator::getInstance().ann_amax_different_bases[seedidx];
+
+			amax_for_seed afors = Configurator::getInstance().getAmaxEntryByNumber(_dim, seedidx);
+			act_seed = afors.first;
+			act_amax = afors.second;
 
 			this->_seeds.push_back(act_seed);
 			this->_amax.push_back(act_amax);

@@ -223,6 +223,8 @@ int readConfig(string path) {
 				continue;
 		}
 
+
+
 		// Parse commands an register in configurator
 		// Should the final enumeration call be pruned, if yes, which pruning will be activated?
         if(command == "--enumpruning") {
@@ -452,8 +454,139 @@ int readConfig(string path) {
         	}
         }
 
-        //
-        if(command == "--ann_seeds_different_bases") {
+
+
+
+
+        // CHANGED to have all values ready for use in a table
+        if(command == "--ann_seeds_amax_config_start") {
+        	std::vector<int> ann_seeds_different_bases;
+        	std::vector<double> ann_amax_different_bases;
+        	int entry_status = 0;
+        	int the_dimension = -1;
+
+        	std::string   innerline;
+        	while(std::getline(file, innerline))
+        	{
+        		if(entry_status == 0) {
+        			ann_seeds_different_bases.clear();
+        			ann_amax_different_bases.clear();
+        			entry_status++;
+        		}
+
+        		std::string innercommand;
+        		std::stringstream   innerlinestream(innerline);
+        		innerlinestream >> innercommand;
+
+        		// Skip empty lines
+        		if (innercommand.length()==0)
+        			continue;
+
+        		if(innercommand.length()>0) {
+        			// Skip comments
+        			if(innercommand[0] == '#')
+        				continue;
+        		}
+
+        		// Second step: Read the Dimension
+                if(innercommand == "--ann_dim") {
+          			if(entry_status != 1) {
+						cerr << "Invalid AMAX format in config file." << endl;
+						return -1;
+            		}
+
+                	try {
+                		innerlinestream >> int_value;
+                		the_dimension = int_value;
+                		cout << "Setting AMAX-dimension to " << the_dimension << "." << endl;
+                		entry_status++;
+                	}
+
+                	catch (exception& e) {
+                		std::cerr << "Missing AMAX-dimension in argument." << std::endl;
+                	}
+                }
+
+        		// Third step: Read the seeds for dimension
+        		if(innercommand == "--ann_seeds_different_bases") {
+        			if(entry_status != 2) {
+        				cerr << "Invalid AMAX format in config file." << endl;
+        				return -1;
+        			}
+
+					try {
+						stringstream ss;
+						ss.str(innerline);
+
+						// Throw away first entry
+						ss >> item;
+						cout << "Read seeds for annealing: ";
+						while(ss >> item) {
+							int seed = std::stoi((std::move(item))); // if C++11
+							ann_seeds_different_bases.push_back(seed);
+							cout << item << " ";
+						}
+						cout << endl;
+						entry_status++;
+					}
+
+					catch (exception& e) {
+							std::cerr << "Missing seeds for different bases to benchmark." << std::endl;
+					}
+        		}
+
+        		// Fourth step: Read the amax-values for dimension
+                if(innercommand == "--ann_amax_different_bases") {
+        			if(entry_status != 3) {
+        				cerr << "Invalid AMAX format in config file." << endl;
+        				return -1;
+        			}
+
+                	try {
+                		stringstream ss;
+                		ss.str(innerline);
+
+                		// Throw away first entry
+                		ss >> item;
+                		cout << "Read amax for annealing: ";
+                		while(ss >> item) {
+                			double amax = std::stod((std::move(item))); // if C++11
+                			ann_amax_different_bases.push_back(amax);
+                			cout << item << " ";
+                		}
+                		cout << endl;
+                		entry_status++;
+                	}
+
+                	catch (exception& e) {
+                		std::cerr << "Missing Amax for different bases to benchmark." << std::endl;
+                	}
+                }
+
+                // Fifth step: Register entry into the Configurator
+                if(entry_status==4) {
+                	if(ann_seeds_different_bases.size() != ann_amax_different_bases.size()) {
+                		cerr << "ann_seeds_different_bases.size() != ann_amax_different_bases.size()";
+                		return -1;
+                	}
+
+                	for(unsigned int i=0; i<ann_seeds_different_bases.size();i++) {
+                		Configurator::getInstance().insertAmaxEntry(the_dimension,
+                				ann_seeds_different_bases[i], ann_amax_different_bases[i]);
+                	}
+                	entry_status=0;
+                }
+
+                if(innercommand == "--ann_seeds_amax_config_end") {
+                	break; // leave the loop
+                }
+
+        	} // While
+        } // If-Block
+
+
+        // Old Way:
+        /*if(command == "--ann_seeds_different_bases") {
         	try {
         		stringstream ss;
         		ss.str(line);
@@ -494,7 +627,7 @@ int readConfig(string path) {
         	catch (exception& e) {
         		std::cerr << "Missing Amax for different bases to benchmark." << std::endl;
         	}
-        }
+        }*/
 		
 		if(command == "--ann_target_temp") {
         	try {
@@ -533,16 +666,6 @@ int readConfig(string path) {
         	}
         }
 
-	}
-
-	// Fallback for annealing if nothing was given for the bases
-	if(Configurator::getInstance().ann_amax_different_bases.size() == 0) {
-		Configurator::getInstance().ann_amax_different_bases.push_back(Configurator::getInstance().Amax);
-		//cout << "FB" << endl;
-	}
-	if(Configurator::getInstance().ann_seeds_different_bases.size() == 0) {
-		Configurator::getInstance().ann_seeds_different_bases.push_back(0);
-		//cout << "FB" << endl;
 	}
 
 

@@ -1073,6 +1073,24 @@ int main(int argc, char** argv)
         if(input == "--anneal") {
         	Configurator::getInstance().do_annealing = true;
         }
+
+        if(input == "--ann_beta_config") {
+        	int val1 = std::atoi(argv[i+1]);
+        	int val2 = std::atoi(argv[i+2]);
+        	int val3 = std::atoi(argv[i+3]);
+        	int val4 = std::atoi(argv[i+4]);
+
+    		Configurator::getInstance().ann_prebeta_start = val1;
+    		Configurator::getInstance().ann_prebeta_end = val2;
+    		Configurator::getInstance().ann_beta_start = val3;
+    		Configurator::getInstance().ann_beta_end = val4;
+
+    		cout << "Annealing with beta-config: ("
+    				<< val1 << ","
+					<< val2 << ","
+					<< val3 << ","
+					<< val4 << ")" << endl;
+        }
 		
 		        // For Annealing Function generator
         if(input == "--ann_target_temp") {
