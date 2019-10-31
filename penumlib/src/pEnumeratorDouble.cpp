@@ -252,7 +252,10 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 			ainfo._number_of_random_bases = Configurator::getInstance().ann_bkz_instances;
 			ainfo._number_of_annealing_threads = Configurator::getInstance().ann_annealing_threads;
 			ainfo._number_of_parallel_reducing_threads = Configurator::getInstance().ann_parallel_reducing_threads;
-			ainfo._number_of_different_bases = Configurator::getInstance().ann_num_different_bases;
+
+			ainfo._number_of_different_bases = std::min<int>(Configurator::getInstance().ann_num_different_bases,
+					Configurator::getInstance().seedsForDimension(dimen));
+
 			ainfo._time_per_node = Configurator::getInstance().ann_time_per_node; //4.145655e-8; //  3.082812277e-9
 
 			EvolutionaryOptimizer<long double> evo_opt = EvolutionaryOptimizer<long double>(ainfo);

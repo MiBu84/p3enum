@@ -57,6 +57,7 @@ public:
 		//cout << "Setting target size to " << this->_target_size << endl;
 		this->_best_individual = EvolutionarySolution<FT>();
 		this->_max_costs = 0;
+		this->no_of_mutations = this->no_of_shifts = this->no_of_recombines = this->no_of_crossing_over = this->no_of_keeping = 0;
 	}
 
 	EvolutionPopulation() {
@@ -65,10 +66,11 @@ public:
 		//cout << "Setting default target size to " << this->_target_size << endl;
 		this->_best_individual = EvolutionarySolution<FT>();
 		this->_max_costs = 0;
+		this->no_of_mutations = this->no_of_shifts = this->no_of_recombines = this->no_of_crossing_over = this->no_of_keeping = 0;
 	}
 
 	~EvolutionPopulation () {
-
+		this->no_of_mutations = this->no_of_shifts = this->no_of_recombines = this->no_of_crossing_over = this->no_of_keeping = 0;
 	}
 
 	EvolutionPopulation(EvolutionPopulation& other) {
@@ -76,6 +78,11 @@ public:
 		this->_max_costs = other._max_costs;
 		this->_best_individual = other._best_individual;
 		this->_population = other._population;
+		this->no_of_shifts = other.no_of_shifts;
+		this->no_of_recombines = other.no_of_recombines;
+		this->no_of_crossing_over = other.no_of_crossing_over;
+		this->no_of_keeping = other.no_of_keeping;
+		this->no_of_mutations = other.no_of_mutations;
 	}
 
 	EvolutionPopulation(const EvolutionPopulation& other) {
@@ -83,6 +90,11 @@ public:
 		this->_max_costs = other._max_costs;
 		this->_best_individual = other._best_individual;
 		this->_population = other._population;
+		this->no_of_shifts = other.no_of_shifts;
+		this->no_of_recombines = other.no_of_recombines;
+		this->no_of_crossing_over = other.no_of_crossing_over;
+		this->no_of_keeping = other.no_of_keeping;
+		this->no_of_mutations = other.no_of_mutations;
 	}
 
 	EvolutionPopulation& operator= (const EvolutionPopulation & other) {
@@ -90,6 +102,11 @@ public:
 		_max_costs = other._max_costs;
 		_best_individual = other._best_individual;
 		_population = other._population;
+		no_of_shifts = other.no_of_shifts;
+		no_of_recombines = other.no_of_recombines;
+		no_of_crossing_over = other.no_of_crossing_over;
+		no_of_keeping = other.no_of_keeping;
+		no_of_mutations = other.no_of_mutations;
 		return *this;
 	}
 
@@ -149,7 +166,7 @@ public:
 		//for(unsigned int elemcnt=0; elemcnt < _target_size; elemcnt++) {
 
 			// The next generation should be of same size
-			int choser = rand() % 4;
+			int choser = rand() % 5;
 			EvolutionarySolution<FT> new_gen_child;
 
 			// Case 0: A random parent will also be in the next generation
@@ -161,6 +178,7 @@ public:
 
 				std::advance(it, rnd);
 				new_gen_child = *it;
+				this->no_of_keeping++;
 			}
 
 			// Case 1: A parent is mutated in a random amount
@@ -178,6 +196,7 @@ public:
 					new_gen_child.modifyToNeighborSolution(false, false);
 				}
 				new_gen_child.calculateCosts();
+				this->no_of_mutations++;
 			}
 
 			// Case 2: Two random solutions do CrossingOver
@@ -195,6 +214,7 @@ public:
 				std::advance(it2, rnd2);
 
 				new_gen_child =  crossingOver(*it1, *(it2));
+				this->no_of_crossing_over++;
 			}
 
 			// Case 3: Two random solutions do Recombination
@@ -212,6 +232,7 @@ public:
 				std::advance(it2, rnd2);
 
 				new_gen_child =  recombine(*it1, *(it2));
+				this->no_of_recombines++;
 			}
 
 			// Case 4: Shift one solution
@@ -223,6 +244,7 @@ public:
 
 				std::advance(it, rnd);
 				new_gen_child = shift(*it);
+				this->no_of_shifts++;
 			}
 
 			if(new_gen_child.getFitness() > this->_best_individual.getFitness()) {
@@ -279,6 +301,15 @@ public:
 			cout << iti->getFitness() / sum_fitness << endl;
 		}
 		cout << "End of probs." << endl;
+	}
+
+	void printStatistics() {
+		cout << "Population stastics: " << endl
+			<< "No of Mutations: " << no_of_mutations << endl
+			<< "No of Shifts: " << no_of_shifts << endl
+			<< "No of Recombines: " << no_of_recombines << endl
+			<< "No_of_CrossingOvers: " << no_of_crossing_over << endl
+			<< "No_of_Survives: " << no_of_keeping << endl;
 	}
 
 	EvolutionarySolution<FT> selectionWithRoullette(const std::set<EvolutionarySolution<FT>> pop=NULL) {
@@ -357,12 +388,15 @@ protected:
 	unsigned int _target_size;
 
 private:
+	int no_of_shifts, no_of_recombines, no_of_crossing_over, no_of_keeping, no_of_mutations;
+
 	EvolutionarySolution<FT> shift(const EvolutionarySolution<FT>& sol1) {
 		EvolutionarySolution<FT> sol_res = EvolutionarySolution<FT>(sol1);
 		int shiftint = (rand()%201) - 100; // between -100 and 100
-		FT shiftfloat = (FT)shiftint / FT(100.0);
+		FT shiftfloat = (FT)shiftint / FT(1000.0); // shift between -0.01 und 0.01
 
 		for(int i=0; i < sol1._dim; i++) {
+			// Prevent shift to negative values
 			sol_res._prun_func[i] = std::max<FT> (sol1._prun_func[i] + shiftfloat, FT(1e-3));
 		}
 

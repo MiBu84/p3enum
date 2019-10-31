@@ -82,6 +82,18 @@ public:
 
 	}
 
+	unsigned int seedsForDimension(int dim) {
+		auto outer_it = this->_amax_per_seed.find(dim);
+
+		if(outer_it == _amax_per_seed.end()) {
+			return 0;
+		}
+
+		else {
+			return outer_it->second.size();
+		}
+	}
+
 	static Configurator* _instance;
 
 	// Configuration variables
@@ -138,6 +150,9 @@ public:
 	double ann_target_temp;
     double ann_cooling_rate;
     int ann_iterations;
+
+    // Evolutionary Function optimizer
+    int evo_generations;
 	
 	//vector<int> ann_seeds_different_bases;
 	//vector<int> ann_amax_different_bases;
@@ -204,6 +219,9 @@ private:
 		ann_target_temp = 0.0000001;
         ann_cooling_rate = 0.999;
         ann_iterations = 10;
+
+        // Evolutionary Function optimizer
+        evo_generations = 400;
 
         // Debugging
         prereduced_base = "";

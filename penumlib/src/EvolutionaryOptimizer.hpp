@@ -60,6 +60,11 @@ public:
 
 	void doEvolution(const mat_ZZ& Bi, MBVec<double>& pruningfuction) {
 		cout << "Starting Evolution" << endl;
+		auto t = std::time(nullptr);
+		auto tm = *std::localtime(&t);
+		std::stringstream ss;
+		ss <<  std::put_time(&tm, "%d-%m-%Y--%H-%M-%S");
+		std::string starttimestr = ss.str();
 
 		BKZBenchmarker<FT> benchi = BKZBenchmarker<FT>(_ainfo);
 		mat_ZZ B = Bi;
@@ -91,7 +96,7 @@ public:
 		const unsigned int number_of_bkz_types = std::max(benchi.size(), (unsigned int)numthreads);
 		srand(time(0));
 
-		const int generations = 1500;
+		const int generations = Configurator::getInstance().evo_generations;
 		const int generations_to_process = generations*number_of_bkz_types;
 		int generations_done = 0;
 		const int one_percent_of_generations = (int)ceil(((double)generations_to_process*0.01));
@@ -178,9 +183,28 @@ public:
 
 #pragma omp single
 		{
+			writeTempResultToFile(starttimestr, _populations, number_of_bkz_types, generations_done);
+
+			FT mincost = numeric_limits<FT>::max();
+			unsigned int mincost_idx = _populations.size();
+
 			for(int i=0; i<_threads; i++) {
-				_populations[i].getBestIndiviual().printSolution();
+				if(_populations[i].getBestIndiviual().getCost() < mincost) {
+					mincost = _populations[i].getBestIndiviual().getCost();
+					mincost_idx = i;
+				}
 			}
+
+			if (mincost_idx < _populations.size()) {
+				cout << "Found minimal solution: " << endl;
+				_populations[mincost_idx].getBestIndiviual().printSolution();
+				_populations[mincost_idx].printStatistics();
+			}
+
+			else {
+				cerr << "Index " << mincost_idx << " for minimal solution invalid." << endl;
+			}
+
 		}
 
 	} // end parallel
@@ -194,6 +218,39 @@ protected:
 	AnnealInfo<FT> _ainfo;
 	std::vector<EvolutionPopulation<FT>> _populations;
 	int _threads;
+
+	int writeTempResultToFile(std::string ident, vector<EvolutionPopulation<FT>>& pops,
+				const int numthreads, const int generation) {
+			std::string fname = "evolution-log-";
+			fname.append(ident);
+			fname.append(".txt");
+
+			ofstream myfile;
+			myfile.open (fname.c_str(), ios::app);
+
+
+			FT mincost = FT(std::numeric_limits<long double>::max());
+			int idx = -1;
+			for(int i=0; i<numthreads;i++) {
+				if(pops[i].getBestIndiviual().getCost() < mincost) {
+					mincost = pops[i].getBestIndiviual().getCost();
+					idx = i;
+				}
+			}
+
+			stringstream ss;
+
+			ss << "Found final Solution of thread " << idx <<": " << endl;
+			pops[idx].getBestIndiviual().printSolutionToSStream(ss);
+			ss << "Final costs: " << mincost << endl;
+			ss << "In " << generation << " generations." << endl;
+
+			myfile << ss.str();
+			myfile.close();
+
+			return 0;
+
+		}
 };
 
 

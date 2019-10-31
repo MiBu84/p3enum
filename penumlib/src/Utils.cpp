@@ -454,7 +454,17 @@ int readConfig(string path) {
         	}
         }
 
+        if(command == "--evo_generations") {
+        	try {
+        		linestream >> int_value;
+        		Configurator::getInstance().evo_generations = int_value;
+        		cout << "Generations for Evolution: " << int_value << "." << endl;
+        	}
 
+        	catch (exception& e) {
+        		std::cerr << "Missing number for evo_generations." << std::endl;
+        	}
+        }
 
 
 

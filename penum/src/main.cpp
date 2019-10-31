@@ -1126,6 +1126,18 @@ int main(int argc, char** argv)
             Configurator::getInstance().ann_iterations = ann_iterations;
             cout << "Setting ann_iterations parameter to " << ann_iterations << "." << endl;
             i++;  
+        }
+
+        if(input == "--evo_generations") {
+             if(argc <= i+1) {
+                std::cerr << "Missing evo_generations in argument. Terminating." << std::endl;
+                exit(-1);
+            }
+
+            int evo_generations = atoi(argv[i+1]);
+            Configurator::getInstance().evo_generations = evo_generations;
+            cout << "Setting evo_generations parameter to " << evo_generations << "." << endl;
+            i++;
         } 
 
         if(input == "--prereduced_base") {
