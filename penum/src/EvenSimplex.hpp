@@ -47,6 +47,11 @@ template <typename T> class autoarray1d {
     std::vector<T> data;
 
     public:
+    autoarray1d () {
+    	data.reserve(2000);
+    	data.resize(2000);
+    }
+
     T& operator [] (int i) {
         if (i<0) {
             cerr << "autoarray1d: range error" << endl;
@@ -55,6 +60,7 @@ template <typename T> class autoarray1d {
 
         if ((cpp_int)i>=data.size()) {
             data.resize(i+1);
+            cout << "Calling resize 1D" << endl;
         }
         return data[i];
     }
@@ -74,17 +80,38 @@ template <typename T> class autoarray2d {
     autoarray1d<autoarray1d<T> > data;
 
     public:
+    autoarray2d () {
+    	data.resize(2000);
+    }
+
     autoarray1d<T>& operator [] (int i) {
-        if (i<0) {
+       /*if (i<0) {
             cerr << "autoarray2d: range error" << endl;
             exit(0);
         }
 
-        if (i>=data.size()) {
+       if (i>=data.size()) {
             data.resize(i+1);
-        }
+            cout << "Calling resize 2D" << endl;
+        }*/
+
         return data[i];
     }
+
+    autoarray1d<T>& operator [] (int i) const {
+       /*if (i<0) {
+            cerr << "autoarray2d: range error" << endl;
+            exit(0);
+        }
+
+       if (i>=data.size()) {
+            data.resize(i+1);
+            cout << "Calling resize 2D" << endl;
+        }*/
+
+        return data[i];
+    }
+
     int size() {return data.size();};
     void resize(int i) {data.resize(i);};
 
@@ -303,7 +330,7 @@ namespace EvenSimplex {
 	            return EvenSimplexVolumeWrapperMain<DFLOAT,long double>(rd,dim,option,parallel,-1,uprob,diag);
 	        } else
 	        if (dim<=85) {
-	            return EvenSimplexVolumeWrapperMain<DFLOAT,float10>(rd,dim,option,parallel,-1,uprob,diag);
+	            return EvenSimplexVolumeWrapperMain<DFLOAT,float10>(rd,dim,option,parallel,-1,uprob,diag); //float10
 	        } else
 	        if (dim<=115) {
 	            return EvenSimplexVolumeWrapperMain<DFLOAT,float30>(rd,dim,option,parallel,-1,uprob,diag);

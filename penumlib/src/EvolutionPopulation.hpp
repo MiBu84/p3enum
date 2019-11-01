@@ -397,9 +397,11 @@ private:
 
 		for(int i=0; i < sol1._dim; i++) {
 			// Prevent shift to negative values
-			sol_res._prun_func[i] = std::max<FT> (sol1._prun_func[i] + shiftfloat, FT(1e-3));
+			sol_res._prun_func[i] = std::min<FT>(std::max<FT> (sol1._prun_func[i] + shiftfloat, FT(1e-3)), FT(1.0));
 		}
 
+		sol_res.resetProbs();
+		sol_res.calculateCosts();
 		return sol_res;
 	}
 

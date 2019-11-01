@@ -250,10 +250,10 @@ public:
 		}
 
 		cout << "Time for Annealing: " << omp_get_wtime() - algstart << " s." << endl;
-		cout << "All solutions: " << endl;
+		/*cout << "All solutions: " << endl;
 		for(unsigned int i=0; i<number_of_bkz_types;i++) {
 			sol_per_thread[i].printSolution();
-		}
+		}*/
 
 
 		cout << "Found final best Solution of thread " << idx <<": " << endl;
