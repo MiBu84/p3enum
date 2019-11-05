@@ -124,6 +124,8 @@ public:
 			int succcnt = 0;
 
 			EvolutionarySolution<FT> tomodify_sol = starting_sol_loc;
+            
+            // Warmup
 
 			// Generate target_size random solutions
 			_populations[tid].clear();

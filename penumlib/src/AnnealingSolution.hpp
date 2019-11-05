@@ -715,6 +715,40 @@ public:
 		_costs /= FT1(_ainfo._number_of_random_bases);
 		_costs_calculated = true;
 		_costs = round( _costs * 1000.0) / 1000.0;
+		
+		/*if(_costs < 0.01) {
+		_costs = FT1(0.0);
+			for(int i=0; i<_ainfo._number_of_random_bases; i++) {
+				// We can calculate bases in parallel but with a time penalty of factor 1.5
+				_t_reduction[i] = (FT1(_bkz_info.rtime[i]));
+
+				const vector<vector<FT1>>& bs_tmp = this->_bench_mark->getBsForBetaPair(_bkz_info.betas);
+				const long double* bs_ptr = bs_tmp[i].data();
+				FT1 amax_tmp = _bkz_info.amax[i];
+				_est_nodes[i]= estimateNumberOfNodesInTree<FT1, FT1>(_prun_func, amax_tmp, _dim, bs_ptr, _probs[i], !_probs_initialized[i]);
+
+				_probs_initialized[i] = true;
+				_t_enums[i] = _ainfo._time_per_node * _est_nodes[i];
+
+				_succ_prob[i] = _probs[i][_dim];
+
+				// If each thread enumerates for itself
+				FT1 prob_one_shot = _succ_prob[i];
+				FT1 prob_thread_shots =  FT1(1) - pow((FT1(1) - prob_one_shot), _ainfo._number_of_parallel_reducing_threads);
+
+				// With Bernoulli and 0.99 chance as average
+				_base_costs[i] = (log(FT1(0.0001)) / (log(FT1(1.0) - prob_thread_shots))) * (_t_reduction[i] + _t_enums[i]);
+				cout << _base_costs[i] << endl;
+				cout << prob_thread_shots << " " << _t_reduction[i] << " " << _t_enums[i] << endl;
+				_costs += _base_costs[i];
+			}
+			_costs /= FT1(_ainfo._number_of_random_bases);
+			_costs_calculated = true;
+			_costs = round( _costs * 1000.0) / 1000.0;	
+			int stop = 1;
+			cin >> stop;
+		}*/
+		
 		return this->_costs;
 	}
 

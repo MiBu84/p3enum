@@ -260,7 +260,7 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 
 			EvolutionaryOptimizer<long double> evo_opt = EvolutionaryOptimizer<long double>(ainfo);
 			evo_opt.doEvolution(B, prunfunc);
-			//return 0;
+			return 0;
 
 			SimulatedAnnealer<long double> annealer = SimulatedAnnealer<long double>(ainfo);
 			annealer.anneal(B, prunfunc);
