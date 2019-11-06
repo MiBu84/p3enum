@@ -178,6 +178,7 @@ public:
 
 				std::advance(it, rnd);
 				new_gen_child = *it;
+#pragma omp atomic
 				this->no_of_keeping++;
 			}
 
@@ -196,6 +197,7 @@ public:
 					new_gen_child.modifyToNeighborSolution(false, false);
 				}
 				new_gen_child.calculateCosts();
+#pragma omp atomic
 				this->no_of_mutations++;
 			}
 
@@ -214,6 +216,7 @@ public:
 				std::advance(it2, rnd2);
 
 				new_gen_child =  crossingOver(*it1, *(it2));
+#pragma omp atomic
 				this->no_of_crossing_over++;
 			}
 
@@ -232,6 +235,7 @@ public:
 				std::advance(it2, rnd2);
 
 				new_gen_child =  recombine(*it1, *(it2));
+#pragma omp atomic
 				this->no_of_recombines++;
 			}
 
@@ -244,6 +248,7 @@ public:
 
 				std::advance(it, rnd);
 				new_gen_child = shift(*it);
+#pragma omp atomic
 				this->no_of_shifts++;
 			}
 

@@ -71,7 +71,7 @@ public:
 			return amax_for_seed(-2, -2);
 		}
 
-		int advance_no = num-1;
+		int advance_no = num;
 		std::advance(inner_it, advance_no);
 
 		if(inner_it == seedentr.end()) {

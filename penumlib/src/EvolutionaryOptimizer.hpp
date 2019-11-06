@@ -13,6 +13,7 @@
 #include "BKZBenchmarker.hpp"
 #include "MBVec.hpp"
 #include <boost/progress.hpp>
+//#include <boost/timer/progress_display.hpp>
 
 template <class FT>
 class EvolutionaryOptimizer {
@@ -21,38 +22,36 @@ public:
 		this->_ainfo = ainfo;
 		_threads=ainfo._number_of_annealing_threads;
 
-		//cout << "Creating " << _threads << " populations." << endl;
-
-		for(int i=0; i<_threads; i++)
-			_populations.push_back(EvolutionPopulation<FT>(250));
+		/*for(int i=0; i<_threads; i++)
+			_populations.push_back(EvolutionPopulation<FT>(250));*/
 
 	}
 
 	EvolutionaryOptimizer() {
 		this->_ainfo = AnnealInfo<FT>();
-		_populations.push_back(EvolutionPopulation<FT>(250));
+		/*_populations.push_back(EvolutionPopulation<FT>(250));*/
 		_threads=1;
 	}
 
 	EvolutionaryOptimizer(EvolutionaryOptimizer& other) {
 		this->_ainfo = other._ainfo;
 		this->_threads = other._threads;
-		for(int i=0; i<_threads; i++)
-			this->_populations[i] = other._populations[i];
+		/*for(int i=0; i<_threads; i++)
+			this->_populations[i] = other._populations[i];*/
 	}
 
 	EvolutionaryOptimizer(const EvolutionaryOptimizer& other) {
 		this->_ainfo = other._ainfo;
 		this->_threads = other._threads;
-		for(int i=0; i<_threads; i++)
-			this->_populations[i] = other._populations[i];
+		/*for(int i=0; i<_threads; i++)
+			this->_populations[i] = other._populations[i];*/
 	}
 
 	EvolutionaryOptimizer& operator= (const EvolutionaryOptimizer & other) {
 		this->_ainfo = other._ainfo;
 		this->_threads = other._threads;
-		for(int i=0; i<_threads; i++)
-			this->_populations[i] = other._populations[i];
+		/*for(int i=0; i<_threads; i++)
+			this->_populations[i] = other._populations[i];*/
 
 		return *this;
 	}
@@ -102,18 +101,22 @@ public:
 		const int one_percent_of_generations = (int)ceil(((double)generations_to_process*0.01));
 		int next_generation_target = one_percent_of_generations;
 		int print_cnt = 0;
-
+		int stages_without_improvement = 0;
 		//boost::progress_display show_progress(generations);
 
 
 		double tstart = omp_get_wtime();
 		EvolutionarySolution<FT> starting_sol_glob = EvolutionarySolution<FT>(&benchi, circ, _ainfo);
+		starting_sol_glob.calculateCosts();
 		EvolutionarySolution<FT> glob_best_sol;
+		cout << "Initial costs: " << starting_sol_glob.getCost() << endl;
 
 #pragma omp parallel num_threads (numthreads) shared(generations_done)
 {
 		int tid = omp_get_thread_num();
-		EvolutionarySolution<FT> starting_sol_loc = starting_sol_glob;
+		EvolutionPopulation<FT> mypop = EvolutionPopulation<FT>(250);
+		//.push_back(EvolutionPopulation<FT>(250));
+		EvolutionarySolution<FT> starting_sol_loc = EvolutionarySolution<FT>(&benchi, circ, _ainfo);
 
 #pragma omp for
 		for(unsigned int ci = 0; ci < number_of_bkz_types; ci++) {
@@ -128,23 +131,25 @@ public:
             // Warmup
 
 			// Generate target_size random solutions
-			_populations[tid].clear();
-			_populations[tid].insertIndividual(tomodify_sol);
+			mypop.clear();
+			mypop.insertIndividual(tomodify_sol);
 
-			for(unsigned int i=1; i < _populations[tid].getTargetSize(); i++) {
+			for(unsigned int i=1; i < mypop.getTargetSize(); i++) {
 				for(int ii=0; ii<10000; ii++) {
 					tomodify_sol.modifyToNeighborSolution(false, false);
 				}
 				tomodify_sol.calculateCosts();
-				_populations[tid].insertIndividual(tomodify_sol);
+				mypop.insertIndividual(tomodify_sol);
 				tomodify_sol = starting_sol_loc;
 
 			}
 
-			for (int ac =0; ac<generations; ac++) {
-				FT best = _populations[tid].getMaxFitness();
-				_populations[tid].nextGeneration();
-				FT new_best = _populations[tid].getMaxFitness();
+			for (int ac =0; ac<generations &&
+			stages_without_improvement < one_percent_of_generations*5;
+			ac++) {
+				FT best = mypop.getMaxFitness();
+				mypop.nextGeneration();
+				FT new_best = mypop.getMaxFitness();
 
 				if (new_best > best) {
 					succcnt++;
@@ -153,8 +158,23 @@ public:
 
 #pragma omp critical
 				{
-					if(glob_best_sol.getCost() > _populations[tid].getBestIndiviual().getCost()) {
-						glob_best_sol = _populations[tid].getBestIndiviual();
+					if(glob_best_sol.getCost() > mypop.getBestIndiviual().getCost()) {
+						// Calculate improvement
+						FT improvement = (glob_best_sol.getCost() - mypop.getBestIndiviual().getCost()) - FT(1.0);
+
+						if(abs(improvement) < 5e-4) {
+							stages_without_improvement++;
+							cout << "Impr:" << improvement << endl;
+						}
+						else
+							stages_without_improvement=0;
+
+						glob_best_sol = mypop.getBestIndiviual();
+
+
+					}
+					else {
+						stages_without_improvement++;
 					}
 				}
 
@@ -164,6 +184,8 @@ public:
 
 				if(tid==0) {
 					if(generations_done > next_generation_target) {
+
+
 						next_generation_target += one_percent_of_generations;
 						print_cnt++;
 
@@ -173,7 +195,7 @@ public:
 						double expected_remaining_time = time_per_gen * (double)generations_remaining;
 
 						cout << "(" << print_cnt << " \%): " << generations_done << "/" << generations_to_process
-								<< ", lowest costs: " << _populations[tid].getBestIndiviual().getCost()
+								<< ", lowest costs: " << glob_best_sol.getCost()
 								<< ", remaining: " << expected_remaining_time << "s." << endl;
 					}
 					//++show_progress;
@@ -183,12 +205,12 @@ public:
 			cout << succcnt << " out of " << attempcnt << endl;
 		} // End BKZ types
 
-#pragma omp single
+#pragma omp critical
 		{
-			writeTempResultToFile(starttimestr, _populations, number_of_bkz_types, generations_done);
+			/*writeTempResultToFile(starttimestr, mypop, number_of_bkz_types, generations_done);
 
 			FT mincost = numeric_limits<FT>::max();
-			unsigned int mincost_idx = _populations.size();
+			unsigned int mincost_idx = mypop.size();
 
 			for(int i=0; i<_threads; i++) {
 				if(_populations[i].getBestIndiviual().getCost() < mincost) {
@@ -198,18 +220,23 @@ public:
 			}
 
 			if (mincost_idx < _populations.size()) {
-				cout << "Found minimal solution: " << endl;
+
 				_populations[mincost_idx].getBestIndiviual().printSolution();
 				_populations[mincost_idx].printStatistics();
 			}
 
 			else {
 				cerr << "Index " << mincost_idx << " for minimal solution invalid." << endl;
-			}
+			}*/
 
 		}
 
 	} // end parallel
+	cout << "Found minimal solution: " << endl;
+	glob_best_sol.printSolution();
+
+	//writeTempResultToFile(starttimestr, mypop, number_of_bkz_types, generations_done);
+
 	cout << "Evolution's duration: " << omp_get_wtime() - tstart << " sec." << endl;
 	}
 
@@ -218,10 +245,10 @@ public:
 
 protected:
 	AnnealInfo<FT> _ainfo;
-	std::vector<EvolutionPopulation<FT>> _populations;
+	//std::vector<EvolutionPopulation<FT>> _populations;
 	int _threads;
 
-	int writeTempResultToFile(std::string ident, vector<EvolutionPopulation<FT>>& pops,
+	int writeTempResultToFile(std::string ident, EvolutionPopulation<FT> pops,
 				const int numthreads, const int generation) {
 			std::string fname = "evolution-log-";
 			fname.append(ident);
@@ -233,17 +260,17 @@ protected:
 
 			FT mincost = FT(std::numeric_limits<long double>::max());
 			int idx = -1;
-			for(int i=0; i<numthreads;i++) {
-				if(pops[i].getBestIndiviual().getCost() < mincost) {
+			/*for(int i=0; i<numthreads;i++) {
+				if(pops.getBestIndiviual().getCost() < mincost) {
 					mincost = pops[i].getBestIndiviual().getCost();
 					idx = i;
 				}
-			}
+			}*/
 
 			stringstream ss;
 
 			ss << "Found final Solution of thread " << idx <<": " << endl;
-			pops[idx].getBestIndiviual().printSolutionToSStream(ss);
+			pops.getBestIndiviual().printSolutionToSStream(ss);
 			ss << "Final costs: " << mincost << endl;
 			ss << "In " << generation << " generations." << endl;
 

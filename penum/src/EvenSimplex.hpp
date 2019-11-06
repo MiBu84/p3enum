@@ -264,9 +264,22 @@ namespace EvenSimplex {
 	        mpfr_flag = true;
 	    }
 
-	    CFLOAT** F = (CFLOAT**)shared_memory::allocate2<CFLOAT>(14002,dim+1,dim+1);
+
+	    CFLOAT** F = NULL;
+#pragma omp critical
+	{
+	    F = (CFLOAT**)shared_memory::allocate2<CFLOAT>(14002,dim+1,dim+1);
+	}
+
 	    //CFLOAT* bin = (CFLOAT*)shared_memory::allocate1<CFLOAT>(3332,dim+1);
-	    CFLOAT* CR = (CFLOAT*)shared_memory::allocate1<CFLOAT>(3333,dim+1);
+
+	    CFLOAT* CR = NULL;
+
+#pragma omp critical
+	    {
+	    CR = (CFLOAT*)shared_memory::allocate1<CFLOAT>(3333,dim+1);
+	    }
+
 	    for (int i=1;i<=dim;i++) CR[i] = boost::lexical_cast<CFLOAT>(rd[i]);
 	    for (int i=0;i<dim;i++) F[0][i] = 0;
 
