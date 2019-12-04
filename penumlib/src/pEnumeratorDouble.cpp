@@ -28,7 +28,9 @@
 #include <vector>
 
 // fpllltest
+#include <cstdio>
 #include <cstdlib>
+#include <immintrin.h>
 #include <fplll.h>
 
 #define auxCeil(x) ((double)(long)((x)+1))
@@ -148,7 +150,8 @@ pEnumeratorDouble::pEnumeratorDouble(int dim) {
 		this->r[nt] = new int[ _dim + 4];
 		this->sigma[nt] = new double*[ _dim + 4 ];
 		for(int i = 0; i < _dim + 4; i++) {
-			this->sigma[nt][i] = new double[ _dim + 4 ];
+			//this->sigma[nt][i] = new double[ _dim + 4 ];
+			this->sigma[nt][i] = static_cast<double*>(std::aligned_alloc(64, (_dim + 4 ) * sizeof(double)));
 		}
 	}
 
@@ -305,9 +308,13 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 		mat_RR mu;
 		vec_RR bstar;
 
-		double** p_mu = new double*[B.NumRows()];
+		//double** p_mu = new double*[B.NumRows()];
+		//for(int i=0; i<B.NumRows(); i++)
+			//p_mu[i] = new double[B.NumRows()];
+
+		double** p_mu = static_cast<double**>(std::aligned_alloc(64, (B.NumRows() ) * sizeof(double**)));
 		for(int i=0; i<B.NumRows(); i++)
-			p_mu[i] = new double[B.NumRows()];
+			p_mu[i] = static_cast<double*>(std::aligned_alloc(64, (B.NumRows() ) * sizeof(double*)));
 
 		double* p_bstar = new double[B.NumRows()];
 		int* p_u = new int[B.NumRows()+2];
@@ -455,7 +462,8 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 			for(int i = 0; i < B.NumRows(); i++) {
 				p_bstar[i] = NTL::conv<double>(bstar[i]);
 				for(int j = 0; j < B.NumCols(); j++) {
-					p_mu[i][j] = NTL::conv<double>(mu[i][j]);
+					//p_mu[i][j] = NTL::conv<double>(mu[i][j]);
+					p_mu[i][j] = NTL::conv<double>(mu[j][i]); //ToDo: Trial with transposed matrix for access pattern
 				}
 			}
 			int dim = B.NumCols();
@@ -541,9 +549,12 @@ double pEnumeratorDouble::solveSVPMP(mat_ZZ& B, vec_ZZ& vec) {
 		delete[] p_bstar;
 		delete[] p_u;
 		delete[] p_prunfunc;
+		//for(int i=0; i<B.NumRows(); i++)
+		//   delete[] p_mu[i];
+		//delete[] p_mu;
 		for(int i=0; i<B.NumRows(); i++)
-		   delete[] p_mu[i];
-		delete[] p_mu;
+		   std::free(p_mu[i]);
+		std::free(p_mu);
 } // End parallel
 		return act_A;
 }
@@ -1563,93 +1574,175 @@ double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm
 		int* u, MBVec<double> prunefunc_in, int j, int k, int dim, double Ain=-1) {
 
 	int tid = omp_get_thread_num();
-	long long nodecnt = 0;
+	double sum_arr[64] __attribute__((aligned(64)));
+		long long nodecnt = 0;
 
-	for(int i=0; i< _dim + 2; i++) {
-		r[tid][i] = i;
-		for(int j=0; j < _dim + 2; j++) {
-			sigma[tid][i][j] = 0.0;
+		for(int i=0; i< _dim + 2; i++) {
+			r[tid][i] = i;
+			for(int j=0; j < _dim + 4; j++) {
+				sigma[tid][i][j] = 0.0;
+			}
 		}
-	}
 
-	int* umin = new int[dim + 2];
-	int* v = new int[dim + 2];
-	double* l = new double[dim + 2];
-	double* c = new double[dim + 2];
+		int* umin = new int[dim + 2];
+		//double* uloc = new double[dim + 2];
+		double* uloc = static_cast<double*>(std::aligned_alloc(64, (dim + 2) * sizeof(double*)));
+		double* v = new double[dim + 2];
+		double* l = new double[dim + 2];
+		double* c = new double[dim + 2];
 
-	// To decide the zigzag pattern
-	int* Delta = new int[dim + 2];
-	int* delta = new int[dim + 2];
+		// To decide the zigzag pattern
+		int* Delta = new int[dim + 2];
+		int* delta = new int[dim + 2];
 
-	int s;
-	int t; // s d for zigzagpattern
+		int s;
+		int t; // s d for zigzagpattern
 
-	double A = bstarnorm[j] * 1.0001;
-	if(Ain == -1)
-		A = bstarnorm[j] * 1.0001;
-	else
-		A = Ain;
+		double A = bstarnorm[j] * 1.0001;
+		if(Ain == -1)
+			A = bstarnorm[j] * 1.0001;
+		else
+			A = Ain;
 
-	for(long i=0; i <= dim + 1; i++) {
-		c[i] = 0.0;
-        l[i] = 0;
-		Delta[i] = v[i] = 0.0;
-		delta[i] = 1.0;
-		umin[i] = u[i] = 0;
-	}
+		for(long i=0; i <= dim + 1; i++) {
+			c[i] = 0.0;
+	        l[i] = 0;
+			Delta[i] = v[i] = 0.0;
+			delta[i] = 1.0;
+			umin[i] = u[i] = 0;
+		}
 
-	s = t = j;
+		s = t = j;
 
-	for(long i=j; i <= k+1; i++) {
-		umin[i] = u[i] = 0;
-	}
-	u[j] = umin[j] = 1;
+		for(long i=j; i <= k+1; i++) {
+			umin[i] = u[i] = 0;
+			uloc[i] = 0.0;
+		}
+		u[j] = umin[j] = 1;
+		uloc[j] = 1.0;
+
+		double tstart = omp_get_wtime();
+		while (true) {
+
+			l[t] = l[ t + 1 ] + ( (uloc[t]) + c[t] ) * ( (uloc[t]) + c[t] ) * bstarnorm[t];
+
+			if(l[t] < prunefunc_in[t]) {
+				nodecnt++;
+
+				if(t > j) {
+					t = t - 1;
+
+					r[tid][t] = std::max<int>(r[tid][t], r[tid][t+1]);
+
+					for(int jj = r[tid][t+1]; jj > t + 1; jj--) {
+						sigma[tid][t][jj-1] = sigma[tid][t][jj] + uloc[jj-1] * mu[t][jj-1];
+					}
+					c[t] = sigma[tid][t][t+1];
+
+					//double* sigmaw = &sigma[tid][t][_dim + 3 - (r[tid][t+1]-1)];
+					//double* sigmar = &sigma[tid][t][_dim + 3 - r[tid][t+1]];
 
 
-	double tstart = omp_get_wtime();
-	while (true) {
+					/*int jj=r[tid][t+1];
 
-		l[t] = l[ t + 1 ] + ( (u[t]) + c[t] ) * ( (u[t]) + c[t] ) * bstarnorm[t];
+					int cnt = 1;
+					if((jj-4) % 4 == 0)
+					{
+						__m256i zero = _mm256_setzero_si256 ();
+						for(jj = r[tid][t+1]; jj - 3  > t + 1; jj-=4) {
+							__m256d u_avx = _mm256_load_pd (&uloc[jj-4]);
+							__m256d mu_avx = _mm256_load_pd (&mu[t][jj-4]);
+							__m256d sum_arr_avx = _mm256_mul_pd (u_avx, mu_avx);
 
-		if(l[t] < prunefunc_in[t]) {
-			nodecnt++;
-			if(t > j) {
-				t = t - 1;
+							//__m256d arr2 = _mm256_loadu_pd (&sigma[tid][t][(jj - 0)]);
+							__m256d arr2 = _mm256_i64gather_pd (&sigma[tid][t][(jj - 0)], zero, 1);
+							sum_arr_avx = _mm256_add_pd(arr2, sum_arr_avx);
+							_mm256_store_pd (sum_arr, sum_arr_avx);
 
-				r[tid][t] = std::max<int>(r[tid][t], r[tid][t+1]);
+							//sum_arr[3] += sigma[tid][t][(jj - 0)];
+							sum_arr[2] += sum_arr[3];
+							sum_arr[1] += sum_arr[2];
+							sum_arr[0] += sum_arr[1];
 
-				for(int j = r[tid][t+1]; j > t + 1; j--) {
-					sigma[tid][t][j-1] = sigma[tid][t][j] + u[j-1] * mu[j-1][t];
+
+							//sum_arr_avx = _mm256_setr_pd (sum_arr[0], sum_arr[1], sum_arr[2], sum_arr[3]);
+							//_mm256_store_pd(&sigma[tid][t][(jj-4)], sum_arr_avx);
+
+							//_mm256_stream_pd (sum_arr, sum_arr_avx);
+
+							sigma[tid][t][(jj-1)] = sum_arr[3];
+							sigma[tid][t][(jj-2)] = sum_arr[2];
+							sigma[tid][t][(jj-3)] = sum_arr[1];
+							sigma[tid][t][(jj-4)] = sum_arr[0];
+
+
+							//sigma[tid][t][_dim + 3 - (jj-1)] = sigma[tid][t][_dim + 3 - (jj - 0)] + uloc[jj-1] * mu[t][jj-1];
+							//sigma[tid][t][_dim + 3 - (jj-2)] = sigma[tid][t][_dim + 3 - (jj - 1)] + uloc[jj-2] * mu[t][jj-2];
+							//sigma[tid][t][_dim + 3 - (jj-3)] = sigma[tid][t][_dim + 3 - (jj - 2)] + uloc[jj-3] * mu[t][jj-3];
+							//sigma[tid][t][_dim + 3 - (jj-4)] = sigma[tid][t][_dim + 3 - (jj - 3)] + uloc[jj-4] * mu[t][jj-4];
+							//*sigmaw = *sigmar + uloc[jj-1] * mu[t][jj-1]; //ToDo: Trial with transposed matrix for access pattern
+							//sigmaw++;
+							//sigmar++;
+						}
+					}
+
+
+
+					for(; jj > t + 1; jj--) {
+						//sigma[tid][t][_dim + 3 - (jj-1)] = sigma[tid][t][_dim + 3 - jj - 0] + uloc[jj-1] * mu[t][jj-1];
+						sigma[tid][t][jj-1] = sigma[tid][t][jj - 0] + uloc[jj-1] * mu[t][jj-1];
+					}
+
+
+					c[t] = sigma[tid][t][t+1];*/
+
+					r[tid][t+1] = t + 1;
+
+					// Activate to not use caching
+					//c[t] = muProdDouble(u, mu, t, s/*dim-1*/);
+
+					uloc[t] = v[t] = optroundF(-c[t] - 0.5);
+
+					// For ZigZag
+					Delta[t] = 0;
+					if(uloc[t] > -c[t]) {
+						delta[t] = - 1;
+					}
+					else {
+						delta[t] = 1;
+					}
 				}
-				r[tid][t+1] = t + 1;
 
-				c[t] = sigma[tid][t][t+1];
-
-				// Activate to not use caching
-				//c[t] = muProdDouble(u, mu, t, s/*dim-1*/);
-                
-                u[t] = v[t] = optroundF(-c[t] - 0.5);        
-
-				// For ZigZag
-				Delta[t] = 0;
-				if(u[t] > -c[t]) {
-					delta[t] = - 1;
-				}
 				else {
-					delta[t] = 1;
+					A = l[t];
+
+					for(long i=j; i <= k; i++) {
+						umin[i] = (int)uloc[i];
+					}
+
+					// Avoid visiting short vector twice
+					// When bound is not updated
+					t = t + 1;
+
+					if(t > k) {
+						break;
+					}
+
+					r[tid][t] = t+1;
+
+					s = max(s,t);
+
+					if (t<s)
+						Delta[t] = -Delta[t];
+
+					if(Delta[t] * delta[t] >= 0) Delta[t] += delta[t];
+						uloc[t] = v[t] + Delta[t];
 				}
 			}
 
 			else {
-				A = l[t];
-
-				for(long i=j; i <= k; i++) {
-					umin[i] = u[i];
-				}
-
-				// Avoid visiting short vector twice
-				// When bound is not updated
 				t = t + 1;
+
 
 				if(t > k) {
 					break;
@@ -1663,50 +1756,31 @@ double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm
 					Delta[t] = -Delta[t];
 
 				if(Delta[t] * delta[t] >= 0) Delta[t] += delta[t];
-					u[t] = v[t] + Delta[t];
+				uloc[t] = v[t] + Delta[t];
 			}
 		}
 
-		else {
-			t = t + 1;
-
-
-			if(t > k) {
-				break;
-			}
-
-			r[tid][t] = t+1;
-
-			s = max(s,t);
-
-			if (t<s)
-				Delta[t] = -Delta[t];
-
-			if(Delta[t] * delta[t] >= 0) Delta[t] += delta[t];
-			u[t] = v[t] + Delta[t];
+		for(long i=j; i <= k; i++) {
+			u[i] = umin[i];
 		}
+		double tend = omp_get_wtime();
 
-	}
+		cout << "[Thread: " << tid << "]\t"
+			<< "Time ENUM: " << (tend - tstart)
+				<< " / Speed:  " << (double)(nodecnt) / (tend - tstart) << " nodes/s ("
+				<< nodecnt << " nodes)." << endl;
 
-	for(long i=j; i <= k; i++) {
-		u[i] = umin[i];
-	}
-	double tend = omp_get_wtime();
+		// clean memory
+		delete[] umin;
+		//delete[] uloc;
+		std::free(uloc);
+		delete[] v;
+		delete[] l;
+		delete[] c;
+		delete[] Delta;
+		delete[] delta;
 
-	cout << "[Thread: " << tid << "]\t"
-		<< "Time ENUM: " << (tend - tstart)
-			<< " / Speed:  " << (double)(nodecnt) / (tend - tstart) << " nodes/s ("
-			<< nodecnt << " nodes)." << endl;
-
-	// clean memory
-	delete[] umin;
-	delete[] v;
-	delete[] l;
-	delete[] c;
-	delete[] Delta;
-	delete[] delta;
-
-	return A;
+		return A;
 }
 
 

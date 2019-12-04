@@ -114,7 +114,7 @@ public:
 
 		AnnealingSolution<FT> starting_sol = AnnealingSolution<FT>(&benchi, circ, _ainfo);
 
-		double T_target = Configurator::getInstance().ann_target_temp;
+		double T_target = Configurator::getInstance().get_ann_target_temp();
 		double cooling_rate = Configurator::getInstance().ann_cooling_rate;
         
         cout << "Target temp: " << T_target 

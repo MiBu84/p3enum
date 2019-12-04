@@ -839,11 +839,22 @@ int readRunningTimes(int argc, char** argv) {
 
 int main(int argc, char** argv)
 {
+    long double one_shit = 0.00000000555771;
+    int threads = 24;
+    
+    long double result = (long double)(1) - pow(((long double)(1) - one_shit), threads);
+    cout << "Res: " << result << endl;
+    
+    //return 0;
 	readRunningTimes(argc, argv);
 
 #pragma omp parallel
-#pragma omp single nowait
+	{
+#pragma omp single
+	{
 	cout << "Working threads: " << omp_get_num_threads() << endl;
+	}
+	}
 
 #ifdef USE_MB_TYPES
 	cout << "Using MB types." << endl;
@@ -1100,7 +1111,7 @@ int main(int argc, char** argv)
             }
 
             double ann_target_temp = atof(argv[i+1]);
-            Configurator::getInstance().ann_target_temp = ann_target_temp;
+            Configurator::getInstance().set_ann_target_temp(ann_target_temp);
             i++;
         }
         

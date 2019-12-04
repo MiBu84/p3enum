@@ -132,7 +132,17 @@ public:
 
 	}
 
-	BKZInfo<FT1>& next() {
+	BKZBenchmarker& operator= (const BKZBenchmarker & other) {
+		this->_dim = other._dim;
+		this->_data = other._data;
+		this->_bs_data = other._bs_data;
+		this->_ainfo = other._ainfo;
+		this->B_org = other.B_org;
+		this->_seeds = other._seeds;
+		this->_amax = other._amax;
+	}
+
+	const BKZInfo<FT1>& next() const {
 		auto it = _data.begin();
 		return it->second;
 	}
@@ -226,8 +236,8 @@ public:
 		return doBenchmark(bconfig);
 	}
 
-	int printMap() {
-		for(auto it = _data.begin(); it != _data.end(); it++) {
+	int printMap() const {
+		for(auto it = _data.begin(); it != _data.end(); it++)  {
 			cout << it->second.betas.first << " , ";
 			cout << it->second.betas.second << endl;
 
@@ -247,11 +257,22 @@ public:
 		return 0;
 	}
 
-	const vector<vector<FT1>> getBsForBetaPair (const BetaPair& bpair) {
-		return this->_bs_data[bpair];
+	const vector<vector<FT1>> getBsForBetaPair (const BetaPair& bpair)  {
+		//cout << "Search for beta " << bpair.first << " / " << bpair.second << endl;
+		//cout << "Size of map is " << this->_bs_data.size() << endl;
+
+		auto it = this->_bs_data.find(bpair);
+
+		if(it==_bs_data.end()) {
+			cout << "Cannot find beta for " << bpair.first << " / " << bpair.second << endl;
+		}
+
+		//cout << "Length of result is: " << it->second.size() << endl;
+
+		return it->second;
 	}
 
-	std::string createFilenameForConfig() {
+	std::string createFilenameForConfig() const {
 		std::string filename = "BKZPeformance_dim";
 		filename.append(std::to_string(this->_dim));
 		filename.append("_bases");
@@ -266,7 +287,7 @@ public:
 	}
 
 	template <class FT>
-	int writeTablesToFile() {
+	int writeTablesToFile() const {
 		ofstream myfile;
 		myfile.open (createFilenameForConfig());
 
@@ -283,7 +304,9 @@ public:
 				myfile << it->second.amax[i] << " , ";
 				myfile << (overall_cnt++) << endl;
 
-				const vector<vector<FT1>>& bs_temp = _bs_data[it->second.betas];
+				//const vector<vector<FT1>>& bs_temp = _bs_data[it->second.betas];
+
+				auto bs_temp = _bs_data.find(it->second.betas)->second;
 				for(auto it2 = bs_temp[i].begin(); it2 != bs_temp[i].end(); it2++) {
 					myfile << *it2 << endl;
 				}
@@ -523,19 +546,19 @@ public:
 		return 0;
 	}
 
-	std::map<BetaPair, BKZInfo<FT1>>& getDataMap() {
+	const std::map<BetaPair, BKZInfo<FT1>>& getDataMap() {
 		return this->_data;
 	}
 
-	unsigned int size() {
+	unsigned int size() const {
 		return this->_data.size();
 	}
 
-	int getSeedFor(int pos) {
+	int getSeedFor(int pos) const {
 		return _seeds[pos];
 	}
 
-	double getAmaxFor (int pos) {
+	double getAmaxFor (int pos) const {
 		return _amax[pos];
 	}
 

@@ -17,13 +17,14 @@ public:
 
 	}
 
-	EvolutionarySolution(BKZBenchmarker<FT1>* bench_mark, const vector<FT1>& prun_func, const AnnealInfo<FT1>& ainfo) : AnnealingSolution<FT1> (bench_mark, prun_func, ainfo) {
+	EvolutionarySolution(BKZBenchmarker<FT1>* bench_mark, const vector<FT1>& prun_func,
+			const AnnealInfo<FT1>& ainfo) : AnnealingSolution<FT1> (bench_mark, prun_func, ainfo) {
 
 	}
 
-	EvolutionarySolution(EvolutionarySolution& other) {
-		this->_bench_mark = other._bench_mark;
-		this->_costs = other._costs;
+	EvolutionarySolution(EvolutionarySolution& other) : AnnealingSolution<FT1>(other) { //_bench_mark (other._bench_mark)
+		//this->_bench_mark = other._bench_mark;
+		/*this->_costs = other._costs;
 		this->_ainfo = other._ainfo;
 		this->_dim = other._dim;
 
@@ -84,12 +85,12 @@ public:
 			this->_bkz_info.amax[i] = other._bkz_info.amax[i];
 		}
 
-		this->setRandomID();
+		this->setRandomID();*/
 	}
 
-	EvolutionarySolution(const EvolutionarySolution& other) {
-		this->_bench_mark = other._bench_mark;
-		this->_costs = other._costs;
+	EvolutionarySolution(const EvolutionarySolution& other) : AnnealingSolution<FT1> (other) {
+		//this->_bench_mark = other._bench_mark;
+		/*this->_costs = other._costs;
 		this->_ainfo = other._ainfo;
 		this->_dim = other._dim;
 
@@ -150,16 +151,18 @@ public:
 			this->_bkz_info.amax[i] = other._bkz_info.amax[i];
 		}
 
-		this->setRandomID();
+		this->setRandomID();*/
 	}
 
 	EvolutionarySolution& operator= (const EvolutionarySolution & other) {
-		this->_bench_mark = other._bench_mark;
+		//this->_bench_mark = other._bench_mark;
 		this->_costs = other._costs;
 		this->_ainfo = other._ainfo;
 		this->_dim = other._dim;
 
 		this->_succ_prob.reserve(other._ainfo._number_of_random_bases);
+		this->_prob_thread_shots.reserve(other._ainfo._number_of_random_bases);
+		this->_no_of_shots.reserve(other._ainfo._number_of_random_bases);
 		this->_t_nodes.reserve(other._ainfo._number_of_random_bases);
 		this->_est_nodes.reserve(other._ainfo._number_of_random_bases);
 		this->_t_reduction.reserve(other._ainfo._number_of_random_bases);
@@ -167,6 +170,8 @@ public:
 		this->_base_costs.reserve(other._ainfo._number_of_random_bases);
 
 		this->_succ_prob.resize(other._ainfo._number_of_random_bases);
+		this->_prob_thread_shots.resize(other._ainfo._number_of_random_bases);
+		this->_no_of_shots.resize(other._ainfo._number_of_random_bases);
 		this->_t_nodes.resize(other._ainfo._number_of_random_bases);
 		this->_est_nodes.resize(other._ainfo._number_of_random_bases);
 		this->_t_reduction.resize(other._ainfo._number_of_random_bases);
@@ -180,6 +185,8 @@ public:
 
 		for(int i=0; i < other._ainfo._number_of_random_bases; i++) {
 			this->_probs_initialized[i] = other._probs_initialized[i];
+			this->_prob_thread_shots[i] = other._prob_thread_shots[i];
+			this->_no_of_shots[i] = other._no_of_shots[i];
 			this->_succ_prob[i] = other._succ_prob[i];
 			this->_t_nodes[i] = other._t_nodes[i];
 			this->_est_nodes[i] = other._est_nodes[i];
@@ -220,12 +227,14 @@ public:
 	}
 
 	EvolutionarySolution& operator= (EvolutionarySolution & other) {
-			this->_bench_mark = other._bench_mark;
+			//this->_bench_mark = other._bench_mark;
 			this->_costs = other._costs;
 			this->_ainfo = other._ainfo;
 			this->_dim = other._dim;
 
 			this->_succ_prob.reserve(other._ainfo._number_of_random_bases);
+			this->_prob_thread_shots.reserve(other._ainfo._number_of_random_bases);
+			this->_no_of_shots.reserve(other._ainfo._number_of_random_bases);
 			this->_t_nodes.reserve(other._ainfo._number_of_random_bases);
 			this->_est_nodes.reserve(other._ainfo._number_of_random_bases);
 			this->_t_reduction.reserve(other._ainfo._number_of_random_bases);
@@ -233,6 +242,8 @@ public:
 			this->_base_costs.reserve(other._ainfo._number_of_random_bases);
 
 			this->_succ_prob.resize(other._ainfo._number_of_random_bases);
+			this->_prob_thread_shots.resize(other._ainfo._number_of_random_bases);
+			this->_no_of_shots.resize(other._ainfo._number_of_random_bases);
 			this->_t_nodes.resize(other._ainfo._number_of_random_bases);
 			this->_est_nodes.resize(other._ainfo._number_of_random_bases);
 			this->_t_reduction.resize(other._ainfo._number_of_random_bases);
@@ -247,6 +258,8 @@ public:
 			for(int i=0; i < other._ainfo._number_of_random_bases; i++) {
 				this->_probs_initialized[i] = other._probs_initialized[i];
 				this->_succ_prob[i] = other._succ_prob[i];
+				this->_prob_thread_shots[i] = other._prob_thread_shots[i];
+				this->_no_of_shots[i] = other._no_of_shots[i];
 				this->_t_nodes[i] = other._t_nodes[i];
 				this->_est_nodes[i] = other._est_nodes[i];
 				this->_t_reduction[i] = other._t_reduction[i];
@@ -282,6 +295,7 @@ public:
 
 			//this->_id = other._id;
 			this->setRandomID();
+			//cout << "Changing ID from " << other._id << " to " << this->_id << endl;
 			return *this;
 		}
 
@@ -320,7 +334,7 @@ public:
 	}
 
 	FT1 getFitness() const {
-		return FT1(100000.0) / this->_costs;
+		return (FT1) ((1000000.0 / this->_costs) * (1000000.0 / this->_costs));
 	}
 
 	//void setFitness(FT1 f) {
@@ -335,6 +349,7 @@ public:
 	friend	EvolutionarySolution<FT> shift(const EvolutionarySolution<FT>& sol1);
 
 private:
+	//BKZBenchmarker<FT1>* const _bench_mark;
 	//FT1 _fitness;
 };
 
