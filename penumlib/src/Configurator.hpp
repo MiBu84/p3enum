@@ -94,6 +94,14 @@ public:
 		}
 	}
 
+	double get_ann_target_temp () const {
+		return ann_target_temp;
+	}
+
+	void set_ann_target_temp(double val) {
+		this->ann_target_temp = val;
+	}
+
 	static Configurator* _instance;
 
 	// Configuration variables
@@ -132,6 +140,7 @@ public:
 	int trials; // How many trial of pruned and randomized repetitions
 
 	double Aend;
+	double min_A_in_threads;
 	bool iterative_enumeration;
 
 	// Function Optimizer
@@ -149,6 +158,7 @@ public:
 	
 	double ann_target_temp;
     double ann_cooling_rate;
+    bool use_gh;
     int ann_iterations;
 
     // Evolutionary Function optimizer
@@ -196,6 +206,7 @@ private:
         }
 
 		Aend = numeric_limits<double>::max();
+		min_A_in_threads = numeric_limits<double>::max();
 		iterative_enumeration = false;
 
 		// Default: Use scaled pruning function
@@ -219,6 +230,7 @@ private:
 		ann_target_temp = 0.0000001;
         ann_cooling_rate = 0.999;
         ann_iterations = 10;
+        use_gh = false;
 
         // Evolutionary Function optimizer
         evo_generations = 400;

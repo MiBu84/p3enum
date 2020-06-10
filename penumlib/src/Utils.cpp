@@ -770,6 +770,7 @@ mat_ZZ randomizeMatrix(const mat_ZZ A, const vec_ZZ randoms, const int dim, cons
 }
 
 mat_RR GSO(const mat_ZZ& input, mat_RR& mu, vec_RR& c) {
+
 	ComputeGS(input, mu, c);
 	// set the diagonal
 	for (int i = 0; i < input.NumRows(); ++i)

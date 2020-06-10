@@ -83,7 +83,7 @@ private:
 			MBVec<int>& u, double* prunefunc_in, int j, int k, int rel_len, int dim, long long& locnodecnt, double Ain=-1.0 );
 
 	double BurgerEnumerationDouble(double** mu, double* bstarnorm,
-			int* u, MBVec<double> prunefunc_in, int j, int k, int dim, double Ain);
+			int* u, MBVec<double>& prunefunc_in, int j, int k, int dim, double Ain);
 
 	inline double muProdDouble (double* x, double** mu, const int t, const int s);
     inline double muProdDouble (int* x, double** mu, const int t, const int s);
@@ -117,6 +117,9 @@ private:
 	// To execute the benchmark
 	unsigned long long* node_cnt;
 	double * tstart_bench;
+
+	// To search a whole list of short vectors
+	bool _search_vector_list;
 
 	// To reduce number of multiplications
 	int** r;

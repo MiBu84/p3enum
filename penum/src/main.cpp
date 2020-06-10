@@ -21,6 +21,10 @@
 #include <boost/algorithm/string/classification.hpp> // Include boost::for is_any_of
 #include <boost/algorithm/string/split.hpp>
 
+#include "p3Matrix.hpp"
+#include "NTL/matrix.h"
+
+
 namespace fs = std::filesystem;
 
 
@@ -836,9 +840,55 @@ int readRunningTimes(int argc, char** argv) {
 	return 0;
 }
 
+int c = 4;
+
+void callee(int *x, int *y,int z)
+{
+	int ii;
+	static int cnt;
+	cnt++;
+	for (ii = 0; ii < z; ii++) {
+		*x = *y + c;
+	}
+
+	//cout << "cNT: " << cnt << endl;
+}
+
+void caller(int a[], int n)
+{
+	int i, j, m = 3;
+	#pragma omp parallel for
+	for (i = 0; i < n; i++) {
+		int k = m;
+		for (j = 1; j <= 5; j++ ) {
+//#pragma omp critical
+			cout << "Thread " << omp_get_thread_num() << " does j:" << j << endl;
+			callee(&a[i], &k, j);
+		}
+	}
+}
 
 int main(int argc, char** argv)
 {
+	NTL::Mat<ZZ> mat = NTL::Mat<ZZ>();
+	RR::SetPrecision(1000);
+
+    if(readRandomLattice(mat, "/home/mburger/Dokumente/p3enum/penum/inppap/svpc-e1-d10.txt") < 0) {
+    	cout << "Error while reading lattice. Exiting" << std::endl;
+    	exit(-1);
+    }
+
+	p3::p3Matrix<ZZ, RR> pmat = p3::p3Matrix<ZZ, RR> (mat);
+	//pmat.LLL_FP( 0.99 );
+	pmat.S2LLL( 1.0 - 1e-6 );
+
+
+	return 0;
+	//int a[10];
+	//int n = 10;
+
+	//caller(a, n);
+	//exit(0);
 	readRunningTimes(argc, argv);
 
 #pragma omp parallel
@@ -1013,7 +1063,7 @@ int main(int argc, char** argv)
             i++;
         }
 
-
+        // Also automatically activates the iterative search for vectors
         if(input == "--aend") {
             if(argc <= i) {
                 std::cerr << "Missing aend in argument. Terminating." << std::endl;
@@ -1022,6 +1072,7 @@ int main(int argc, char** argv)
 
             double aend = atof(argv[i+1]);
             Configurator::getInstance().Aend = aend;
+            Configurator::getInstance().iterative_enumeration = true;
             i++;
         }
 
@@ -1126,6 +1177,10 @@ int main(int argc, char** argv)
             Configurator::getInstance().ann_iterations = ann_iterations;
             cout << "Setting ann_iterations parameter to " << ann_iterations << "." << endl;
             i++;  
+        }
+
+        if(input == "--ann_use_gh") {
+        	Configurator::getInstance().use_gh = true;
         }
 
         if(input == "--evo_generations") {
