@@ -642,7 +642,7 @@ int readConfig(string path) {
 		if(command == "--ann_target_temp") {
         	try {
         		linestream >> double_value;
-        		Configurator::getInstance().ann_target_temp = double_value;
+        		Configurator::getInstance().set_ann_target_temp(double_value);
         		cout << "Setting annealing target temperature to " << double_value << "." << endl;
         	}
 

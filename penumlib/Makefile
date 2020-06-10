@@ -25,7 +25,7 @@ src/pruningfunc.d
 
 LANG=-std=c++17
 ARFLAGS= -r
-CXXFLAGS= -O3 -mavx -Wall -g -c -fmessage-length=0 -fopenmp -MMD -MP
+CXXFLAGS= -O3 -mavx2 -Wall -g -c -fmessage-length=0 -fopenmp -MMD -MP
 DEFINES= -DUSE_VECQUEUE
 
 INCLUDE=-I./include -I../penum/src -I./src

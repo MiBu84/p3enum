@@ -21,7 +21,7 @@ LANG=-std=c++17
 CXXFLAGS= -O3 -g -Wall -c -fmessage-length=0 -fopenmp -MMD -MP
 DEFINES= -DUSE_VECQUEUE
 LDFLAGS=-fopenmp -g
-INCLUDE=-I../penumlib/src -I../ntl/include
+INCLUDE=-I../penumlib/src -I../ntl/include -Isrc/
 LIBS=-lntl -lpenumlib -lgmp -lfplll -lm -lmpfr -lstdc++fs
 LIBPATH=-L../penumlib -L../ntl/Release
 

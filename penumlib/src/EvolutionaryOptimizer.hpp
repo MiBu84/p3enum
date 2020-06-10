@@ -108,13 +108,14 @@ public:
 		double tstart = omp_get_wtime();
 		EvolutionarySolution<FT> starting_sol_glob = EvolutionarySolution<FT>(&benchi, circ, _ainfo);
 		starting_sol_glob.calculateCosts();
-		EvolutionarySolution<FT> glob_best_sol;
+
+		EvolutionarySolution<FT> glob_best_sol = starting_sol_glob;
 		cout << "Initial costs: " << starting_sol_glob.getCost() << endl;
 
 #pragma omp parallel num_threads (numthreads) shared(generations_done)
 {
 		int tid = omp_get_thread_num();
-		EvolutionPopulation<FT> mypop = EvolutionPopulation<FT>(250);
+		EvolutionPopulation<FT> mypop = EvolutionPopulation<FT>(300);
 		//.push_back(EvolutionPopulation<FT>(250));
 		EvolutionarySolution<FT> starting_sol_loc = EvolutionarySolution<FT>(&benchi, circ, _ainfo);
 
@@ -135,17 +136,23 @@ public:
 			mypop.insertIndividual(tomodify_sol);
 
 			for(unsigned int i=1; i < mypop.getTargetSize(); i++) {
-				for(int ii=0; ii<10000; ii++) {
+				for(int ii=0; ii<1000; ii++) {
 					tomodify_sol.modifyToNeighborSolution(false, false);
 				}
 				tomodify_sol.calculateCosts();
 				mypop.insertIndividual(tomodify_sol);
-				tomodify_sol = starting_sol_loc;
-
+ 				tomodify_sol = starting_sol_loc;
 			}
+            
+            #pragma omp critical 
+            {
+                if(glob_best_sol.getCost() > mypop.getBestIndiviual().getCost()) {
+                    glob_best_sol = mypop.getBestIndiviual();
+                }
+            }
 
 			for (int ac =0; ac<generations &&
-			stages_without_improvement < one_percent_of_generations*5;
+			stages_without_improvement < one_percent_of_generations*6;
 			ac++) {
 				FT best = mypop.getMaxFitness();
 				mypop.nextGeneration();
@@ -162,7 +169,7 @@ public:
 						// Calculate improvement
 						FT improvement = (glob_best_sol.getCost() - mypop.getBestIndiviual().getCost()) - FT(1.0);
 
-						if(abs(improvement) < 5e-4) {
+						if(abs(improvement) < 5e-3) {
 							stages_without_improvement++;
 							cout << "Impr:" << improvement << endl;
 						}
@@ -184,8 +191,6 @@ public:
 
 				if(tid==0) {
 					if(generations_done > next_generation_target) {
-
-
 						next_generation_target += one_percent_of_generations;
 						print_cnt++;
 
@@ -203,6 +208,7 @@ public:
 			}
 
 			cout << succcnt << " out of " << attempcnt << endl;
+            //mypop.printStatistics();
 		} // End BKZ types
 
 #pragma omp critical

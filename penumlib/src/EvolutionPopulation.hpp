@@ -51,22 +51,26 @@ struct classcompID {
 template <class FT>
 class EvolutionPopulation {
 public:
-	EvolutionPopulation(unsigned int target_size) {
+	EvolutionPopulation(unsigned int target_size) : rnd(std::chrono::high_resolution_clock::now().time_since_epoch().count())
+	{
 		this->_population.clear();
 		this->_target_size = target_size;
 		//cout << "Setting target size to " << this->_target_size << endl;
 		this->_best_individual = EvolutionarySolution<FT>();
 		this->_max_costs = 0;
 		this->no_of_mutations = this->no_of_shifts = this->no_of_recombines = this->no_of_crossing_over = this->no_of_keeping = 0;
+		this->sum_fitness = 0;
 	}
 
-	EvolutionPopulation() {
+	EvolutionPopulation()  : rnd(std::chrono::high_resolution_clock::now().time_since_epoch().count())
+	{
 		this->_population.clear();
 		this->_target_size = 101;
 		//cout << "Setting default target size to " << this->_target_size << endl;
 		this->_best_individual = EvolutionarySolution<FT>();
 		this->_max_costs = 0;
 		this->no_of_mutations = this->no_of_shifts = this->no_of_recombines = this->no_of_crossing_over = this->no_of_keeping = 0;
+		this->sum_fitness = 0;
 	}
 
 	~EvolutionPopulation () {
@@ -83,6 +87,8 @@ public:
 		this->no_of_crossing_over = other.no_of_crossing_over;
 		this->no_of_keeping = other.no_of_keeping;
 		this->no_of_mutations = other.no_of_mutations;
+		this->sum_fitness = other.sum_fitness;
+		this->rnd = other.rnd;
 	}
 
 	EvolutionPopulation(const EvolutionPopulation& other) {
@@ -95,6 +101,8 @@ public:
 		this->no_of_crossing_over = other.no_of_crossing_over;
 		this->no_of_keeping = other.no_of_keeping;
 		this->no_of_mutations = other.no_of_mutations;
+		this->sum_fitness = other.sum_fitness;
+		this->rnd = other.rnd;
 	}
 
 	EvolutionPopulation& operator= (const EvolutionPopulation & other) {
@@ -107,6 +115,8 @@ public:
 		no_of_crossing_over = other.no_of_crossing_over;
 		no_of_keeping = other.no_of_keeping;
 		no_of_mutations = other.no_of_mutations;
+		sum_fitness = other.sum_fitness;
+		rnd = other.rnd;
 		return *this;
 	}
 
@@ -125,7 +135,8 @@ public:
 		this->_population.insert(indi_copy);
 
 		if(indi.getFitness() > this->_best_individual.getFitness()) {
-			_best_individual = indi;
+			this->_best_individual = indi_copy;
+
 		}
 
 		return this->_population.size();
@@ -147,27 +158,32 @@ public:
 
 		// Choose those that should breed
 		int rank=0;
+		sumTheFitness();
 		while (parents.size() != parent_size) {
 			// Make copy with new ID
 			//EvolutionarySolution<FT> tmp = selectionWithRoullette();
+
 			int access = (int)floor(rank/2);
 			//cout <<  access << endl;
 			EvolutionarySolution<FT> tmp = selectionByRank(access);
+			tmp.setRandomID();
 			parents.insert( tmp );
+			//cout << "Inserting sol with fitness " << tmp.getFitness() << " compared to " << getBestIndiviual().getFitness() << endl;
 			rank++;
 		}
 
-		/*for(auto it=parents.begin(); it != parents.end();++it) {
+		/*cout << "Start initial" << endl;
+		for(auto it=_population.begin(); it != _population.end();++it) {
 			cout << it->getFitness() << endl;
 		}
-		cout << "End parents" << endl;*/
+		cout << "End initial" << endl;*/
 
 		while (next_gen.size() != _target_size) {
 		//for(unsigned int elemcnt=0; elemcnt < _target_size; elemcnt++) {
 
 			// The next generation should be of same size
-			int choser = rand() % 5;
-			EvolutionarySolution<FT> new_gen_child;
+			int choser = rand() % 6;
+			EvolutionarySolution<FT> new_gen_child = *(parents.begin());
 
 			// Case 0: A random parent will also be in the next generation
 			if(choser==0) {
@@ -183,7 +199,7 @@ public:
 			}
 
 			// Case 1: A parent is mutated in a random amount
-			else if(choser==1) {
+			else if(choser==1 || choser==5) {
 				auto it = parents.begin();
 				unsigned int rnd = (rand() % (parent_size  - 1));
 
@@ -192,7 +208,7 @@ public:
 				std::advance(it, rnd);
 				new_gen_child = *it;
 
-				int maxval = rand()%10+1;
+				int maxval = rand()%3+1;
 				for(int i = 0 ; i < maxval; i++) {
 					new_gen_child.modifyToNeighborSolution(false, false);
 				}
@@ -317,23 +333,19 @@ public:
 			<< "No_of_Survives: " << no_of_keeping << endl;
 	}
 
-	EvolutionarySolution<FT> selectionWithRoullette(const std::set<EvolutionarySolution<FT>> pop=NULL) {
+	EvolutionarySolution<FT> selectionWithRoullette(/*const std::set<EvolutionarySolution<FT>> pop=NULL*/) {
 		// Set a random id
-		std::random_device seeder;
-		std::mt19937 engine(seeder());
-		std::uniform_real_distribution<FT> dist(0.0, 1.0);
+		//std::random_device seeder;
+		//std::mt19937 rng(seeder());
 
-		FT sum_fitness = FT(0);
-		auto iti = _population.begin();
-		for(; iti != _population.end(); ++iti) {
-			sum_fitness+= iti->getFitness();
-		}
-
-		FT prob = dist(engine);
+		FT prob = std::uniform_real_distribution<FT>(0.0, 1.0)(this->rnd);
 
 		FT sum_probs = FT(0);
 
-		if(pop==NULL) {
+		//auto ite = _population.begin();
+		//return *ite;
+
+		//if(pop==NULL) {
 			auto it = _population.begin();
 			for(; it != _population.end(); ++it) {
 				if(prob <= sum_probs) {
@@ -348,9 +360,9 @@ public:
 			}
 			cerr << "Err: " << prob << " / " << sum_probs  << endl;
 			return *it;
-		}
+		//}
 
-		else {
+		/*else {
 			auto it = pop.begin();
 			for(; it != pop.end(); ++it) {
 				if(prob <= sum_probs) {
@@ -365,7 +377,7 @@ public:
 			}
 			cerr << "Err: " << prob << " / " << sum_probs  << endl;
 			return *it;
-		}
+		}*/
 	}
 
 	EvolutionarySolution<FT> selectionByRank(int rank) {
@@ -394,13 +406,26 @@ protected:
 
 private:
 	int no_of_shifts, no_of_recombines, no_of_crossing_over, no_of_keeping, no_of_mutations;
+	FT sum_fitness;
+	std::mt19937 rnd;
+
+	FT sumTheFitness() {
+		sum_fitness = 0;
+		auto iti = _population.begin();
+		for(; iti != _population.end(); ++iti) {
+			sum_fitness+= iti->getFitness();
+		}
+
+		//cout << "Sum of Fitness is " << sum_fitness << endl;
+		return sum_fitness;
+	}
 
 	EvolutionarySolution<FT> shift(const EvolutionarySolution<FT>& sol1) {
 		EvolutionarySolution<FT> sol_res = EvolutionarySolution<FT>(sol1);
-		int shiftint = (rand()%201) - 100; // between -100 and 100
+		int shiftint = 100 - (rand()%201); // between -100 and 100
 		FT shiftfloat = (FT)shiftint / FT(1000.0); // shift between -0.01 und 0.01
 
-		for(int i=0; i < sol1._dim; i++) {
+		for(int i=0; i < sol1._dim-2; i++) {
 			// Prevent shift to negative values
 			sol_res._prun_func[i] = std::min<FT>(std::max<FT> (sol_res._prun_func[i] + shiftfloat, FT(1e-3)), FT(1.0));
 		}

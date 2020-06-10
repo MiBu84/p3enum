@@ -38,14 +38,14 @@ public:
 		return 0;
 	}
 
-	double getAmaxEntry (int dim, int seed) {
+	double getAmaxEntry (int dim, int seed) const {
 		auto outer_it = this->_amax_per_seed.find(dim);
 		if(outer_it == _amax_per_seed.end()) {
 			cout << "No entry for dimension " << dim << " and seed " << seed << endl;
 			return -1;
 		}
 
-		std::map<int,double>& seedentr = outer_it->second;
+		const std::map<int,double>& seedentr = outer_it->second;
 		auto inner_it = seedentr.find(seed);
 
 		if(inner_it == seedentr.end()) {
@@ -56,14 +56,14 @@ public:
 		return inner_it->second;
 	}
 
-	amax_for_seed getAmaxEntryByNumber(int dim, int num) {
+	amax_for_seed getAmaxEntryByNumber(int dim, int num) const {
 		auto outer_it = this->_amax_per_seed.find(dim);
 		if(outer_it == _amax_per_seed.end()) {
 			cout << "No entry for dimension " << dim << " and number " << num << endl;
 			return amax_for_seed(-1, -1);
 		}
 
-		std::map<int,double>& seedentr = outer_it->second;
+		const std::map<int,double>& seedentr = outer_it->second;
 		auto inner_it = seedentr.begin();
 
 		if(inner_it == seedentr.end()) {
@@ -82,7 +82,7 @@ public:
 
 	}
 
-	unsigned int seedsForDimension(int dim) {
+	unsigned int seedsForDimension(int dim) const {
 		auto outer_it = this->_amax_per_seed.find(dim);
 
 		if(outer_it == _amax_per_seed.end()) {
@@ -156,7 +156,7 @@ public:
 	double ann_time_per_node;
 	int ann_num_different_bases;
 	
-	double ann_target_temp;
+
     double ann_cooling_rate;
     bool use_gh;
     int ann_iterations;
@@ -173,6 +173,8 @@ public:
 
 private:
 	amax_table _amax_per_seed;
+	double ann_target_temp;
+
 
 	Configurator() {
 		dolll=true;

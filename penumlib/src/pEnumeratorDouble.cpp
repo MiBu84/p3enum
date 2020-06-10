@@ -1603,8 +1603,82 @@ double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm
 		int* u, MBVec<double>& prunefunc_in, int j, int k, int dim, double Ain=-1) {
 
 	int tid = omp_get_thread_num();
+		//					//double* sigmaw = &sigma[tid][t][_dim + 3 - (r[tid][t+1]-1)];
+		//					//double* sigmar = &sigma[tid][t][_dim + 3 - r[tid][t+1]];
+		//
+		//
+		//					/*int jj=r[tid][t+1];
+		//
+		//					//int cnt = 1;
+		//					if((jj-4) % 4 == 0)
+		//					{
+		//						__m256i zero = _mm256_setzero_si256 ();
+		//						for(jj = r[tid][t+1]; jj - 3  > t + 1; jj-=4) {
+		//							__m256d u_avx = _mm256_load_pd (&uloc[jj-4]);
+		//							__m256d mu_avx = _mm256_load_pd (&mu[t][jj-4]);
+		//							__m256d sum_arr_avx = _mm256_mul_pd (u_avx, mu_avx);
+		//
+		//							__m256d arr2 = _mm256_i64gather_pd (&sigma[tid][t][(jj - 0)], zero, 1);
+		//
+		//						   /* const size_t n = sizeof(__m256i) / sizeof(double);
+		//						    double buffer[8];
+		//						    _mm256_storeu_pd(buffer, arr2);
+		//						    for (int i = 0; i < n; i++)
+		//						        std::cout << buffer[i] << " ";
+		//
+		//						    cout << endl << sigma[tid][t][(jj - 0)] << endl;*/
+		//
+		//							sum_arr_avx = _mm256_add_pd(arr2, sum_arr_avx);
+		//
+		//							//__m128d vlow  = _mm256_castpd256_pd128(sum_arr_avx);
+		//							//__m128d vhigh = _mm256_extractf128_pd(sum_arr_avx, 1); // high 128
+		//
+		//
+		//							_mm256_store_pd (sum_arr2, sum_arr_avx);
+		//
+		//
+		//
+		//							//sum_arr[3] += sigma[tid][t][(jj - 0)];
+		//							sum_arr2[2] += sum_arr[3];
+		//							sum_arr2[1] += sum_arr[2] + sum_arr[3];
+		//							sum_arr2[0] += sum_arr[1] + sum_arr[2] + sum_arr[3];
+		//
+		//
+		//							//sum_arr_avx = _mm256_setr_pd (sum_arr[0], sum_arr[1], sum_arr[2], sum_arr[3]);
+		//							//_mm256_store_pd(&sigma[tid][t][(jj-4)], sum_arr_avx);
+		//
+		//							//_mm256_stream_pd (sum_arr, sum_arr_avx);
+		//
+		//							sigma[tid][t][(jj-4)] = sum_arr2[0];
+		//							sigma[tid][t][(jj-3)] = sum_arr2[1];
+		//							sigma[tid][t][(jj-2)] = sum_arr2[2];
+		//							sigma[tid][t][(jj-1)] = sum_arr2[3];//
+		//
+		//							//sigma[tid][t][_dim + 3 - (jj-1)] = sigma[tid][t][_dim + 3 - (jj - 0)] + uloc[jj-1] * mu[t][jj-1];
+		//							//sigma[tid][t][_dim + 3 - (jj-2)] = sigma[tid][t][_dim + 3 - (jj - 1)] + uloc[jj-2] * mu[t][jj-2];
+		//							//sigma[tid][t][_dim + 3 - (jj-3)] = sigma[tid][t][_dim + 3 - (jj - 2)] + uloc[jj-3] * mu[t][jj-3];
+		//							//sigma[tid][t][_dim + 3 - (jj-4)] = sigma[tid][t][_dim + 3 - (jj - 3)] + uloc[jj-4] * mu[t][jj-4];
+		//							//*sigmaw = *sigmar + uloc[jj-1] * mu[t][jj-1]; //ToDo: Trial with transposed matrix for access pattern
+		//							//sigmaw++;
+		//							//sigmar++;
+		//						}
+		//
+		//						//int stop = 0;
+		//						//cin >> stop;
+		//					}
+		//
+		//
+		//
+		//					for(; jj > t + 1; jj--) {
+		//						//sigma[tid][t][_dim + 3 - (jj-1)] = sigma[tid][t][_dim + 3 - jj - 0] + uloc[jj-1] * mu[t][jj-1];
+		//						sigma[tid][t][jj-1] = sigma[tid][t][jj - 0] + uloc[jj-1] * mu[t][jj-1];
+		//					}*/
+		//
+		//
+		//					c[t] = sigma[tid][t][t+1];
+
+
 	//double sum_arr[64] __attribute__((aligned(64)));
-	//double sum_arr2[64] __attribute__((aligned(64)));
 		long long nodecnt = 0;
 
 		for(int i=0; i< _dim + 2; i++) {
@@ -1653,6 +1727,7 @@ double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm
 
 		double tstart = omp_get_wtime();
 		while (true) {
+
 			l[t] = l[ t + 1 ] + ( (uloc[t]) + c[t] ) * ( (uloc[t]) + c[t] ) * bstarnorm[t];
 
 			if(l[t] < prunefunc_in[t]) {
@@ -1668,83 +1743,62 @@ double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm
 					}
 					c[t] = sigma[tid][t][t+1];
 
-//					//double* sigmaw = &sigma[tid][t][_dim + 3 - (r[tid][t+1]-1)];
-//					//double* sigmar = &sigma[tid][t][_dim + 3 - r[tid][t+1]];
-//
-//
-//					/*int jj=r[tid][t+1];
-//
-//					//int cnt = 1;
-//					if((jj-4) % 4 == 0)
-//					{
-//						__m256i zero = _mm256_setzero_si256 ();
-//						for(jj = r[tid][t+1]; jj - 3  > t + 1; jj-=4) {
-//							__m256d u_avx = _mm256_load_pd (&uloc[jj-4]);
-//							__m256d mu_avx = _mm256_load_pd (&mu[t][jj-4]);
-//							__m256d sum_arr_avx = _mm256_mul_pd (u_avx, mu_avx);
-//
-//							__m256d arr2 = _mm256_i64gather_pd (&sigma[tid][t][(jj - 0)], zero, 1);
-//
-//						   /* const size_t n = sizeof(__m256i) / sizeof(double);
-//						    double buffer[8];
-//						    _mm256_storeu_pd(buffer, arr2);
-//						    for (int i = 0; i < n; i++)
-//						        std::cout << buffer[i] << " ";
-//
-//						    cout << endl << sigma[tid][t][(jj - 0)] << endl;*/
-//
-//							sum_arr_avx = _mm256_add_pd(arr2, sum_arr_avx);
-//
-//							//__m128d vlow  = _mm256_castpd256_pd128(sum_arr_avx);
-//							//__m128d vhigh = _mm256_extractf128_pd(sum_arr_avx, 1); // high 128
-//
-//
-//							_mm256_store_pd (sum_arr2, sum_arr_avx);
-//
-//
-//
-//							//sum_arr[3] += sigma[tid][t][(jj - 0)];
-//							sum_arr2[2] += sum_arr[3];
-//							sum_arr2[1] += sum_arr[2] + sum_arr[3];
-//							sum_arr2[0] += sum_arr[1] + sum_arr[2] + sum_arr[3];
-//
-//
-//							//sum_arr_avx = _mm256_setr_pd (sum_arr[0], sum_arr[1], sum_arr[2], sum_arr[3]);
-//							//_mm256_store_pd(&sigma[tid][t][(jj-4)], sum_arr_avx);
-//
-//							//_mm256_stream_pd (sum_arr, sum_arr_avx);
-//
-//							sigma[tid][t][(jj-4)] = sum_arr2[0];
-//							sigma[tid][t][(jj-3)] = sum_arr2[1];
-//							sigma[tid][t][(jj-2)] = sum_arr2[2];
-//							sigma[tid][t][(jj-1)] = sum_arr2[3];
-//
-//
-//
-//
-//
-//							//sigma[tid][t][_dim + 3 - (jj-1)] = sigma[tid][t][_dim + 3 - (jj - 0)] + uloc[jj-1] * mu[t][jj-1];
-//							//sigma[tid][t][_dim + 3 - (jj-2)] = sigma[tid][t][_dim + 3 - (jj - 1)] + uloc[jj-2] * mu[t][jj-2];
-//							//sigma[tid][t][_dim + 3 - (jj-3)] = sigma[tid][t][_dim + 3 - (jj - 2)] + uloc[jj-3] * mu[t][jj-3];
-//							//sigma[tid][t][_dim + 3 - (jj-4)] = sigma[tid][t][_dim + 3 - (jj - 3)] + uloc[jj-4] * mu[t][jj-4];
-//							//*sigmaw = *sigmar + uloc[jj-1] * mu[t][jj-1]; //ToDo: Trial with transposed matrix for access pattern
-//							//sigmaw++;
-//							//sigmar++;
-//						}
-//
-//						//int stop = 0;
-//						//cin >> stop;
-//					}
-//
-//
-//
-//					for(; jj > t + 1; jj--) {
-//						//sigma[tid][t][_dim + 3 - (jj-1)] = sigma[tid][t][_dim + 3 - jj - 0] + uloc[jj-1] * mu[t][jj-1];
-//						sigma[tid][t][jj-1] = sigma[tid][t][jj - 0] + uloc[jj-1] * mu[t][jj-1];
-//					}*/
-//
-//
-//					c[t] = sigma[tid][t][t+1];
+					//double* sigmaw = &sigma[tid][t][_dim + 3 - (r[tid][t+1]-1)];
+					//double* sigmar = &sigma[tid][t][_dim + 3 - r[tid][t+1]];
+
+
+					/*int jj=r[tid][t+1];
+
+					int cnt = 1;
+					if((jj-4) % 4 == 0)
+					{
+						__m256i zero = _mm256_setzero_si256 ();
+						for(jj = r[tid][t+1]; jj - 3  > t + 1; jj-=4) {
+							__m256d u_avx = _mm256_load_pd (&uloc[jj-4]);
+							__m256d mu_avx = _mm256_load_pd (&mu[t][jj-4]);
+							__m256d sum_arr_avx = _mm256_mul_pd (u_avx, mu_avx);
+
+							//__m256d arr2 = _mm256_loadu_pd (&sigma[tid][t][(jj - 0)]);
+							__m256d arr2 = _mm256_i64gather_pd (&sigma[tid][t][(jj - 0)], zero, 1);
+							sum_arr_avx = _mm256_add_pd(arr2, sum_arr_avx);
+							_mm256_store_pd (sum_arr, sum_arr_avx);
+
+							//sum_arr[3] += sigma[tid][t][(jj - 0)];
+							sum_arr[2] += sum_arr[3];
+							sum_arr[1] += sum_arr[2];
+							sum_arr[0] += sum_arr[1];
+
+
+							//sum_arr_avx = _mm256_setr_pd (sum_arr[0], sum_arr[1], sum_arr[2], sum_arr[3]);
+							//_mm256_store_pd(&sigma[tid][t][(jj-4)], sum_arr_avx);
+
+							//_mm256_stream_pd (sum_arr, sum_arr_avx);
+
+							sigma[tid][t][(jj-1)] = sum_arr[3];
+							sigma[tid][t][(jj-2)] = sum_arr[2];
+							sigma[tid][t][(jj-3)] = sum_arr[1];
+							sigma[tid][t][(jj-4)] = sum_arr[0];
+
+
+							//sigma[tid][t][_dim + 3 - (jj-1)] = sigma[tid][t][_dim + 3 - (jj - 0)] + uloc[jj-1] * mu[t][jj-1];
+							//sigma[tid][t][_dim + 3 - (jj-2)] = sigma[tid][t][_dim + 3 - (jj - 1)] + uloc[jj-2] * mu[t][jj-2];
+							//sigma[tid][t][_dim + 3 - (jj-3)] = sigma[tid][t][_dim + 3 - (jj - 2)] + uloc[jj-3] * mu[t][jj-3];
+							//sigma[tid][t][_dim + 3 - (jj-4)] = sigma[tid][t][_dim + 3 - (jj - 3)] + uloc[jj-4] * mu[t][jj-4];
+							//  *sigmaw = *sigmar + uloc[jj-1] * mu[t][jj-1]; //ToDo: Trial with transposed matrix for access pattern
+							//sigmaw++;
+							//sigmar++;
+						}
+					}
+
+
+
+					for(; jj > t + 1; jj--) {
+						//sigma[tid][t][_dim + 3 - (jj-1)] = sigma[tid][t][_dim + 3 - jj - 0] + uloc[jj-1] * mu[t][jj-1];
+						sigma[tid][t][jj-1] = sigma[tid][t][jj - 0] + uloc[jj-1] * mu[t][jj-1];
+					}
+
+
+					c[t] = sigma[tid][t][t+1];*/
 
 					r[tid][t+1] = t + 1;
 
@@ -1764,24 +1818,10 @@ double pEnumeratorDouble::BurgerEnumerationDouble(double** mu, double* bstarnorm
 				}
 
 				else {
-#pragma omp critical
-					{
-						if(l[t] < prunefunc_in[t]) {
-							A = l[t];
+					A = l[t];
 
-							if (_search_vector_list) {
-								ShortVectorStorage::getInstance().insertVector(uloc, sqrt(l[t]));
-							}
-
-							else {
-								cout << "Setting new amin to " << sqrt(l[t]) << endl;
-								updatePruningFuncLoc(prunefunc_in.data(), _conf, l[t], dim, 0, dim);
-							}
-
-							for(long i=j; i <= k; i++) {
-								umin[i] = (int)uloc[i];
-							}
-						}
+					for(long i=j; i <= k; i++) {
+						umin[i] = (int)uloc[i];
 					}
 
 					// Avoid visiting short vector twice

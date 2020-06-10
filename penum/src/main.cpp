@@ -870,6 +870,7 @@ void caller(int a[], int n)
 
 int main(int argc, char** argv)
 {
+
 	NTL::Mat<ZZ> mat = NTL::Mat<ZZ>();
 	RR::SetPrecision(1000);
 
@@ -889,11 +890,16 @@ int main(int argc, char** argv)
 
 	//caller(a, n);
 	//exit(0);
+
 	readRunningTimes(argc, argv);
 
 #pragma omp parallel
-#pragma omp single nowait
+	{
+#pragma omp single
+	{
 	cout << "Working threads: " << omp_get_num_threads() << endl;
+	}
+	}
 
 #ifdef USE_MB_TYPES
 	cout << "Using MB types." << endl;
@@ -1151,7 +1157,7 @@ int main(int argc, char** argv)
             }
 
             double ann_target_temp = atof(argv[i+1]);
-            Configurator::getInstance().ann_target_temp = ann_target_temp;
+            Configurator::getInstance().set_ann_target_temp(ann_target_temp);
             i++;
         }
         
