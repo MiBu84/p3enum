@@ -22,7 +22,9 @@
 #include <boost/algorithm/string/split.hpp>
 
 #include "p3Matrix.hpp"
+#include "p3BasisReduction.hpp"
 #include "NTL/matrix.h"
+#include "NTLLLL.hpp"
 
 
 namespace fs = std::filesystem;
@@ -870,19 +872,59 @@ void caller(int a[], int n)
 
 int main(int argc, char** argv)
 {
-
 	NTL::Mat<ZZ> mat = NTL::Mat<ZZ>();
-	RR::SetPrecision(1000);
+	RR::SetPrecision(128);
 
-    if(readRandomLattice(mat, "/home/mburger/Dokumente/p3enum/penum/inppap/svpc-e1-d10.txt") < 0) {
+    if(readRandomLattice(mat, "/home/mburger/Dokumente/p3enum/penum/inppap/dim40.txt") < 0) {
     	cout << "Error while reading lattice. Exiting" << std::endl;
     	exit(-1);
     }
 
-	p3::p3Matrix<ZZ, RR> pmat = p3::p3Matrix<ZZ, RR> (mat);
-	//pmat.LLL_FP( 0.99 );
-	pmat.S2LLL( 1.0 - 1e-6 );
+    p3::p3Matrix<long> pmat = p3::p3Matrix<long> (mat);
 
+
+    cout << "Start" << endl;
+    cout << pmat << endl;
+    p3::p3BasisReduction<long,double>::LLL_FP_COHEN(pmat, 0.999);
+   ///p3::p3BasisReduction<long,double>::LLL_FP(pmat, 0.999);
+
+    //cout << pmat << endl;
+    cout << endl;
+
+
+
+    NTL::Mat<ZZ> mat2 = mat;
+    NTL::LLL_FP(mat2, 0.999);
+    cout << mat2 << endl;
+
+    return 0;
+
+    //cout << mat << endl;
+    //NTL::LLL_FP(mat, 0.99);
+    //cout << mat << endl;
+
+	//p3::p3Matrix<long, double> pmat = p3::p3Matrix<long, double> (mat);
+	//NTL::Mat<long> imat = pmat.getNTLMat();
+
+   // NTL::Mat<int> imat;
+    //p3::p3Matrix<long> pmat = p3::p3Matrix<long> (mat);
+	//p3::p3BasisReduction<long,double>::S2LLL(pmat, 0.999);
+
+
+	return 0;
+
+	using namespace p3;
+	p3Vector<double> v1; v1.SetLength(3);
+	v1[0] = 1.5; v1[1] = 2.5; v1[2] = 3.5;
+	cout << v1;
+
+	vector<double> v2; v2.resize(3);
+	v2[0] = 2.5; v2[1] = 2.5; v2[2] = 2.5;
+
+	//p3Vector<double> v3 = v1 -v2;
+	//cout << v3 << endl;
+
+	cout << v1 * v2  << endl;
 
 	return 0;
 	//int a[10];

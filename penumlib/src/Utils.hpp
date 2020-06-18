@@ -65,7 +65,7 @@ template<class T> void subMatrix(const mat_ZZ& in_mat, mat_ZZ& out_mat, int min,
 
 
 template<class T>
-string convert2Str(T &i) {
+string convert2Str(const T &i) {
         string s;
         std::stringstream ss(s);
         ss << i;
