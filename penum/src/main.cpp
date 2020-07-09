@@ -18,6 +18,7 @@
 #include <fstream>
 #include <iostream>
 #include <filesystem>
+#include <chrono>  // for high_resolution_clock
 #include <boost/algorithm/string/classification.hpp> // Include boost::for is_any_of
 #include <boost/algorithm/string/split.hpp>
 
@@ -872,30 +873,42 @@ void caller(int a[], int n)
 
 int main(int argc, char** argv)
 {
-	NTL::Mat<ZZ> mat = NTL::Mat<ZZ>();
+	/*NTL::Mat<ZZ> mat = NTL::Mat<ZZ>();
 	RR::SetPrecision(128);
 
-    if(readRandomLattice(mat, "/home/mburger/Dokumente/p3enum/penum/inppap/dim40.txt") < 0) {
+    if(readRandomLattice(mat, "/home/mburger/Dokumente/p3enum/penum/inppap/dim10v3.txt") < 0) {
     	cout << "Error while reading lattice. Exiting" << std::endl;
     	exit(-1);
     }
 
-    p3::p3Matrix<long> pmat = p3::p3Matrix<long> (mat);
+    NTL::Mat<ZZ> mat2 = mat;
 
+    NTL::LLL_FP(mat2, 0.999);
+    auto start = std::chrono::high_resolution_clock::now();
+    auto finish = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double> elapsed = finish - start;
+    //std::cout << "NTL_FP_LLL time: " << elapsed.count() << " s\n";
 
     cout << "Start" << endl;
-    cout << pmat << endl;
-    p3::p3BasisReduction<long,double>::LLL_FP_COHEN(pmat, 0.999);
-   ///p3::p3BasisReduction<long,double>::LLL_FP(pmat, 0.999);
 
-    //cout << pmat << endl;
+
+   p3::p3Matrix<double> pmat = p3::p3Matrix<double> (mat);
+   start = std::chrono::high_resolution_clock::now();
+   p3::p3BasisReduction<double,long double>::LLL_FP_COHEN(pmat, 0.999);
+   finish = std::chrono::high_resolution_clock::now();
+   elapsed = finish - start;
+   //std::cout << "FP_LLL_COHAN time: " << elapsed.count() << " s\n";
+   //cout << pmat << endl;
+   cout << endl;
+
+    p3::p3Matrix<long> pmat2 = p3::p3Matrix<long> (mat);
+    start = std::chrono::high_resolution_clock::now();
+    p3::p3BasisReduction<long, long double>::S2LLL(pmat2, 1-10e-7);
+    finish = std::chrono::high_resolution_clock::now();
+    elapsed = finish - start;
+    std::cout << "S2LLL time: " << elapsed.count() << " s\n";
+    //cout << pmat2 << endl;
     cout << endl;
-
-
-
-    NTL::Mat<ZZ> mat2 = mat;
-    NTL::LLL_FP(mat2, 0.999);
-    cout << mat2 << endl;
 
     return 0;
 
@@ -931,9 +944,9 @@ int main(int argc, char** argv)
 	//int n = 10;
 
 	//caller(a, n);
-	//exit(0);
+	//exit(0);*/
 
-	readRunningTimes(argc, argv);
+	//readRunningTimes(argc, argv);
 
 #pragma omp parallel
 	{

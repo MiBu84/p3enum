@@ -16,13 +16,19 @@ struct GSInfo {
 	p3Matrix<FT> _mu;
 	p3Matrix<FT> _bstar;
 	p3Vector<FT> _bstarabs;
-	p3Vector<FT> _babs;
 
 	GSInfo(int r, int c) {
 		_mu.SetDims(r, c);
 		_bstar.SetDims(r,  c);
 		_bstarabs.SetLength(r);
-		_babs.SetLength(r);
+	}
+
+	FT det() {
+		FT sum = FT(1);
+		for(unsigned int i=0; i < _bstarabs.size(); i++) {
+			sum *= _bstarabs[i];
+		}
+		return sum;
 	}
 };
 

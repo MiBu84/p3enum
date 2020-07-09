@@ -4,21 +4,25 @@ CXX = g++
 AR = ar
 
 CPP_SRCS += \
+src/ShortVectorStorage.cpp \
 src/Utils.cpp \
 src/pEnumeratorDouble.cpp \
 src/pruningfunc.cpp 
 
 O_SRCS += \
+src/ShortVectorStorage.o \
 src/Utils.o \
 src/pEnumeratorDouble.o \
 src/pruningfunc.o 
 
 OBJS += \
+src/ShortVectorStorage.o \
 src/Utils.o \
 src/pEnumeratorDouble.o \
 src/pruningfunc.o 
 
 CPP_DEPS += \
+src/ShortVectorStorage.d \
 src/Utils.d \
 src/pEnumeratorDouble.d \
 src/pruningfunc.d 

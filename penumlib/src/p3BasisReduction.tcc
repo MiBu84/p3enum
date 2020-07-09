@@ -168,14 +168,14 @@ template<class T, class FT>
 	}
 
 	FT mu = gs_info._mu[k][k-1];
-	FT B = gs_info._babs[k] + mu * mu * gs_info._babs[k-1];
-	gs_info._mu[k][k-1] = mu * gs_info._babs[k-1] / B;
+	FT B = gs_info._bstarabs[k] + mu * mu * gs_info._bstarabs[k-1];
+	gs_info._mu[k][k-1] = mu * gs_info._bstarabs[k-1] / B;
 
 	p3Vector<FT> b = gs_info._bstar[k-1];
 	gs_info._bstar[k-1] = gs_info._bstar[k] + mu*b;
-	gs_info._bstar[k] = - gs_info._mu[k][k-1] * gs_info._bstar[k] + (gs_info._babs[k] / B) * b;
-	gs_info._babs[k] = gs_info._babs[k-1] * gs_info._babs[k] / B;
-	gs_info._babs[k-1] = B;
+	gs_info._bstar[k] = - gs_info._mu[k][k-1] * gs_info._bstar[k] + (gs_info._bstarabs[k] / B) * b;
+	gs_info._bstarabs[k] = gs_info._bstarabs[k-1] * gs_info._bstarabs[k] / B;
+	gs_info._bstarabs[k-1] = B;
 
 	for (int i = k+1; i <= k_max; i++) {
 		FT t = gs_info._mu[i][k];
@@ -197,21 +197,20 @@ template<class T, class FT>
 			// RR to ZZ
 			//std::string strval = convert2Str<FT>(q_j);
 			//T q_j_i; convertFromStr<T>(q_j_i, strval);
-			//_mat[k] = _mat[k] - q_j_i * _mat[j];
+			//mat[k] = mat[k] - q_j_i * mat[j];
 
 			fmat[k] = fmat[k] - q_j * fmat[j];
 			//_fmat = conv_to_ft_mat <T, FT> (_mat);
 
 			// Update only relevant mu
-		    for (int i = 0; i < j; i++)
-		    	gs_info._mu[k][i] = gs_info._mu[k][i] - q_j * gs_info._mu[j][i];
-			//GramSchmidt();
+		    //for (int i = 0; i < j; i++)
+		    //	gs_info._mu[k][i] = gs_info._mu[k][i] - q_j * gs_info._mu[j][i];
+			GramSchmidt(mat, fmat, gs_info);
 		}
 		// Full update
 		GramSchmidt(mat, fmat, gs_info);
 	}
 }
-
 
 template<class T, class FT>
 	void p3BasisReduction<T, FT>::GramSchmidt (p3Matrix<T>& mat, p3Matrix<FT>& fmat, GSInfo<T, FT>& gs_info) {
@@ -344,6 +343,8 @@ void p3BasisReduction<T, FT>::swapBaseVectors (p3Matrix<FT>& fmat, int idx1, int
 template<class T, class FT>
 	void p3BasisReduction<T, FT>::S2LLL (p3Matrix<T>& mat, double eta) {
 
+	assert(eta > 0.6 && eta <= 1);
+
 	p3Matrix<FT> fmat = conv_to_ft_mat <T, FT> (mat);
 	GSInfo<T, FT> gsinfo = GSInfo<T, FT>(mat.NumRows(), mat.NumCols());
 
@@ -378,6 +379,8 @@ template<class T, class FT>
 	mat = conv_to_int_mat<FT, T> (fmat);
 
 	//std::cout << fmat << endl;
+	cout << gsinfo._bstarabs;
+	cout << "Det End:" << gsinfo.det() << endl;
 	FT endBB = calc_SS_B(gsinfo);
 	std::cout << "Improved to: " << endBB << " / " << endBB/startBB << std::endl;
 	std::cout << redcnt << " reductions." << std::endl;
@@ -421,11 +424,15 @@ template<class T, class FT>
 	p3Matrix<FT> fmat = conv_to_ft_mat <T, FT> (mat);
 	GSInfo<T, FT> gsinfo = GSInfo<T, FT>(mat.NumRows(), mat.NumRows());
 
+	GramSchmidt(mat, fmat, gsinfo);
+	cout << gsinfo._bstar << endl;
+	cout << "Det Start:" << gsinfo.det() << endl;
+
 	// Initialize
 	int k = 1;
 	int k_max = 0;
 	gsinfo._bstar[0] = fmat[0];
-	gsinfo._babs[0] = fmat[0] * fmat[0];
+	gsinfo._bstarabs[0] = fmat[0] * fmat[0];
 	p3Matrix<T>  H = p3Matrix<T>(fmat.NumRows(), fmat.NumCols(), true);
 	int n = fmat.NumRows();
 
@@ -436,12 +443,12 @@ template<class T, class FT>
 			gsinfo._bstar[k] = fmat[k];
 
 			for (int j=0; j < k; j++) {
-				gsinfo._mu[k][j] = fmat[k] * gsinfo._bstar[j] / gsinfo._babs[j];
+				gsinfo._mu[k][j] = fmat[k] * gsinfo._bstar[j] / gsinfo._bstarabs[j];
 				gsinfo._bstar[k] = gsinfo._bstar[k] - gsinfo._mu[k][j] * gsinfo._bstar[j];
 			}
-			gsinfo._babs[k] = gsinfo._bstar[k] * gsinfo._bstar[k];
+			gsinfo._bstarabs[k] = gsinfo._bstar[k] * gsinfo._bstar[k];
 
-			if(gsinfo._babs[k] == 0) {
+			if(gsinfo._bstarabs[k] == 0) {
 				cerr << "b_i does not form a basis" << endl;
 				return;
 			}
@@ -451,7 +458,7 @@ template<class T, class FT>
 		while (true) {
 			reduce_RET(k, k-1, mat, fmat, H, gsinfo);
 
-			if(gsinfo._babs[k] < (delta_ - gsinfo._mu[k][k-1] * gsinfo._mu[k][k-1]) *  gsinfo._babs[k-1])
+			if(gsinfo._bstarabs[k] < (delta_ - gsinfo._mu[k][k-1] * gsinfo._mu[k][k-1]) *  gsinfo._bstarabs[k-1])
 			{
 				// SWAP
 				swap_SWAP(k, k_max, mat, fmat, H,  gsinfo);
@@ -468,7 +475,8 @@ template<class T, class FT>
 		}
 	}
 
-	cout << fmat;
+	cout << "Det End:" << gsinfo.det() << endl;
+	mat = conv_to_int_mat <FT, T> (fmat);
 	return;
 
 }
